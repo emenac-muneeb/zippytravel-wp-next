@@ -1,0 +1,381 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Cairo:wght@200..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Toasts above fixed navbar (z-50) */
+:root {
+  --toastify-z-index: 10000;
+  --toastify-toast-top: 5rem;
+}
+
+/* Global font — Inter across the entire site */
+html, body, * {
+  font-family: 'Inter', var(--font-inter), system-ui, -apple-system, sans-serif !important;
+}
+
+
+input[type="checkbox"].custom-check:checked::before {
+  content: "✔";
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  color: white;
+  font-weight: bold;
+}
+
+/* Style month and year dropdowns */
+.react-datepicker__month-select,
+.react-datepicker__year-select {
+  background-color: #ffffff;
+  border: 1px solid #F1A868;
+    color: #F1A868;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 6px 34px 6px 12px;
+  font-size: 14px;
+  outline: none;
+  margin: 14px 6px 0px 6px;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23DC0727' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+body{
+  font-family: var(--font-inter), Inter, sans-serif;
+  overflow-x: hidden;
+}
+h1 {
+  color: #A57233;
+  font-size: 32px;
+}
+
+h2 {
+  color: #A57233;
+  font-size: 26px;
+}
+
+h3 {
+  color: #3F3F3F;
+  font-size: 22px;
+}
+
+h4 {
+  color: #A57233;
+  font-size: 20px;
+}
+
+h5 {
+  color: #A57233;
+  font-size: 16px;
+}
+
+h6 {
+  color: #A57233;
+  font-size: 15px;
+}
+p {
+  color: #4C4C4C ;
+}
+
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 40px ;
+  }
+  h2 {
+    font-size: 32px ;
+  }
+  h3 {
+    font-size: 26px ;
+  }
+  h4 {
+    font-size: 22px ;
+  }
+  h5 {
+    font-size: 18px ;
+  }
+  h6 {
+    font-size: 16px ;
+  }
+}
+strong,
+.prose strong {
+    color: #A57233;
+    font-family: var(--font-inter), Inter, sans-serif !important;
+}
+.white_tags {
+  color: white !important;
+}
+
+.red_tag {
+  color: #F1A868 !important;
+}
+
+.black_tag {
+  color: #000 !important;
+}
+
+.scroll-tag>h2 {
+  font-size: 32px;
+  font-family: var(--font-inter), Inter, sans-serif;
+}
+
+.h1-white {
+  color: white !important;
+}
+
+.hero-banner-title {
+  color: white ;
+  font-size: 45px ;
+  font-weight: 900 ;
+  line-height: 1.2 ;
+  margin-bottom: 0.5rem;
+  @media (max-width: 768px) {
+    font-size: 32px;
+  }
+}
+
+.hero-banner-subtitle {
+  color: white ;
+  font-family: var(--font-inter), Inter, sans-serif ;
+  font-size: clamp(32px, 5.2vw, 58px) ;
+  font-weight: 400 ;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.custom-quicksand * {
+  font-family: var(--font-inter), Inter, sans-serif !important;
+}
+
+.h3-black {
+  color: #A57233 !important;
+}
+text-red {
+  color: #F1A868 !important;
+} 
+h1 {
+    font-family: var(--font-inter), system-ui, sans-serif;
+}
+h2 {
+    font-family: var(--font-inter), system-ui, sans-serif;
+}
+p{
+  font-size: 16px;
+}
+
+/* Destination slider: reserve slide height before Swiper init */
+.destination-stable-swiper .swiper-slide {
+  height: auto;
+}
+
+/* NProgress custom color */
+#nprogress .bar {
+  background: #F1A868 !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #F1A868, 0 0 5px #F1A868 !important;
+}
+.faq_question{
+  font-size: 16px !important;
+}
+.dmcaBadgeHelper{
+  margin-left: 0;
+}
+.container{
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+}
+.heading_section,
+.section_heading {
+  padding-bottom: 30px;
+  width: 100%;
+  text-align: left;
+  position: relative;
+  padding-top: 13px;
+}
+.heading_section::before,
+.section_heading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 4px;
+  background-color: #F1A868;
+  z-index: 1;
+}
+.heading_section::after,
+.section_heading::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 100px;
+  height: 1px;
+  background-color: #F1A868;
+  z-index: 1;
+}
+.pre_heading{
+  font-size: 42px;
+  font-weight: 800;
+  color: #3F3F3F;
+  margin-bottom: 0px;
+  line-height: 1.2;
+}
+.sub_text{
+  font-size: 22px;
+  font-weight: 300;
+  color: #4C4C4C;
+  margin-bottom: 0px;
+  line-height: 1.5;
+}
+.z-2{
+  z-index: 2;
+}
+.no-underline{
+  text-decoration: none !important;
+}
+.banner-description p{
+  color: white;
+  font-size: 18px ;
+  font-weight: 400 ;
+  line-height: 1.5;
+  margin-bottom: 0px;
+  font-family: var(--font-inter), Inter, sans-serif ;
+}
+@media (max-width: 1200px) {
+  .pre_heading {
+    font-size: 36px;
+  }
+  .sub_text {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .pre_heading {
+    font-size: 32px;
+  }
+  .sub_text {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pre_heading {
+    font-size: 26px;
+  }
+  .sub_text {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pre_heading {
+    font-size: 22px;
+  }
+  .sub_text {
+    font-size: 14px;
+  }
+}
+@media screen and (min-width: 1600px) {
+  .container {
+      padding-left: 107px;
+      padding-right: 107px;
+      max-width: 1534px;
+  }
+}
+@media (max-width: 768px) {
+  .dmcaBadgeHelper{
+    margin-left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.head-white h2,
+.head-white p {
+  color: white !important;
+}
+
+.asl-bg::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #713E00;
+  opacity: 0.6;
+  z-index: 0;
+}
+.pb-00 {
+  padding-bottom: 0px !important;
+}
+.airline_card .pro_img{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.airline_card .pro_img img{
+  width: 100%;
+  max-width: calc(100% - 12px);
+  max-height: calc(100% - 12px);
+  margin: 0 auto;
+  border-radius: 12px;
+}
+.airline_card:hover .pro_img img{
+  transition: all 0.3s ease-in-out;
+  max-width: 100%;
+  max-height: 100%;
+}
+.airline_card .pro_img .btn img{
+  max-width: unset;
+  max-height: unset;
+  width: auto;
+  height: auto;
+  
+}
+.eaf-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #A57233;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 7px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  width: 100%;
+  max-width: 220px;
+  gap: 10px;
+}
+.eaf-cta-btn:hover {
+  background: #b57c49;
+  color: #fff;
+}
+@media screen and  (max-width: 1200px) and (min-width: 992px)  {
+  .blogwithbg .absolteimg{
+    position: relative !important;
+    width: 100%;
+    right: auto;
+    top: auto;
+    margin-top: 30px;
+  }
+}
+.prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  color:#A57233;
+  font-weight: 500;
+  text-decoration: none;
+}

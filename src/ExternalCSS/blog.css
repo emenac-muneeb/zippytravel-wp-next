@@ -1,0 +1,226 @@
+strong {
+  color: #A57233;
+  font-family: var(--font-inter), Inter, sans-serif;
+}
+
+.parseData {
+  font-family: var(--font-inter), Inter, sans-serif;
+}
+
+.parseData h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  color: #A57233;
+  font-family: var(--font-inter), Inter, sans-serif;
+}
+
+.parseData h2 {
+  font-size: 26px;
+  font-weight: 600;
+  margin: 0.75rem 0;
+  color: #A57233;
+  font-family: var(--font-inter), Inter, sans-serif;
+}
+
+.parseData h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0.5rem 0;
+  color: #A57233;
+  font-family: var(--font-inter), Inter, sans-serif;
+}
+
+.parseData h4 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0.5rem 0;
+  color: #A57233;
+  font-family: var(--font-inter), Inter, sans-serif;
+}
+
+@media (min-width: 1024px) {
+  .parseData h1 {
+    font-size: 40px;
+  }
+  .parseData h2 {
+    font-size: 32px;
+  }
+  .parseData h3 {
+    font-size: 26px;
+  }
+  .parseData h4 {
+    font-size: 22px;
+  }
+}
+
+.parseData p {
+  font-size: 1rem;
+  line-height: 1.625;
+  margin: 0.5rem 0;
+  font-family: var(--font-inter), Inter, sans-serif;
+}
+
+/* ---------- Anchor Styling With Underline Hover Animation ---------- */
+
+
+
+
+
+/* Last override: Blue anchor design (from your bottom code) */
+
+.parseData a {
+  color: #A57233;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.parseData a:hover {
+  color: #F1A868;
+}
+
+.parseData img {
+  border-radius: 16px;
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+  display: block;
+}
+
+.parseData figure {
+  margin: 1.25rem 0;
+}
+
+.parseData figure img {
+  margin: 0;
+}
+
+.blog-detail-content p {
+  color: #4C4C4C;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0.75rem 0;
+}
+
+@media (min-width: 768px) {
+  .blog-detail-content p {
+    font-size: 18px;
+  }
+}
+
+.blog-detail-content h1,
+.blog-detail-content h2,
+.blog-detail-content h3,
+.blog-detail-content h4 {
+  color: #A57233;
+  font-weight: 700;
+}
+
+.blog-detail-content strong {
+  color: #363636;
+  font-weight: 700;
+}
+
+/* ---------- List Styles ---------- */
+
+.parseData ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+  margin-top: 0.5rem;
+}
+
+.parseData ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.parseData li {
+  font-size: 1rem;
+  line-height: 1.625;
+  color: #374151;
+  /* gray-700 */
+  margin-bottom: 0.25rem;
+}
+
+.parseData ul ul,
+.parseData ol ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+.parseData ol ol,
+.parseData ul ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+/* ---------- Table Styles ---------- */
+
+.parseData table {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.875rem;
+  table-layout: auto;
+}
+
+.parseData th {
+  background-color: #f3f4f6;
+  /* gray-100 */
+  font-weight: 600;
+  text-align: left;
+  border: 1px solid #d1d5db;
+  padding: 0.5rem 0.75rem;
+  /* min-width: 120px; */
+}
+
+.parseData td {
+  border: 1px solid #d1d5db;
+  padding: 0.5rem 0.75rem;
+  /* min-width: 120px; */
+}
+
+.parseData tr:nth-child(even) {
+  background-color: #f9fafb;
+  /* gray-50 */
+}
+
+/* ---------- Responsive Table Styles (Compact for Mobile) ---------- */
+@media screen and (max-width: 768px) {
+  .parseData table {
+    display: table; /* Force it to stay as a table */
+    width: 100%;
+    table-layout: fixed; /* Force it to fit within the width */
+    font-size: 11px; /* Smaller font for mobile */
+    border-collapse: collapse;
+  }
+
+  .parseData th, .parseData td {
+    padding: 6px 4px; /* Reduced padding */
+    word-break: break-word; /* Allow text to wrap anywhere */
+    hyphens: auto;
+    vertical-align: top;
+    line-height: 1.2;
+  }
+
+  /* Adjust specific columns if needed, but let's try equal distribution first */
+  .parseData th {
+    font-size: 10px;
+    background-color: #f3f4f6;
+  }
+
+  .parseData td strong {
+    font-size: 11px;
+    display: block;
+  }
+}
+
+figure:has(> figure.table) {
+  overflow: visible; /* Prevent unwanted scrollbars from wrapper */
+}

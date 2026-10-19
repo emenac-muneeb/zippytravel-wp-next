@@ -1,0 +1,61 @@
+{
+  "name": "emantravel",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@headlessui/react": "^2.2.3",
+    "@heroicons/react": "^2.2.0",
+    "@tailwindcss/typography": "^0.5.16",
+    "@tippyjs/react": "^4.2.6",
+    "axios": "^1.9.0",
+    "cheerio": "^1.1.0",
+    "html-react-parser": "^5.2.6",
+    "keen-slider": "^6.8.6",
+    "lucide-react": "^0.511.0",
+    "next": "latest",
+    "nprogress": "^0.2.0",
+    "react": "latest",
+    "react-datepicker": "^8.4.0",
+    "react-dom": "latest",
+    "react-hot-toast": "^2.5.2",
+    "react-icons": "^5.5.0",
+    "react-slick": "^0.30.3",
+    "react-toastify": "^11.0.5",
+    "slick-carousel": "^1.8.1",
+    "swiper": "^11.2.7",
+    "tippy.js": "^6.3.7"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "eslintConfig": {
+    "extends": [
+      "next/core-web-vitals"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.9",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.21.0",
+    "eslint-config-next": "latest",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.1"
+  }
+}
