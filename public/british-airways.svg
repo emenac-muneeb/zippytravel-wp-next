@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" width="220" height="60">
+  <path d="M120 18 C145 18 175 24 195 38 L180 38 C165 28 140 24 120 24 Z" fill="#EB2226"/>
+  <path d="M140 25 C160 25 185 30 205 44 L190 44 C175 34 155 30 140 30 Z" fill="#075AAA"/>
+  <text x="15" y="33" font-family="'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="700" fill="#075AAA" letter-spacing="1">BRITISH</text>
+  <text x="15" y="46" font-family="'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="500" fill="#075AAA" letter-spacing="3">AIRWAYS</text>
+</svg>

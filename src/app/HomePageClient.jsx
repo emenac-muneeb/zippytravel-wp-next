@@ -15,6 +15,8 @@ import {
 } from "../Components/common/Skeleton";
 import { ExclusiveAirlineFaresSkeleton } from "../Components/ExclusiveAirlineFares";
 
+import CheapestFlightFares from "../Components/CheapestFlightFares";
+
 const DestinationSlider = dynamic(() => import("../Components/DestinationSlider"), {
   ssr: true,
   loading: () => <DestinationSliderSkeleton />,
@@ -166,20 +168,21 @@ const HomePageClient = ({
             heading={homePage?.cheapfares_widget?.[0]?.heading || ""}
             subheading={homePage?.cheapfares_widget?.[0]?.sub_heading || ""}
           />
-           <AffordableTourSection
+          {/* AffordableTourSection, ExclusiveAirlineFares, and Testimonials commented out as requested */}
+          {/* <AffordableTourSection
             heading={homePage?.affordabletour_widget?.[0]?.heading || ""}
             subheading={homePage?.affordabletour_widget?.[0]?.sub_heading || ""}
           />
-            <ExclusiveAirlineFares
-              heading={homePage?.airfarepackages_widget?.[0]?.heading || "Exclusive Airline Fares"}
-              subheading={homePage?.airfarepackages_widget?.[0]?.sub_heading || "Browse The best Business and First Class Airlines"}
-              fares={homePage?.airfarepackages_widget?.[0]?.fares}
-            />
-            <Testimonials
-              heading={homePage?.ourclientsays_widget?.[0]?.heading || ""}
-              subheading={homePage?.ourclientsays_widget?.[0]?.sub_heading || ""}
-              initialReviews={initialReviews}
-            />
+          <ExclusiveAirlineFares
+            heading={homePage?.airfarepackages_widget?.[0]?.heading || "Exclusive Airline Fares"}
+            subheading={homePage?.airfarepackages_widget?.[0]?.sub_heading || "Browse The best Business and First Class Airlines"}
+            fares={homePage?.airfarepackages_widget?.[0]?.fares}
+          />
+          <Testimonials
+            heading={homePage?.ourclientsays_widget?.[0]?.heading || ""}
+            subheading={homePage?.ourclientsays_widget?.[0]?.sub_heading || ""}
+            initialReviews={initialReviews}
+          /> */}
 
           {/* <NeedHelp />
           <PopularDestinations
@@ -188,9 +191,9 @@ const HomePageClient = ({
             initialContinents={initialContinents}
           /> */}
 
-            <div className="my-[53px]">
-              <AirlineSlider />
-            </div>
+          <AirlineSlider />
+
+          <CheapestFlightFares />
 
           {(homePage?.scroll_description || initialScrollParsed?.hasContent) && (
               <div className="w-full font-quicksand sm:pb-[55px] pb-[30px] relative after:content-[''] after:absolute after:bottom-0 

@@ -53,8 +53,8 @@ function DestinationFareCard({ dest, href, priority = false }) {
       {/* Content Area — min-height locks price/title wrap on mobile */}
       <div className="pt-[13px] pb-[16px] px-[22px] flex justify-between flex-grow bg-white min-h-[100px]">
         <div className="min-w-0 pr-2">
-          <p className="sm:text-[16px] text-[14px] text-[#363636] mb-0 leading-snug">Business Class Flights To</p>
-          <span className="sm:text-[22px] text-[18px] font-[700] text-[#A57233] leading-tight group-hover:text-gray-800 transition-colors block line-clamp-2">
+          <p className="sm:text-[16px] text-[14px] text-[#363636] mb-0 leading-snug">Flights To</p>
+          <span className="sm:text-[22px] text-[18px] font-[700] text-[#1F0060] leading-tight block line-clamp-2">
             {dest.city}
           </span>
           <p className="text-[16px] text-[#363636] mt-0 truncate">{dest.country || dest.continent}</p>
@@ -67,9 +67,17 @@ function DestinationFareCard({ dest, href, priority = false }) {
             <span className="sm:text-[26px] text-[22px] font-[700] tracking-tight">{dest.price}</span>
             <span className="text-[16px] font-[300] self-end ml-[3px]">pp</span>
           </div>
-          <span className="whitespace-nowrap sm:text-[14px] text-[12px] text-[#727272] leading-1 flex items-center sm:gap-3 gap-2 group-hover:text-[#d67938] transition-colors">
-            View Fares <span className="flex"><img src="/media/fr-svgs/cardbtnarrow.png" alt="cardbtnarrow" className="w-[18px] h-[10px]" /></span>
-          </span>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              window.location.href = "tel:02039232255";
+            }}
+            className="w-[101px] h-[36px] bg-[#1F0060] hover:bg-[#2c0087] text-white font-poppins font-medium text-[15px] rounded-[8px] flex items-center justify-center transition-colors shadow-sm"
+          >
+            Call Us
+          </button>
         </div>
       </div>
     </Link>
@@ -159,9 +167,8 @@ function StableDestinationSwiper({ items, getKey, renderCard, loop, prevRef, nex
 
       {/* Static strip mirrors swiper geometry until swiper is ready */}
       <div
-        className={`flex gap-[10px] min-[576px]:gap-5 pt-4 pb-[78px] overflow-hidden ${
-          swiperReady ? "invisible absolute inset-0 pointer-events-none" : ""
-        }`}
+        className={`flex gap-[10px] min-[576px]:gap-5 pt-4 pb-[78px] overflow-hidden ${swiperReady ? "invisible absolute inset-0 pointer-events-none" : ""
+          }`}
         aria-hidden={swiperReady}
       >
         {items.slice(0, 3).map((item, index) => (
@@ -237,14 +244,14 @@ export default function DestinationSlider({
   );
 
   return (
-    <div id="recommended-destinations" className="pt-[30px] sm:pt-[50px] pb-[15px] sm:pb-[25px] bg-white">
+    <div id="recommended-destinations" className="pt-[10px] sm:pt-[15px] pb-[15px] sm:pb-[25px] bg-white">
       <div className="container">
         {/* Reserve multi-line heading height on mobile (title + long subtitle wrap) */}
-        <div className="heading_section min-h-[170px] sm:min-h-[120px] md:min-h-[130px]">
-          <h2 className="pre_heading">
+        <div className="heading_section !text-center flex flex-col items-center [&::before]:hidden [&::after]:hidden !pt-0 !pb-4 sm:!pb-6">
+          <h2 className="pre_heading text-center">
             {heading || 'Top Destinations'}
           </h2>
-          <p className="sub_text">
+          <p className="sub_text text-center max-w-[850px] mx-auto">
             {subheading || 'Best Premium Fares'}
           </p>
         </div>
