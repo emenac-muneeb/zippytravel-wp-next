@@ -77,10 +77,18 @@ const Testimonials = dynamic(() => import("../Components/Testimonials"), {
 const ScrollDetail = dynamic(() => import("../Components/ScrollDetail"), {
   ssr: true,
   loading: () => (
-    <div className="container mt-[53px] min-h-[520px]" aria-hidden>
-      <div className="flex flex-col lg:flex-row gap-[36px] h-auto lg:h-[634px]">
-        <Skeleton className="flex-1 min-h-[320px] lg:h-[630px] rounded-[25px]" />
-        <Skeleton className="w-full lg:w-[476px] h-[320px] lg:h-[630px] rounded-[25px]" />
+    <div className="w-full my-8 lg:my-12 py-2 px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16" aria-hidden>
+      <div className="hidden lg:flex items-center justify-between gap-6 xl:gap-8 2xl:gap-12 w-full min-h-[600px] xl:min-h-[656px]">
+        <Skeleton className="w-[220px] xl:w-[263px] h-[600px] xl:h-[656px] rounded-[28px]" />
+        <Skeleton className="flex-1 w-full h-[600px] xl:h-[656px] rounded-[28px]" />
+        <Skeleton className="w-[300px] xl:w-[361px] h-[600px] xl:h-[656px] rounded-[28px]" />
+      </div>
+      <div className="flex flex-col lg:hidden gap-6 w-full max-w-[720px] mx-auto">
+        <div className="flex items-center justify-center gap-3 sm:gap-5 w-full">
+          <Skeleton className="w-[42%] max-w-[220px] h-[220px] sm:h-[300px] rounded-[20px]" />
+          <Skeleton className="w-[54%] max-w-[280px] h-[220px] sm:h-[300px] rounded-[20px]" />
+        </div>
+        <Skeleton className="w-full h-[360px] sm:h-[420px] rounded-2xl" />
       </div>
     </div>
   ),
@@ -196,23 +204,13 @@ const HomePageClient = ({
           <CheapestFlightFares />
 
           {(homePage?.scroll_description || initialScrollParsed?.hasContent) && (
-              <div className="w-full font-quicksand sm:pb-[55px] pb-[30px] relative after:content-[''] after:absolute after:bottom-0 
-              after:right-0 after:w-[calc(75%-0px)]  after:h-[70%] after:bg-[#FFFAF5] after:rounded-tl-[40px] after:z-[-1]">
+            <div className="w-full font-quicksand bg-white">
               <ScrollDetail
                 description={homePage?.scroll_description}
                 parsedContent={initialScrollParsed}
               />
             </div>
           )}
-            {(homePage?.scroll_description_2 || initialScrollParsed?.hasContent) && (
-              <div className="w-full font-quicksand sm:pt-[55px] pt-[30px] relative after:content-[''] after:absolute after:top-0 
-              after:right-0 after:w-[calc(75%-0px)]  after:h-[70%] after:bg-[#FFFAF5] after:rounded-bl-[40px] after:z-[-1]">
-                <ScrollDetailRight
-                  description={homePage?.scroll_description_2}
-                  // parsedContent={initialScrollParsed}
-                />
-              </div>
-            )}
            
 
           {homePage?.faq_widget?.[0]?.faq_ids && (

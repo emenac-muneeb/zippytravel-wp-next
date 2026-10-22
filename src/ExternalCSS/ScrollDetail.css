@@ -1,52 +1,91 @@
 .arabic-text {
-    font-family: var(--font-inter), Inter, 'Tahoma', sans-serif;
-    direction: rtl;
-    unicode-bidi: bidi-override;
-  }
-  
-  /* Custom Scrollbar Styles */
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 1px;
-  }
-  
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: #A57233;
-    border-radius: 6px;
-    box-shadow: 0 0 0 2px #A57233;
-  }
-  
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background-color: #A57233;
-      box-shadow: 0 0 0 2px #A57233;
-  }
-  
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background-color: #A57233;
-    border-radius: 6px;
-  }
-  
-  .scrollbar-thin .prose h2,
-  .scrollbar-thin .prose h3 {
-    margin-top: 0px !important;
-    margin-bottom: 8px !important;
-  }
+  font-family: var(--font-inter), Inter, 'Tahoma', sans-serif;
+  direction: rtl;
+  unicode-bidi: bidi-override;
+}
 
-  .scrollbar-thin .prose h1,
-  .scrollbar-thin .prose h2,
-  .scrollbar-thin .prose h3,
-  .scrollbar-thin .prose h4,
-  .scrollbar-thin .prose h5,
-  .scrollbar-thin .prose h6 {
-    color: #A57233 !important;
-  }
+/* Hide native scrollbar for ScrollDetail while retaining mousewheel/touch scrolling */
+.scroll-detail-content,
+.scroll-detail-content * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
 
-  /* .sd-con {
-    padding: 0 !important;
-  } */
+.scroll-detail-content::-webkit-scrollbar,
+.scroll-detail-content *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+/* Typography styles for ScrollDetail content */
+.scroll-detail-content .prose h1,
+.scroll-detail-content .prose h2,
+.scroll-detail-content .prose h3,
+.scroll-detail-content .prose h4,
+.scroll-detail-content .prose h5,
+.scroll-detail-content .prose h6 {
+  color: #1F0060 !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.scroll-detail-content .prose h1:first-child,
+.scroll-detail-content .prose h2:first-child,
+.scroll-detail-content .prose h3:first-child {
+  margin-top: 0 !important;
+}
+
+.scroll-detail-content .prose p {
+  color: #4C4C4C !important;
+  text-align: center !important;
+  line-height: 1.7 !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 1.25rem !important;
+  font-size: 15px !important;
+}
+
+/* Custom Scrollbar Styles for other usages */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 1px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #5CACC4;
+  border-radius: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: #5CACC4;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 6px;
+}
+
+.scrollbar-thin .prose h2,
+.scrollbar-thin .prose h3 {
+  margin-top: 0px !important;
+  margin-bottom: 8px !important;
+}
+
+.scrollbar-thin .prose h1,
+.scrollbar-thin .prose h2,
+.scrollbar-thin .prose h3,
+.scrollbar-thin .prose h4,
+.scrollbar-thin .prose h5,
+.scrollbar-thin .prose h6 {
+  color: #1F0060 !important;
+}
+
 .mt {
   margin-top: 53px !important;
 }
 
 .mt2 {
   margin-top: 115px !important;
-}
+}

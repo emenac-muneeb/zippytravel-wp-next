@@ -3,6 +3,8 @@ import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { showToast } from "../Helpers/Helper";
+import PassengerDropdown from "./PassengerDropdown";
+import CalendarDropdown from "./CalendarDropdown";
 
 const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
   const router = useRouter();
@@ -16,27 +18,50 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
   const [departureDate, setDepartureDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
 
-  // Passengers popover state
+  // Dropdown states
   const [showPassengerModal, setShowPassengerModal] = useState(false);
+  const [showDepCalendar, setShowDepCalendar] = useState(false);
+  const [showRetCalendar, setShowRetCalendar] = useState(false);
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
 
-  // Hidden date and input refs
+  // Input and container refs
   const originInputRef = useRef(null);
   const destinationInputRef = useRef(null);
-  const departureDateInputRef = useRef(null);
-  const returnDateInputRef = useRef(null);
-  const passengerModalRef = useRef(null);
+  const passengerContainerRef = useRef(null);
+  const depCalendarContainerRef = useRef(null);
+  const retCalendarContainerRef = useRef(null);
+  const mobilePassengerContainerRef = useRef(null);
+  const mobileDepCalendarContainerRef = useRef(null);
+  const mobileRetCalendarContainerRef = useRef(null);
 
-  // Close passenger dropdown on click outside
+  // Close dropdowns on click outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
-        passengerModalRef.current &&
-        !passengerModalRef.current.contains(e.target)
+        passengerContainerRef.current &&
+        !passengerContainerRef.current.contains(e.target) &&
+        (!mobilePassengerContainerRef.current ||
+          !mobilePassengerContainerRef.current.contains(e.target))
       ) {
         setShowPassengerModal(false);
+      }
+      if (
+        depCalendarContainerRef.current &&
+        !depCalendarContainerRef.current.contains(e.target) &&
+        (!mobileDepCalendarContainerRef.current ||
+          !mobileDepCalendarContainerRef.current.contains(e.target))
+      ) {
+        setShowDepCalendar(false);
+      }
+      if (
+        retCalendarContainerRef.current &&
+        !retCalendarContainerRef.current.contains(e.target) &&
+        (!mobileRetCalendarContainerRef.current ||
+          !mobileRetCalendarContainerRef.current.contains(e.target))
+      ) {
+        setShowRetCalendar(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -267,10 +292,15 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
 
                 {/* 3. Passengers Div */}
                 <div
-                  onClick={() => setShowPassengerModal(!showPassengerModal)}
+                  ref={passengerContainerRef}
+                  onClick={() => {
+                    setShowPassengerModal(!showPassengerModal);
+                    setShowDepCalendar(false);
+                    setShowRetCalendar(false);
+                  }}
                   className="flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center cursor-pointer select-none"
                 >
-                  <div className="flex flex-col items-start">
+                  <div className="flex flex-col items-start pointer-events-none">
                     <span
                       className="font-poppins font-semibold text-[20px] text-[#1F0060] inline-block"
                       style={{
@@ -288,7 +318,7 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
                     </span>
                   </div>
                   {/* Right Icon: right 20px, top 48px */}
-                  <div className="absolute right-[20px] top-[48px]">
+                  <div className="absolute right-[20px] top-[48px] pointer-events-none">
                     <Image
                       src="/Group 8.png"
                       alt="Passengers Dropdown"
@@ -299,13 +329,32 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
                       }`}
                     />
                   </div>
+
+                  {/* Custom Passengers Dropdown: 6px gap from input, 340px width, 176px height */}
+                  {showPassengerModal && (
+                    <PassengerDropdown
+                      adults={adults}
+                      setAdults={setAdults}
+                      children={children}
+                      setChildren={setChildren}
+                      infants={infants}
+                      setInfants={setInfants}
+                      className="absolute top-[calc(100%+6px)] right-0 z-50"
+                    />
+                  )}
                 </div>
               </div>
 
               {/* Row 2: 2 Divs (515px x 88px at 1360px, 10px gap, mt 10px) */}
-              <div className="flex items-center gap-[10px] mt-[10px]">
+              <div className="flex items-center gap-[10px] mt-[10px] relative z-20">
                 {/* 1. Departure Date Div (Origin Departure Calendar) */}
                 <div
+                  ref={depCalendarContainerRef}
+                  onClick={() => {
+                    setShowDepCalendar(!showDepCalendar);
+                    setShowPassengerModal(false);
+                    setShowRetCalendar(false);
+                  }}
                   className="flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center cursor-pointer select-none"
                 >
                   <div className="flex flex-col items-start pointer-events-none">
@@ -325,16 +374,6 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
                       {departureDate ? formatDisplayDate(departureDate) : "Enter your departure date"}
                     </span>
                   </div>
-                  {/* Full-coverage native date input — opens calendar on ANY click reliably */}
-                  <input
-                    ref={departureDateInputRef}
-                    type="date"
-                    min={new Date().toISOString().split("T")[0]}
-                    value={departureDate}
-                    onChange={(e) => setDepartureDate(e.target.value)}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
-                    aria-label="Departure Date"
-                  />
                   {/* Right Icon: right 20px, top 48px */}
                   <div className="absolute right-[20px] top-[48px] pointer-events-none z-10">
                     <Image
@@ -345,10 +384,36 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
                       className="w-[24px] h-[24px] object-contain"
                     />
                   </div>
+
+                  {/* Custom Calendar Dropdown: 10px gap from input, 395px width, 304px height */}
+                  {showDepCalendar && (
+                    <CalendarDropdown
+                      selectedDate={departureDate}
+                      minDate={new Date().toISOString().split("T")[0]}
+                      onSelectDate={(dateStr) => {
+                        setDepartureDate(dateStr);
+                        if (returnDate && returnDate < dateStr) {
+                          setReturnDate("");
+                        }
+                        setShowDepCalendar(false);
+                        if (tripType === "Round Trip" && !returnDate) {
+                          setShowRetCalendar(true);
+                        }
+                      }}
+                      className="absolute top-[calc(100%+10px)] right-0 z-50"
+                    />
+                  )}
                 </div>
 
                 {/* 2. Return Date Div */}
                 <div
+                  ref={retCalendarContainerRef}
+                  onClick={() => {
+                    if (tripType !== "Round Trip") return;
+                    setShowRetCalendar(!showRetCalendar);
+                    setShowPassengerModal(false);
+                    setShowDepCalendar(false);
+                  }}
                   className={`flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center select-none transition-all duration-200 ${
                     tripType === "Round Trip"
                       ? "opacity-100 cursor-pointer"
@@ -374,17 +439,6 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
                         : "Enter your return date"}
                     </span>
                   </div>
-                  {/* Full-coverage native date input for Return Date */}
-                  <input
-                    ref={returnDateInputRef}
-                    type="date"
-                    min={departureDate || new Date().toISOString().split("T")[0]}
-                    value={returnDate}
-                    disabled={tripType !== "Round Trip"}
-                    onChange={(e) => setReturnDate(e.target.value)}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20 disabled:cursor-not-allowed disabled:pointer-events-none"
-                    aria-label="Return Date"
-                  />
                   {/* Right Icon: right 20px, top 48px */}
                   <div className="absolute right-[20px] top-[48px] pointer-events-none z-10">
                     <Image
@@ -395,6 +449,19 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
                       className="w-[24px] h-[24px] object-contain"
                     />
                   </div>
+
+                  {/* Custom Return Calendar Dropdown: 10px gap from input, 395px width, 304px height */}
+                  {showRetCalendar && tripType === "Round Trip" && (
+                    <CalendarDropdown
+                      selectedDate={returnDate}
+                      minDate={departureDate || new Date().toISOString().split("T")[0]}
+                      onSelectDate={(dateStr) => {
+                        setReturnDate(dateStr);
+                        setShowRetCalendar(false);
+                      }}
+                      className="absolute top-[calc(100%+10px)] right-0 z-50"
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -479,11 +546,16 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
 
               {/* Passengers */}
               <div
-                onClick={() => setShowPassengerModal(!showPassengerModal)}
-                className="bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] cursor-pointer select-none"
+                ref={mobilePassengerContainerRef}
+                onClick={() => {
+                  setShowPassengerModal(!showPassengerModal);
+                  setShowDepCalendar(false);
+                  setShowRetCalendar(false);
+                }}
+                className="bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] cursor-pointer select-none z-30"
               >
                 <span
-                  className="font-poppins font-semibold text-[18px] text-[#1F0060] inline-block w-fit"
+                  className="font-poppins font-semibold text-[18px] text-[#1F0060] inline-block w-fit pointer-events-none"
                   style={{
                     borderBottomWidth: "5px",
                     borderBottomStyle: "solid",
@@ -494,17 +566,36 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
                 >
                   Passengers
                 </span>
-                <span className="font-poppins text-[16px] text-[#8FA0AD] mt-2 truncate underline decoration-[#9BB0BF] underline-offset-2 inline-block">
+                <span className="font-poppins text-[16px] text-[#8FA0AD] mt-2 truncate underline decoration-[#9BB0BF] underline-offset-2 inline-block pointer-events-none">
                   {passengerDisplayText}
                 </span>
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
                   <Image src="/Group 8.png" alt="Passengers" width={22} height={22} />
                 </div>
+
+                {/* Mobile Custom Passengers Dropdown: 6px gap from input, 340px width, 176px height */}
+                {showPassengerModal && (
+                  <PassengerDropdown
+                    adults={adults}
+                    setAdults={setAdults}
+                    children={children}
+                    setChildren={setChildren}
+                    infants={infants}
+                    setInfants={setInfants}
+                    className="absolute top-[calc(100%+6px)] left-0 sm:left-auto right-0 z-50 max-w-[340px]"
+                  />
+                )}
               </div>
 
               {/* Departure Date */}
               <div
-                className="bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] cursor-pointer select-none"
+                ref={mobileDepCalendarContainerRef}
+                onClick={() => {
+                  setShowDepCalendar(!showDepCalendar);
+                  setShowPassengerModal(false);
+                  setShowRetCalendar(false);
+                }}
+                className="bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] cursor-pointer select-none z-20"
               >
                 <div className="pointer-events-none">
                   <span
@@ -523,22 +614,37 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
                     {departureDate ? formatDisplayDate(departureDate) : "Enter your departure date"}
                   </span>
                 </div>
-                <input
-                  type="date"
-                  min={new Date().toISOString().split("T")[0]}
-                  value={departureDate}
-                  onChange={(e) => setDepartureDate(e.target.value)}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
-                  aria-label="Departure Date"
-                />
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none z-10">
                   <Image src="/Icon2.png" alt="Departure Date" width={22} height={22} />
                 </div>
+
+                {/* Mobile Custom Calendar Dropdown: 10px gap from input, 395px width, 304px height */}
+                {showDepCalendar && (
+                  <CalendarDropdown
+                    selectedDate={departureDate}
+                    minDate={new Date().toISOString().split("T")[0]}
+                    onSelectDate={(dateStr) => {
+                      setDepartureDate(dateStr);
+                      if (returnDate && returnDate < dateStr) {
+                        setReturnDate("");
+                      }
+                      setShowDepCalendar(false);
+                    }}
+                    className="absolute top-[calc(100%+10px)] left-0 sm:left-auto right-0 z-50 max-w-[395px]"
+                  />
+                )}
               </div>
 
               {/* Return Date */}
               <div
-                className={`bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] md:col-span-2 select-none ${
+                ref={mobileRetCalendarContainerRef}
+                onClick={() => {
+                  if (tripType !== "Round Trip") return;
+                  setShowRetCalendar(!showRetCalendar);
+                  setShowPassengerModal(false);
+                  setShowDepCalendar(false);
+                }}
+                className={`bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] md:col-span-2 select-none z-10 ${
                   tripType === "Round Trip" ? "opacity-100 cursor-pointer" : "opacity-35 cursor-not-allowed"
                 }`}
               >
@@ -561,18 +667,22 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
                       : "Enter your return date"}
                   </span>
                 </div>
-                <input
-                  type="date"
-                  min={departureDate || new Date().toISOString().split("T")[0]}
-                  value={returnDate}
-                  disabled={tripType !== "Round Trip"}
-                  onChange={(e) => setReturnDate(e.target.value)}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20 disabled:cursor-not-allowed disabled:pointer-events-none"
-                  aria-label="Return Date"
-                />
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none z-10">
                   <Image src="/Icon3.png" alt="Return Date" width={22} height={22} />
                 </div>
+
+                {/* Mobile Custom Return Calendar Dropdown: 10px gap from input, 395px width, 304px height */}
+                {showRetCalendar && tripType === "Round Trip" && (
+                  <CalendarDropdown
+                    selectedDate={returnDate}
+                    minDate={departureDate || new Date().toISOString().split("T")[0]}
+                    onSelectDate={(dateStr) => {
+                      setReturnDate(dateStr);
+                      setShowRetCalendar(false);
+                    }}
+                    className="absolute top-[calc(100%+10px)] left-0 sm:left-auto right-0 z-50 max-w-[395px]"
+                  />
+                )}
               </div>
             </div>
 
@@ -580,114 +690,12 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
             <button
               type="button"
               onClick={handleSearch}
-              className="mt-4 w-full h-[52px] bg-[#5CACC4] hover:bg-[#4ea0b8] text-white font-poppins font-bold rounded-[12px] flex items-center justify-center gap-2 shadow-md"
+              className="mt-4 w-full h-[52px] bg-[#5CACC4] hover:bg-[#4ea0b8] text-white font-poppins font-bold rounded-[12px] flex items-center justify-center gap-2 shadow-md cursor-pointer"
             >
               <Image src="/Icon.png" alt="Search" width={22} height={22} />
               <span>Search Flights</span>
             </button>
           </div>
-
-          {/* Passenger Counter Modal Popover */}
-          {showPassengerModal && (
-            <div
-              ref={passengerModalRef}
-              className="absolute right-4 xl:right-[150px] top-[140px] z-50 w-[300px] bg-white rounded-2xl shadow-2xl border border-gray-100 p-5 font-poppins"
-            >
-              <div className="flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
-                <span className="font-semibold text-[16px] text-[#1F0060]">Select Passengers</span>
-                <button
-                  type="button"
-                  onClick={() => setShowPassengerModal(false)}
-                  className="text-gray-400 hover:text-black font-bold text-lg"
-                >
-                  ✕
-                </button>
-              </div>
-
-              {/* Adults */}
-              <div className="flex items-center justify-between py-2">
-                <div>
-                  <p className="font-medium text-[15px] text-[#222]">Adults</p>
-                  <p className="text-[12px] text-gray-400">12+ years</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setAdults(Math.max(1, adults - 1))}
-                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center font-bold text-gray-600 hover:border-[#5CACC4] hover:text-[#5CACC4]"
-                  >
-                    -
-                  </button>
-                  <span className="font-semibold w-5 text-center">{adults}</span>
-                  <button
-                    type="button"
-                    onClick={() => setAdults(Math.min(9, adults + 1))}
-                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center font-bold text-gray-600 hover:border-[#5CACC4] hover:text-[#5CACC4]"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-              {/* Children */}
-              <div className="flex items-center justify-between py-2">
-                <div>
-                  <p className="font-medium text-[15px] text-[#222]">Children</p>
-                  <p className="text-[12px] text-gray-400">2 - 11 years</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setChildren(Math.max(0, children - 1))}
-                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center font-bold text-gray-600 hover:border-[#5CACC4] hover:text-[#5CACC4]"
-                  >
-                    -
-                  </button>
-                  <span className="font-semibold w-5 text-center">{children}</span>
-                  <button
-                    type="button"
-                    onClick={() => setChildren(Math.min(9, children + 1))}
-                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center font-bold text-gray-600 hover:border-[#5CACC4] hover:text-[#5CACC4]"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-              {/* Infants */}
-              <div className="flex items-center justify-between py-2">
-                <div>
-                  <p className="font-medium text-[15px] text-[#222]">Infants</p>
-                  <p className="text-[12px] text-gray-400">&lt; 2 years</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setInfants(Math.max(0, infants - 1))}
-                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center font-bold text-gray-600 hover:border-[#5CACC4] hover:text-[#5CACC4]"
-                  >
-                    -
-                  </button>
-                  <span className="font-semibold w-5 text-center">{infants}</span>
-                  <button
-                    type="button"
-                    onClick={() => setInfants(Math.min(adults, infants + 1))}
-                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center font-bold text-gray-600 hover:border-[#5CACC4] hover:text-[#5CACC4]"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setShowPassengerModal(false)}
-                className="mt-4 w-full py-2 bg-[#5CACC4] text-white rounded-lg font-bold text-[14px] hover:bg-[#4ea0b8] transition-colors"
-              >
-                Apply
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </section>

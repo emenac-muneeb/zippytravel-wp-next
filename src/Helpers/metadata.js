@@ -5,7 +5,9 @@ import { normalizeFrontendImageSrc } from "./imageurl";
 
 const EMPTY_SCROLL_RESULT = {
   filteredDescription: "",
-  rightPanelImageUrl: null,
+  leftPanelImageUrl: "/scroll-left.png",
+  leftPanelImageAlt: "Emenac Travel",
+  rightPanelImageUrl: "/scroll-right.png",
   rightPanelImageAlt: "Emenac Travel",
   isPngImage: false,
   hasContent: false,
@@ -29,7 +31,13 @@ export function parseScrollDescription(description) {
   root("h1, h2, h3, h4, h5, h6").each((_, heading) => {
     const item = root(heading);
     const existing = (item.attr("class") || "").trim();
-    item.attr("class", `${existing} !text-[#A57233]`.trim());
+    item.attr("class", `${existing} !text-[#1F0060] font-bold text-center`.trim());
+  });
+
+  root("p").each((_, p) => {
+    const item = root(p);
+    const existing = (item.attr("class") || "").trim();
+    item.attr("class", `${existing} text-center text-[#4A5568] leading-relaxed my-3`.trim());
   });
 
   root("ul").each((_, ul) => {
@@ -37,7 +45,7 @@ export function parseScrollDescription(description) {
     const existing = (item.attr("class") || "").trim();
     item.attr(
       "class",
-      `${existing} list-disc pl-6 [&>li]:marker:text-[#A57233]`.trim(),
+      `${existing} list-disc pl-6 text-left inline-block [&>li]:marker:text-[#1F0060]`.trim(),
     );
   });
 
@@ -46,7 +54,7 @@ export function parseScrollDescription(description) {
     const existing = (item.attr("class") || "").trim();
     item.attr(
       "class",
-      `${existing} list-decimal pl-6 [&>li]:marker:text-[#A57233]`.trim(),
+      `${existing} list-decimal pl-6 text-left inline-block [&>li]:marker:text-[#1F0060]`.trim(),
     );
   });
 
@@ -55,14 +63,14 @@ export function parseScrollDescription(description) {
     const existing = (item.attr("class") || "").trim();
     item.attr(
       "class",
-      `${existing} w-full my-4 border border-gray-400 rounded-md`.trim()
+      `${existing} w-full my-4 border border-gray-300 rounded-md`.trim()
     );
   });
 
   root("tr").each((_, row) => {
     const item = root(row);
     const existing = (item.attr("class") || "").trim();
-    item.attr("class", `${existing} border-b border-gray-400`.trim());
+    item.attr("class", `${existing} border-b border-gray-300`.trim());
   });
 
   root("th, td").each((_, cell) => {
@@ -70,7 +78,7 @@ export function parseScrollDescription(description) {
     const existing = (item.attr("class") || "").trim();
     item.attr(
       "class",
-      `${existing} px-2 py-2 text-left align-top border-r border-gray-400`.trim()
+      `${existing} px-2 py-2 text-left align-top border-r border-gray-300`.trim()
     );
   });
 
@@ -79,7 +87,7 @@ export function parseScrollDescription(description) {
     const existing = (item.attr("class") || "").trim();
     item.attr(
       "class",
-      `${existing} font-semibold text-green-700 bg-gray-50`.trim()
+      `${existing} font-semibold text-[#1F0060] bg-gray-50`.trim()
     );
   });
 
@@ -89,36 +97,19 @@ export function parseScrollDescription(description) {
     item.attr("class", `${existing} text-gray-700`.trim());
   });
 
-  const figureImg = root("figure img").first();
-  const fallbackImg = root("img").first();
-  const imageEl = figureImg.length ? figureImg : fallbackImg;
-
-  let rightPanelImageUrl = null;
-  let rightPanelImageAlt = "Emenac Travel";
-  let isPngImage = false;
-
-  const src = imageEl.attr("src");
-  if (src) {
-    rightPanelImageUrl = normalizeFrontendImageSrc(src);
-    isPngImage = src.toLowerCase().endsWith(".png");
-    rightPanelImageAlt = imageEl.attr("alt")?.trim() || "Emenac Travel";
-    imageEl.closest("figure").remove();
-  }
-
-  root("img").each((_, img) => {
-    const item = root(img);
-    const imgSrc = item.attr("src");
-    if (imgSrc) item.attr("src", normalizeFrontendImageSrc(imgSrc));
-  });
+  // Remove legacy images from CMS so they don't break the layout
+  root("figure, img").remove();
 
   const filteredDescription = root("body").html() || "";
   const textContent = root("body").text().replace(/\s+/g, " ").trim();
 
   return {
     filteredDescription,
-    rightPanelImageUrl,
-    rightPanelImageAlt,
-    isPngImage,
+    leftPanelImageUrl: "/scroll-left.png",
+    leftPanelImageAlt: "Emenac Travel",
+    rightPanelImageUrl: "/scroll-right.png",
+    rightPanelImageAlt: "Emenac Travel",
+    isPngImage: false,
     hasContent: textContent.length > 0,
   };
 }
