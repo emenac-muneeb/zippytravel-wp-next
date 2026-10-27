@@ -138,14 +138,14 @@ export default function CityPackages({ countrySlug, citySlug, initialPackages = 
                 )}
             </div>
 
-            {/* Load More Button */}
+            {/* Show More Button */}
             {!loading && visibleCount < packagesData.length && (
-                <div className="flex justify-center mt-6">
+                <div className="flex justify-center mt-10">
                     <button
                         onClick={handleLoadMore}
-                        className="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition"
+                        className="w-[140px] h-[44px] bg-[#1F0060] hover:bg-[#2c0087] text-white font-poppins font-bold text-[15px] rounded-[14px] shadow-sm transition-all duration-200 active:scale-95 flex items-center justify-center cursor-pointer"
                     >
-                        Load More
+                        Show More
                     </button>
                 </div>
             )}

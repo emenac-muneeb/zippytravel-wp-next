@@ -6,9 +6,13 @@ import ScriptInjector from '../../../Components/common/ScriptInjector';
 
 async function getAirlineDetails(slug) {
   try {
-    const res = await fetch(endpoints.airlineDetails(slug), { next: { revalidate: 3600 } });
+    const url = endpoints.airlineDetails(slug);
+    console.log("[DEBUG getAirlineDetails] Fetching URL:", url);
+    const res = await fetch(url, { next: { revalidate: 3600 } });
+    console.log("[DEBUG getAirlineDetails] Response status:", res.status);
     if (!res.ok) return null;
     const data = await res.json();
+    console.log("[DEBUG getAirlineDetails] Data status:", data?.status, "result:", !!data?.result);
     return data?.status === 1 ? data.result : null;
   } catch (err) {
     console.error("Error fetching airline details:", err);
@@ -58,10 +62,13 @@ export async function generateMetadata({ params }) {
 
 
 export default async function Page({ params }) {
-  const { airlineSlug } = await params;
+  const resolvedParams = await params;
+  console.log("[DEBUG Page] resolvedParams:", resolvedParams);
+  const { airlineSlug } = resolvedParams;
   const airlineData = await getAirlineDetails(airlineSlug);
 
   if (!airlineData) {
+    console.log("[DEBUG Page] airlineData is null, calling notFound()");
     notFound();
   }
 

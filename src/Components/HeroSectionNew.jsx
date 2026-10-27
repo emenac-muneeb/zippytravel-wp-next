@@ -5,8 +5,17 @@ import { useRouter } from "next/navigation";
 import { showToast } from "../Helpers/Helper";
 import PassengerDropdown from "./PassengerDropdown";
 import CalendarDropdown from "./CalendarDropdown";
+import { BASE_URL_IMG } from "../Helpers/imageurl";
 
-const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
+const HeroSectionNew = ({
+  setFlightLoading,
+  setPopupMessage,
+  title,
+  subTitle,
+  description,
+  bgImageOverride,
+  initialBanners = [],
+}) => {
   const router = useRouter();
 
   // Tab state: "One-Way" or "Round Trip"
@@ -35,6 +44,25 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
   const mobilePassengerContainerRef = useRef(null);
   const mobileDepCalendarContainerRef = useRef(null);
   const mobileRetCalendarContainerRef = useRef(null);
+
+  // Resolve background image
+  const bannerImgSrc = React.useMemo(() => {
+    if (bgImageOverride) {
+      if (bgImageOverride.startsWith("http") || bgImageOverride.startsWith("/")) {
+        return bgImageOverride;
+      }
+      return `${BASE_URL_IMG}/media/${bgImageOverride.replace(/^\/?media\//, "")}`;
+    }
+    if (initialBanners && initialBanners.length > 0) {
+      const first = initialBanners[0];
+      const url = typeof first === "string" ? first : (first?.url || first?.image_url);
+      if (url) {
+        if (url.startsWith("http") || url.startsWith("/")) return url;
+        return `${BASE_URL_IMG}/media/${url.replace(/^\/?media\//, "")}`;
+      }
+    }
+    return "/BG%20Banner.png";
+  }, [bgImageOverride, initialBanners]);
 
   // Close dropdowns on click outside
   useEffect(() => {
@@ -131,16 +159,14 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
         */}
         <div className="w-full relative overflow-hidden rounded-[28px] sm:rounded-[36px] lg:rounded-[40px] min-h-[580px] sm:min-h-[625px] xl:min-h-[640px] flex flex-col items-center">
           {/* 
-            Background Image: BG Banner.png
-            Direct img tag with URL-encoded fallback so it is 100% visible,
-            never blocked behind parent background or Next.js optimizer errors.
+            Background Image
           */}
           <img
-            src="/BG%20Banner.png"
+            src={bannerImgSrc}
             onError={(e) => {
-              e.currentTarget.src = "/bg-banner.png";
+              e.currentTarget.src = "/BG%20Banner.png";
             }}
-            alt="Zippy Travel Hero Banner"
+            alt={title || "Zippy Travel Hero Banner"}
             className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none z-0"
           />
 
@@ -149,22 +175,35 @@ const HeroSectionNew = ({ setFlightLoading, setPopupMessage }) => {
 
           {/* Centered Text Content (Max 1360px container) */}
           <div className="w-full max-w-[1360px] mx-auto text-center pt-[70px] sm:pt-[90px] lg:pt-[107px] px-4 relative z-10">
-            {/* Text 1: — Zippy Travel (Poppins 24px, 400) */}
+            {/* Text 1: — Zippy Travel */}
             <p className="font-poppins font-normal text-[18px] sm:text-[22px] lg:text-[24px] text-white tracking-wide">
-              — Zippy Travel
+              {subTitle || "— Zippy Travel"}
             </p>
 
-            {/* Text 2: London-Based UK Agency (Poppins 83px, 700) */}
+            {/* Text 2: London-Based UK Agency / Destinations */}
             <h1 className="mt-[8px] font-poppins font-bold text-[36px] sm:text-[54px] md:text-[68px] lg:text-[83px] text-white tracking-tight leading-[1.08] drop-shadow-sm">
-              London-Based UK Agency
+              {title || "London-Based UK Agency"}
             </h1>
 
-            {/* Text 3: Description (Poppins 24px, 500) */}
-            <p className="mt-[24px] sm:mt-[32px] lg:mt-[40px] font-poppins font-medium text-[16px] sm:text-[20px] lg:text-[24px] text-white/95 max-w-[850px] mx-auto leading-relaxed">
-              Zippytravel.co.uk is an e-commerce UK based company
-              <br className="hidden sm:inline" />
-              {" "}offering online travel products and services.
-            </p>
+            {/* Text 3: Description */}
+            {description ? (
+              typeof description === "string" && description.includes("<") ? (
+                <div
+                  className="mt-[24px] sm:mt-[32px] lg:mt-[40px] font-poppins font-medium text-[16px] sm:text-[20px] lg:text-[24px] text-white/95 max-w-[850px] mx-auto leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: description }}
+                />
+              ) : (
+                <p className="mt-[24px] sm:mt-[32px] lg:mt-[40px] font-poppins font-medium text-[16px] sm:text-[20px] lg:text-[24px] text-white/95 max-w-[850px] mx-auto leading-relaxed">
+                  {description}
+                </p>
+              )
+            ) : (
+              <p className="mt-[24px] sm:mt-[32px] lg:mt-[40px] font-poppins font-medium text-[16px] sm:text-[20px] lg:text-[24px] text-white/95 max-w-[850px] mx-auto leading-relaxed">
+                Zippytravel.co.uk is an e-commerce UK based company
+                <br className="hidden sm:inline" />
+                {" "}offering online travel products and services.
+              </p>
+            )}
           </div>
 
           {/* Bottom spacer so banner maintains proper height */}

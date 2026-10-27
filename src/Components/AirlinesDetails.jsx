@@ -236,15 +236,13 @@ export default function AirlinesDetails() {
         )}
 
         {showEnquiryModal && (
-          <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-end items-center">
-            <div className="bg-white rounded-l-2xl rounded-r-none w-full sm:w-[90%] md:w-[80%] lg:w-[60%] max-w-5xl relative h-auto max-h-[90%] overflow-y-auto shadow-lg">
-              <button
-                onClick={() => setShowEnquiryModal(false)}
-                className="absolute top-3 right-5 text-gray-600 text-2xl font-bold hover:text-gray-800"
-              >
-                &times;
-              </button>
-
+          <div
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setShowEnquiryModal(false);
+            }}
+            className="fixed inset-0 z-[999] bg-black/65 backdrop-blur-sm flex justify-center items-center p-3 sm:p-6 overflow-y-auto"
+          >
+            <div className="w-full max-w-[820px] relative max-h-[94vh] overflow-y-auto rounded-[20px] sm:rounded-[24px] shadow-2xl my-auto animate-in fade-in zoom-in-95 duration-200">
               <EnquiryModal
                 formatDate={formatDate}
                 onClose={() => setShowEnquiryModal(false)}

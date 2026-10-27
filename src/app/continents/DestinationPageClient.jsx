@@ -1,33 +1,29 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import BrandingSection from '../../Components/BrandingSection';
+import HeroSectionNew from '../../Components/HeroSectionNew';
 import ContinentCountryCard from '../../Components/ContinentCountryCard';
-import useDestinationBreadcrumbs from '../../Hooks/useDestinationsBreadcrumbs';
+import LoadingScreen from '../../Components/LoadingScreen';
+import PopUp from '../../Components/PopUp';
 import { endpoints } from '../../Helpers/endpoints';
-import { BASE_URL_IMG } from '../../Helpers/imageurl';
-import BannerInner from '../../Components/BannerInner';
-
 
 const SkeletonCard = () => (
-    <div className="w-full max-w-[312px] h-[290px] bg-white rounded-[24px] shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100/60 p-[10px] mx-auto mb-6 animate-pulse flex flex-col justify-between">
-        <div className="w-full h-[203px] max-w-[292px] bg-gray-200 rounded-[16px] mx-auto shrink-0" />
-        <div className="flex justify-between items-start mt-[15px] px-0 pb-1">
-            <div className="flex flex-col gap-2 w-1/2 pl-[11px]">
-                <div className="h-3 bg-gray-200 rounded w-1/2" />
-                <div className="h-6 bg-gray-200 rounded w-3/4" />
+    <div className="w-full aspect-[1/1.05] sm:aspect-square min-h-[270px] max-w-[340px] bg-gray-200 rounded-[24px] sm:rounded-[28px] shadow-sm animate-pulse relative overflow-hidden p-4 sm:p-5 flex flex-col justify-end mx-auto">
+        <div className="flex justify-between items-end w-full gap-2">
+            <div className="flex flex-col gap-2 w-1/2">
+                <div className="h-3.5 bg-gray-300 rounded w-2/3" />
+                <div className="h-6 bg-gray-300 rounded w-4/5" />
             </div>
-            <div className="flex flex-col items-end gap-2 w-1/3 pr-[11px]">
-                <div className="h-6 bg-gray-200 rounded w-full" />
-                <div className="h-4 bg-gray-200 rounded w-2/3" />
+            <div className="flex flex-col items-end gap-2 w-1/3">
+                <div className="h-6 bg-gray-300 rounded w-3/4" />
+                <div className="h-6 bg-gray-300 rounded-[6px] w-16" />
             </div>
         </div>
     </div>
 );
 
-export default function DestinationPageClient({ initialData }) {
+export default function DestinationPageClient({ initialData = {} }) {
     const { continents = [], pageData } = initialData;
-    const breadcrumbs = useDestinationBreadcrumbs();
     const [FlightLoading, setFlightLoading] = useState(false);
     const [popupMessage, setPopupMessage] = useState(null);
 
@@ -36,18 +32,16 @@ export default function DestinationPageClient({ initialData }) {
     const [countries, setCountries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [hasFetched, setHasFetched] = useState(false);
-    const [visibleCount, setVisibleCount] = useState(12);
+    const [visibleCount, setVisibleCount] = useState(16);
 
     const widgetContent = pageData?.widgets_content || '';
     const headingMatch = widgetContent.match(/heading="([^"]+)"/);
     const subHeadingMatch = widgetContent.match(/sub_heading="([^"]+)"/);
     
     const widgetData = {
-        heading: headingMatch ? headingMatch[1] : 'Top Destinations',
-        sub_heading: subHeadingMatch ? subHeadingMatch[1] : 'Travellers always look for comfort on their air trips to the places they most long to Emenac Travel comforts over their budgets.',
+        heading: headingMatch ? headingMatch[1] : (pageData?.heading || 'All Destinations'),
+        sub_heading: subHeadingMatch ? subHeadingMatch[1] : (pageData?.sub_heading || "Our customers can access our web site for a 'one-stop shop' including access to specially negotiated airfares, hotels, car rental and insurance."),
     };
-
-    const allBanners = continents.flatMap(continent => continent.banner_img || []);
 
     // Keep selection in sync if continents arrive/change
     useEffect(() => {
@@ -71,7 +65,7 @@ export default function DestinationPageClient({ initialData }) {
         setLoading(true);
         setHasFetched(false);
         setCountries([]);
-        setVisibleCount(12);
+        setVisibleCount(16);
 
         axios
             .get(endpoints.ContinentCountriesBySlug(selectedContinent.slug))
@@ -99,7 +93,7 @@ export default function DestinationPageClient({ initialData }) {
         };
     }, [selectedContinent?.id, selectedContinent?.slug]);
 
-    const loadMore = () => setVisibleCount(prev => prev + 12);
+    const loadMore = () => setVisibleCount((prev) => prev + 16);
 
     const showSkeleton = loading || !hasFetched;
     const showEmpty = hasFetched && !loading && countries.length === 0;
@@ -114,118 +108,118 @@ export default function DestinationPageClient({ initialData }) {
 
     return (
         <>
-            <BannerInner
-                setFlightLoading={setFlightLoading}
-                setPopupMessage={setPopupMessage}
-                initialBanners={[]}
-                bgImageOverride={pageData?.banner_img?.[0]?.url}
-                showClassSelector={false}
-            />
+            {popupMessage && (
+                <PopUp title="Error" message={popupMessage} onClose={() => setPopupMessage(null)} />
+            )}
 
-            <div className="w-full mx-auto py-2">
-                <div className='container'>
-                    {/* {breadcrumbs} */}
+            {FlightLoading ? (
+                <LoadingScreen />
+            ) : (
+                <>
+                    {/* Hero Section matching Home Page exactly */}
+                    <HeroSectionNew
+                        setFlightLoading={setFlightLoading}
+                        setPopupMessage={setPopupMessage}
+                        title={pageData?.title || "Destinations"}
+                        subTitle="— Zippy Travel"
+                        description={
+                            pageData?.banner_description ||
+                            pageData?.description ||
+                            "Zippytravel.co.uk is an e-commerce UK based company offering online travel products and services."
+                        }
+                        bgImageOverride={pageData?.banner_img?.[0]?.url}
+                    />
 
-               
-
-                {(widgetData?.heading || widgetData.sub_heading) && (
-                    <div className="my-8">
-                        {widgetData.heading && (
-                                <div className="heading_section pb-00">
-                                    <h1 className="font-bold text-[42px] text-black">
+                    <div className="w-full pb-16 font-poppins">
+                        {/* Section Header: All Destinations */}
+                        {(widgetData?.heading || widgetData?.sub_heading) && (
+                            <div className="text-center mt-12 sm:mt-16 mb-8 sm:mb-10 max-w-3xl mx-auto px-4">
+                                {widgetData.heading && (
+                                    <h2 className="font-poppins font-bold text-[32px] sm:text-[40px] md:text-[44px] text-[#1F0060] tracking-tight">
                                         {widgetData.heading}
-                                    </h1>
-                                </div>
+                                    </h2>
+                                )}
+                                {widgetData.sub_heading && (
+                                    <p className="mt-3 text-[#555555] text-[15px] sm:text-[16px] font-poppins leading-relaxed">
+                                        {widgetData.sub_heading}
+                                    </p>
+                                )}
+                            </div>
                         )}
-                        {widgetData.sub_heading && (
-                                <p className="text-gray-700 text-sm sm:text-base max-w-2xl font-quicksand">
-                                {widgetData.sub_heading}
-                            </p>
-                        )}
-                    </div>
-                )}
 
-                    {/* Continent selection tabs */}
-                    {continents.length > 0 && (
-                        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 mb-8">
-                            {continents.map((continent) => {
-                                const isActive = selectedContinent?.id === continent.id;
-                                return (
-                                    <button
-                                        key={continent.id}
-                                        type="button"
-                                        onClick={() => handleSelectContinent(continent)}
-                                        className={`px-2 py-2.5 rounded-10 font-quicksand font-bold transition-all duration-300 text-center w-full ${isActive
-                                            ? "bg-tertiary text-white shadow-[-11px_-2px_41px_10px_#EEDFD1]"
-                                            : "bg-[#FDF3E7] text-[#A57233] hover:bg-[#FAF2EA] shadow-md"
-                                            }`}
-                                    >
-                                        {continent.title}
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    )}
-
-                    {/* Countries list / Skeleton Loader — never show empty message while API is in flight */}
-                    {showSkeleton ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center mt-6">
-                            {Array.from({ length: 8 }).map((_, i) => (
-                                <SkeletonCard key={i} />
-                            ))}
-                        </div>
-                    ) : showEmpty ? (
-                        <div className="text-center py-12 text-gray-500 font-quicksand">
-                            No destinations available for this continent at the moment.
-                        </div>
-                    ) : (
-                        <>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center mt-6">
-                                {countries.slice(0, visibleCount).map((country, index) => {
-                                    const continentName = selectedContinent?.title || "";
+                        {/* Continent selection tabs */}
+                        {continents.length > 0 && (
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-[1236px] mx-auto mb-8 sm:mb-12 px-4 sm:px-6 xl:px-0">
+                                {continents.map((continent) => {
+                                    const isActive = selectedContinent?.id === continent.id;
                                     return (
-                                        <ContinentCountryCard
-                                            key={country.id || country.slug || index}
-                                            id={country.id}
-                                            metaData={country}
-                                            continent={continentName}
-                                            slug={country.slug}
-                                            country={country.title}
-                                            price={parseFloat(country.fare?.price) || 0}
-                                            imageUrl={country.image_url}
-                                            imageAlt={country.image_alt}
-                                            browserTitle={country.browser_title}
-                                            description={country.short_description}
-                                            ContinentCountries={null}
-                                        />
+                                        <button
+                                            key={continent.id}
+                                            type="button"
+                                            onClick={() => handleSelectContinent(continent)}
+                                            className={`h-[48px] px-4 rounded-[10px] font-poppins font-bold text-[15px] sm:text-[17px] transition-all duration-300 flex items-center justify-center text-center w-full select-none ${
+                                                isActive
+                                                    ? "bg-[#5CACC4] text-white shadow-md"
+                                                    : "bg-[#1F0060] text-white hover:bg-[#2A0080] shadow-sm"
+                                            }`}
+                                        >
+                                            {continent.title}
+                                        </button>
                                     );
                                 })}
                             </div>
-                            {countries.length > visibleCount && (
-                                <div className="flex justify-center mt-6 mb-12">
-                                    <button
-                                        type="button"
-                                        onClick={loadMore}
-                                        className="flex items-center justify-center gap-2 w-[fit-content]
-                                        px-4 py-2.5 rounded-10 font-quicksand font-bold transition-all duration-300 text-center bg-tertiary text-white shadow-[-11px_-2px_41px_10px_#EEDFD1]"
-                                    >
-                                        Load More
-                                        <svg
-                                            className="w-3.5 h-3.5 text-white group-hover:translate-x-1.5 transition-transform duration-300"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth="3"
-                                        >
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                                        </svg>
-                                    </button>
+                        )}
+
+                        {/* Countries list / Skeleton Loader */}
+                        {showSkeleton ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 max-w-[1236px] mx-auto px-4 sm:px-6 xl:px-0 mt-6">
+                                {Array.from({ length: 8 }).map((_, i) => (
+                                    <SkeletonCard key={i} />
+                                ))}
+                            </div>
+                        ) : showEmpty ? (
+                            <div className="text-center py-16 text-gray-500 font-poppins text-lg">
+                                No destinations available for this continent at the moment.
+                            </div>
+                        ) : (
+                            <>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 max-w-[1236px] mx-auto px-4 sm:px-6 xl:px-0 mt-6">
+                                    {countries.slice(0, visibleCount).map((country, index) => {
+                                        const continentName = selectedContinent?.title || "";
+                                        return (
+                                            <ContinentCountryCard
+                                                key={country.id || country.slug || index}
+                                                id={country.id}
+                                                metaData={country}
+                                                continent={continentName}
+                                                slug={country.slug}
+                                                country={country.title}
+                                                price={parseFloat(country.fare?.price) || 0}
+                                                imageUrl={country.image_url}
+                                                imageAlt={country.image_alt}
+                                                browserTitle={country.browser_title}
+                                                description={country.short_description}
+                                                ContinentCountries={null}
+                                            />
+                                        );
+                                    })}
                                 </div>
-                            )}
-                        </>
-                    )}
-            </div>
-        </div>
+                                {countries.length > visibleCount && (
+                                    <div className="flex justify-center mt-10 mb-10">
+                                        <button
+                                            type="button"
+                                            onClick={loadMore}
+                                            className="px-8 py-2.5 bg-[#1F0060] hover:bg-[#2A0080] text-white font-poppins font-bold text-[16px] sm:text-[18px] rounded-[14px] shadow-md hover:shadow-lg transition-all flex items-center justify-center select-none"
+                                        >
+                                            Show More
+                                        </button>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </div>
+                </>
+            )}
         </>
     );
 }
