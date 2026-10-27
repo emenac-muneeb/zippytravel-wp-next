@@ -7,6 +7,7 @@ import PopUp from "../Components/PopUp";
 import ScrollDetailRight from "../Components/ScrollDetailRight";
 import AirlineSlider from "../Components/AirlineSlider";
 import LatestNews from "../Components/LatestNews";
+import BlogSection from "../Components/BlogSection";
 import {
   DestinationSliderSkeleton,
   TestimonialsSkeleton,
@@ -222,14 +223,15 @@ const HomePageClient = ({
               />
             </div>
           )}
-          {homePage?.latestnews_widget?.[0]?.heading && (
+          {/* {homePage?.latestnews_widget?.[0]?.heading && (
            <div className="sm:mt-16 mt-8">
               <LatestNews
                 heading={homePage?.latestnews_widget?.[0]?.heading || ""}
                 subheading={homePage?.latestnews_widget?.[0]?.sub_heading || ""}
               />
             </div>
-            )}
+            )} */}
+          <BlogSection />
         </>
       )}
     </>
