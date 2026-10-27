@@ -106,8 +106,8 @@ export default function BlogSection() {
                 </Link>
               </div>
 
-              {/* 3. Floating Overlay Girl (Touches the button left edge, scales smoothly on 2xl/3xl) */}
-              <div className="blog-overlay-wrapper absolute left-[30px] sm:left-[70px] 2xl:left-[80px] 3xl:left-[90px] bottom-0 w-[300px] sm:w-[383px] 2xl:w-[420px] 3xl:w-[465px] h-[380px] sm:h-[455px] 2xl:h-[495px] 3xl:h-[530px] z-[5] pointer-events-none">
+              {/* 3. Floating Overlay Girl (Balanced position touching button edge, scales smoothly on 2xl/3xl) */}
+              <div className="blog-overlay-wrapper absolute left-[20px] sm:left-[45px] 2xl:left-[52px] 3xl:left-[60px] bottom-0 w-[300px] sm:w-[383px] 2xl:w-[420px] 3xl:w-[465px] h-[380px] sm:h-[455px] 2xl:h-[495px] 3xl:h-[530px] z-[5] pointer-events-none">
                 <img
                   src="/blog image png2 2.png"
                   alt="Traveler with luggage"
