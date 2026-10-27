@@ -274,10 +274,9 @@ export default function CountryFares() {
                             <div className="text-center mb-10 flex items-center justify-center">
                                 <button
                                     onClick={() => setVisibleCount((prev) => prev + 6)}
-                                    className="px-6 py-2  text-black flex items-center gap-2 hover:underline"
+                                    className="w-[140px] h-[44px] bg-[#1F0060] hover:bg-[#2c0087] text-white font-poppins font-bold text-[15px] rounded-[14px] shadow-sm transition-all duration-200 active:scale-95 flex items-center justify-center cursor-pointer"
                                 >
-                                    Load More
-                                    <img src={`${BASE_URL_IMG}/assets/svgs/Arrow1.svg`} alt="Arrow" />
+                                    Show More
                                 </button>
                             </div>
                         )}

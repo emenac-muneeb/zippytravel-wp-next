@@ -8,7 +8,7 @@ import AirlineCard from "./AirlineCard";
 function groupByAlphabet(airlines) {
   return airlines.reduce((acc, airline) => {
     if (!airline?.title || typeof airline.title !== "string") return acc;
-    const letter = airline.title[0].toUpperCase();
+    const letter = airline.title.trim()[0].toUpperCase();
     if (!/^[A-Z]$/.test(letter)) return acc;
     if (!acc[letter]) acc[letter] = [];
     acc[letter].push(airline);
@@ -16,27 +16,9 @@ function groupByAlphabet(airlines) {
   }, {});
 }
 
-function AlphabetDivider({ letter }) {
-  return (
-    <div className="mb-[20px] flex items-center gap-4">
-      <span className="text-[30px] font-extrabold leading-none text-[#A57233] sm:text-[60px] relative px-[43px] 
-      after:content-[''] after:absolute after:bottom-1/2 after:translate-y-1/2 after:right-0  after:w-[40px] after:h-[6px] after:bg-[url('/shortdoblelineright.svg')] after:bg-contain after:bg-center
-      before:content-[''] before:absolute before:bottom-1/2 before:translate-y-1/2 before:left-0  before:w-[40px] before:h-[6px] before:bg-[url('/shortdobleline.svg')] before:bg-contain before:bg-center">
-        {letter}
-      </span>
-    </div>
-  );
-}
-
 function AirlineCardSkeleton() {
   return (
-    <div className="animate-pulse">
-      <div className="aspect-[16/10] w-full rounded-[18px] bg-gray-200" />
-      <div className="mt-3 flex items-center gap-2.5">
-        <div className="h-9 w-9 rounded-md bg-gray-200" />
-        <div className="h-4 w-2/3 rounded bg-gray-200" />
-      </div>
-    </div>
+    <div className="w-full h-[96px] sm:h-[110px] rounded-[20px] sm:rounded-[24px] bg-[#F0F5F8] animate-pulse" />
   );
 }
 
@@ -71,15 +53,18 @@ export default function AirlineGrid({
   }, []);
 
   const topAirlines = useMemo(() => {
-    if (topAirlinesData?.is_active && Array.isArray(topAirlinesData.airlines) && topAirlinesData.airlines.length > 0) {
+    if (
+      topAirlinesData?.is_active &&
+      Array.isArray(topAirlinesData.airlines) &&
+      topAirlinesData.airlines.length > 0
+    ) {
       return topAirlinesData.airlines.map((a) => ({
         ...a,
         slug: a.page_url || a.slug,
-        thumbnail_url: a.thumbnail_url?.replace(/^\/media\//, "") || a.thumbnail_url,
-        image_url: a.image_url?.replace(/^\/media\//, "") || a.image_url,
+        image_url: a.image_url || a.logo || a.thumbnail_url,
       }));
     }
-    return airlines;
+    return airlines.slice(0, 8);
   }, [topAirlinesData, airlines]);
 
   const groupedAirlines = useMemo(() => groupByAlphabet(airlines), [airlines]);
@@ -90,25 +75,40 @@ export default function AirlineGrid({
     return airlines.filter((a) => a.title?.toLowerCase().includes(q));
   }, [airlines, search]);
 
+  const topHeading =
+    (topAirlinesData?.is_active && topAirlinesData?.heading) ||
+    heading ||
+    "Top Class Airlines";
+  const topSubHeading =
+    subHeading ||
+    "Our customers can access our web site for a 'one-stop shop' including access to specially negotiated airfares, hotels, car rental and insurance.";
+
+  const allHeading = heading2 || "All Available Airlines";
+  const allSubHeading =
+    subHeading2 ||
+    "Our customers can access our web site for a 'one-stop shop' including access to specially negotiated airfares, hotels, car rental and insurance.";
+
   const gridClass =
-    "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-x-[24px] gap-y-[20px]";
+    "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6";
+
+  const sortedLetters = Object.keys(groupedAirlines).sort();
 
   return (
-    <div className="mx-auto pb-6">
-      {/* Top Business Class Airlines */}
-      <section className="mb-14 sm:mb-16">
-        <div className="heading_section">
-          <h1 className="pre_heading">
-            {(topAirlinesData?.is_active && topAirlinesData?.heading) || heading}
-          </h1>
-          <p className="sub_text">
-            {subHeading}
+    <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-6 pb-20 font-poppins">
+      {/* ── Section 1: Top Class Airlines ── */}
+      <section className="mb-16 sm:mb-24">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-[28px] sm:text-[34px] font-bold text-[#1F0060] tracking-tight">
+            {topHeading}
+          </h2>
+          <p className="text-[14px] sm:text-[15px] text-[#5E6470] max-w-[680px] mx-auto mt-2 sm:mt-2.5 leading-relaxed font-normal">
+            {topSubHeading}
           </p>
         </div>
 
         {loading ? (
           <div className={gridClass}>
-            {Array.from({ length: 14 }).map((_, i) => (
+            {Array.from({ length: 8 }).map((_, i) => (
               <AirlineCardSkeleton key={i} />
             ))}
           </div>
@@ -121,76 +121,143 @@ export default function AirlineGrid({
         )}
       </section>
 
-      {/* All Airlines We Work With */}
+      {/* ── Section 2: All Available Airlines ── */}
       <section>
-        <div className="mb-8 flex flex-col gap-6 min-[756px]:flex-row min-[756px]:items-center min-[756px]:justify-between">
-          <div className="heading_section !pb-0 !mb-0">
-            <h2 className="pre_heading">
-              {heading2}
+        {allHeading && (
+          <div className="text-center mb-10 sm:mb-14">
+            <h2 className="text-[28px] sm:text-[34px] font-bold text-[#1F0060] tracking-tight">
+              {allHeading}
             </h2>
-            <p className="sub_text">
-              {subHeading2}
+            <p className="text-[14px] sm:text-[15px] text-[#5E6470] max-w-[680px] mx-auto mt-2 sm:mt-2.5 leading-relaxed font-normal">
+              {allSubHeading}
             </p>
           </div>
-
-          <div className="relative w-full max-w-[443px] shrink-0 mx-auto min-[756px]:mx-0">
-            <input
-              type="text"
-              aria-label="Search Airlines"
-              placeholder="Search Airline..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-full border-0  bg-[#FFF8F1] py-2.5 pl-6 pr-20 h-[68px] text-[16px] text-[#C9A77E] 
-              placeholder:text-[#C9A77E] outline-none transition"
-            />
-            <span
-              className="absolute right-0 top-1/2 flex h-[68px] w-[68px] -translate-y-1/2 items-center justify-center rounded-full bg-[#FFE1C7] text-white
-              border-[8px] border-[#fff]"
-              aria-hidden
-            >
-              <img src="/media/fr-svgs/searchcolor.svg" alt="" />
-            </span>
-          </div>
-        </div>
+        )}
 
         {loading ? (
-          <div className={gridClass}>
-            {Array.from({ length: 10 }).map((_, i) => (
-              <AirlineCardSkeleton key={i} />
-            ))}
-          </div>
-        ) : filtered ? (
-          filtered.length ? (
+          <div className="space-y-10">
+            <div className="flex items-center gap-2.5">
+              <span className="text-[#5CACC4] text-[40px] sm:text-[48px] font-extrabold leading-none">
+                A
+              </span>
+              <span className="text-[#1F0060] text-[28px] sm:text-[34px] font-bold leading-none">
+                →
+              </span>
+            </div>
             <div className={gridClass}>
-              {filtered.map((airline) => (
-                <AirlineCard key={airline.id || airline.slug} airline={airline} />
+              {Array.from({ length: 8 }).map((_, i) => (
+                <AirlineCardSkeleton key={i} />
               ))}
             </div>
-          ) : (
-            <p className="py-10 text-center text-[#4C4C4C]">
-              No matching airlines found.
-            </p>
-          )
-        ) : (
-          Object.keys(groupedAirlines)
-            .sort()
-            .map((letter) => {
-              const group = groupedAirlines[letter] || [];
-              if (!group.length) return null;
-              return (
-                <div key={letter} className="mb-12">
-                  <AlphabetDivider letter={letter} />
-                  <div className={gridClass}>
-                    {group.map((airline) => (
-                      <AirlineCard
-                        key={airline.id || airline.slug}
-                        airline={airline}
-                      />
-                    ))}
-                  </div>
+          </div>
+        ) : filtered ? (
+          <div>
+            <div className="flex items-center justify-between mb-8 pb-3 border-b border-slate-200">
+              <span className="text-sm font-semibold text-slate-600">
+                Search Results ({filtered.length})
+              </span>
+              <div className="flex flex-col items-end">
+                <span className="text-[12px] sm:text-[13px] font-semibold text-[#5CACC4]">
+                  Choose Airline
+                </span>
+                <div className="relative border-b-[1.5px] border-[#5CACC4] focus-within:border-[#1F0060] pb-1 w-[180px] sm:w-[240px] flex items-center justify-between transition-colors">
+                  <input
+                    type="text"
+                    placeholder="Search Airline Here"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="w-full bg-transparent outline-none text-xs text-slate-700 placeholder:text-slate-400 pr-2"
+                  />
+                  <svg
+                    className="w-3.5 h-3.5 text-[#1F0060]/70 shrink-0 pointer-events-none"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2.2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
                 </div>
-              );
-            })
+              </div>
+            </div>
+
+            {filtered.length > 0 ? (
+              <div className={gridClass}>
+                {filtered.map((airline) => (
+                  <AirlineCard key={airline.id || airline.slug} airline={airline} />
+                ))}
+              </div>
+            ) : (
+              <p className="py-12 text-center text-slate-500 font-medium">
+                No matching airlines found.
+              </p>
+            )}
+          </div>
+        ) : (
+          sortedLetters.map((letter, letterIdx) => {
+            const group = groupedAirlines[letter] || [];
+            if (!group.length) return null;
+
+            return (
+              <div key={letter} className="mb-14 sm:mb-20">
+                {/* Letter Header + Search input on the very first letter */}
+                <div className="flex items-center justify-between mb-6 sm:mb-7">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-[#5CACC4] text-[40px] sm:text-[50px] font-extrabold leading-none">
+                      {letter}
+                    </span>
+                    <span className="text-[#1F0060] text-[28px] sm:text-[34px] font-bold leading-none">
+                      →
+                    </span>
+                  </div>
+
+                  {letterIdx === 0 && (
+                    <div className="flex flex-col items-end">
+                      <span className="text-[12px] sm:text-[13px] font-semibold text-[#5CACC4] mb-0.5">
+                        Choose Airline
+                      </span>
+                      <div className="relative border-b-[1.5px] border-[#5CACC4]/80 focus-within:border-[#1F0060] pb-1 w-[180px] sm:w-[240px] flex items-center justify-between transition-colors">
+                        <input
+                          type="text"
+                          placeholder="Search Airline Here"
+                          value={search}
+                          onChange={(e) => setSearch(e.target.value)}
+                          className="w-full bg-transparent outline-none text-[12px] sm:text-[13px] text-slate-700 placeholder:text-slate-400 pr-2"
+                        />
+                        <svg
+                          className="w-3.5 h-3.5 text-[#1F0060]/70 shrink-0 pointer-events-none"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2.2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* 4-column Airline Cards Grid */}
+                <div className={gridClass}>
+                  {group.map((airline) => (
+                    <AirlineCard
+                      key={airline.id || airline.slug}
+                      airline={airline}
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          })
         )}
       </section>
     </div>

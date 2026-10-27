@@ -58,13 +58,12 @@ export default function SpecificContinentClient({ initialData }) {
                 </div>
 
                 {countries.length > visibleCount && (
-                    <div className="flex justify-center mt-6">
+                    <div className="flex justify-center mt-10">
                         <button
                             onClick={loadMore}
-                            className="flex items-center text-sm font-medium text-primary hover:underline gap-2"
+                            className="w-[140px] h-[44px] bg-[#1F0060] hover:bg-[#2c0087] text-white font-poppins font-bold text-[15px] rounded-[14px] shadow-sm transition-all duration-200 active:scale-95 flex items-center justify-center cursor-pointer"
                         >
-                            Load More
-                            <img src={`${BASE_URL_IMG}/assets/svgs/Arrow1.svg`} alt="arrow right" />
+                            Show More
                         </button>
                     </div>
                 )}

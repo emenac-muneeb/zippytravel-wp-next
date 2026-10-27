@@ -652,19 +652,11 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                         transition
                         className="fixed inset-0 bg-black/50 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
                     />
-                    <div className="fixed inset-0 z-50 flex justify-end items-center p-4">
+                    <div className="fixed inset-0 z-50 flex justify-center items-center p-3 sm:p-6">
                         <DialogPanel
                             transition
-                            className="w-[736px] max-w-full h-[540px] max-h-[90vh] bg-white rounded-l-3xl shadow-xl transform transition-all overflow-auto relative data-closed:translate-x-full data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in border border-[#F2ECE4]"
+                            className="w-[820px] max-w-full max-h-[94vh] bg-white rounded-[20px] sm:rounded-[24px] shadow-2xl transform transition-all overflow-auto relative data-closed:scale-95 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
                         >
-                            <button
-                                type="button"
-                                onClick={() => setEnquiryOpen(false)}
-                                className="absolute top-5 left-5 text-black/70 text-xl z-10 hover:text-secondary"
-                                aria-label="Close"
-                            >
-                                ✕
-                            </button>
                             <EnquiryModal setEnquiryOpen={setEnquiryOpen} EnquiryOpen={EnquiryOpen} />
                         </DialogPanel>
                     </div>

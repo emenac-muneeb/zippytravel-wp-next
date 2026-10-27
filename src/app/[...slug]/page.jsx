@@ -355,11 +355,10 @@ async function enrichPageResult(result) {
       enrichedData.parsedScrollContent2 = parseScrollDescription(scrollDescription2);
     }
 
-    // Prefer Business (API default). Cities with no Business inventory still get an empty list —
-    // do not fall back to match-location Economy while Business is selected in the UI.
-    const businessFares = await fetchCityFaresByClass(enrichedData.slug);
-    if (businessFares) {
-      enrichedData.fares = businessFares;
+    // By default for city fares, fetch Economy / Premium class (class=1) instead of Business
+    const defaultFares = await fetchCityFaresByClass(enrichedData.slug, 1);
+    if (defaultFares && (defaultFares.data?.length > 0 || defaultFares.length > 0)) {
+      enrichedData.fares = defaultFares;
     }
   }
 
