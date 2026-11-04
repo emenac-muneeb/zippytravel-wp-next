@@ -193,8 +193,7 @@ const HomePageClient = ({
             initialReviews={initialReviews}
           /> */}
 
-          {/* <NeedHelp />
-          <PopularDestinations
+          {/* <PopularDestinations
             heading=""
             subheading=""
             initialContinents={initialContinents}

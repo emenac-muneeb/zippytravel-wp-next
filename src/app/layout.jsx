@@ -12,6 +12,7 @@ import { getGeneralSettings, getWebsiteTitle, getRobotsSetting, GetCanonicalUrl 
 import { BASE_URL_IMG } from "../Helpers/imageurl";
 import ScriptInjector from "../Components/common/ScriptInjector"; 
 import ToastProvider from "../Components/common/ToastProvider";
+import NeedHelp from "../Components/NeedHelp";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -131,6 +132,7 @@ export default async function RootLayout({ children }) {
           <NavBar />
           <ToastProvider />
           <main>{children}</main>
+          <NeedHelp />
           <Footer />
         </GeneralSettingsProvider>
 

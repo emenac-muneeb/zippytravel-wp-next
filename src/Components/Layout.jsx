@@ -24,6 +24,7 @@
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import ScrollToTop from "./ScrollToTop";
+import NeedHelp from "./NeedHelp";
 
 export default function Layout({ children }) {
   return (
@@ -31,6 +32,7 @@ export default function Layout({ children }) {
       <ScrollToTop />
       <NavBar />
       {children}
+      <NeedHelp />
       <Footer />
     </>
   );
