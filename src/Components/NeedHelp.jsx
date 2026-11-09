@@ -1,14 +1,22 @@
 "use client";
 import React, { useState } from "react";
+import { usePathname } from "next/navigation";
 import CallbackPopup from "./CallbackPopup";
 import { useGeneralSettings } from "../Context/GeneralSettingsContext";
 
 const NeedHelp = () => {
+  const pathname = usePathname();
   const { footerSetting } = useGeneralSettings();
   const [showPopup, setShowPopup] = useState(false);
 
   const footerData = footerSetting;
   const phone = footerData?.contents?.footer_phone || "";
+
+  // Hide on static policy & about pages as per design
+  const isHidden = ["about-us", "cookies", "terms", "privacy"].some((key) =>
+    pathname?.toLowerCase().includes(key)
+  );
+  if (isHidden) return null;
 
   return (
     <>

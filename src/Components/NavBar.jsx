@@ -16,6 +16,7 @@ const NavBar = () => {
   const [loginStep, setloginStep] = useState(1);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const isAboutUs = pathname?.toLowerCase().includes("about-us");
 
   const phoneNumber = globalVariable?.PHONENUMBER || "0203 - 923 - 2255";
   const telHref = `tel:${phoneNumber.replace(/[^0-9+]/g, "")}`;
@@ -25,7 +26,13 @@ const NavBar = () => {
 
   return (
     <>
-      <header className="w-full bg-white border-b border-gray-100 z-50 relative font-poppins">
+      <header
+        className={`w-full z-50 font-poppins transition-colors ${
+          isAboutUs
+            ? "absolute top-0 left-0 bg-transparent border-none"
+            : "w-full bg-white border-b border-gray-100 relative"
+        }`}
+      >
         {/* Main 1360px container */}
         <div className="w-full max-w-[1360px] mx-auto px-4 xl:px-0">
           {/* Desktop Navigation (>= 1200px) */}
@@ -33,7 +40,7 @@ const NavBar = () => {
             {/* Logo: 166px x 36px (80px from left edge) */}
             <Link href="/" className="shrink-0 flex items-center" aria-label="Zippy Travel Home">
               <Image
-                src="/ZTlogo dark 1.png"
+                src={isAboutUs ? "/ZTlogo-white.png" : "/ZTlogo dark 1.png"}
                 alt="Zippy Travel"
                 width={166}
                 height={36}
@@ -47,7 +54,11 @@ const NavBar = () => {
               {/* Business Class Flights (37px from logo) */}
               <Link
                 href="/airlines"
-                className="font-poppins font-normal text-[18px] text-[#000000] hover:text-[#5CACC4] transition-colors whitespace-nowrap"
+                className={`transition-colors whitespace-nowrap ${
+                  isAboutUs
+                    ? "font-poppins font-normal text-[16px] text-white bg-[#1F0060] px-3.5 py-1.5 rounded-[6px] shadow-sm hover:bg-[#340b8a]"
+                    : "font-poppins font-normal text-[18px] text-[#000000] hover:text-[#5CACC4]"
+                }`}
               >
                 Business Class Flights
               </Link>
@@ -55,15 +66,21 @@ const NavBar = () => {
               {/* Destination */}
               <Link
                 href="/continents"
-                className="font-poppins font-normal text-[18px] text-[#000000] hover:text-[#5CACC4] transition-colors whitespace-nowrap"
+                className={`font-poppins font-normal text-[18px] transition-colors whitespace-nowrap ${
+                  isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"
+                }`}
               >
                 Destination
               </Link>
 
-              {/* Airline Badge: 85px x 30px, bg #1F0060 */}
+              {/* Airline Badge / Link */}
               <Link
                 href="/airline"
-                className="w-[85px] h-[30px] bg-[#1F0060] hover:bg-[#340b8a] text-white rounded-[6px] flex items-center justify-center font-poppins font-normal text-[16px] transition-colors whitespace-nowrap shadow-sm"
+                className={`transition-colors whitespace-nowrap ${
+                  isAboutUs
+                    ? "font-poppins font-normal text-[18px] text-white hover:text-[#5CACC4]"
+                    : "w-[85px] h-[30px] bg-[#1F0060] hover:bg-[#340b8a] text-white rounded-[6px] flex items-center justify-center font-poppins font-normal text-[16px] shadow-sm"
+                }`}
               >
                 Airline
               </Link>
@@ -71,7 +88,9 @@ const NavBar = () => {
               {/* Contact Us */}
               <Link
                 href="/contact-us"
-                className="font-poppins font-normal text-[18px] text-[#000000] hover:text-[#5CACC4] transition-colors whitespace-nowrap"
+                className={`font-poppins font-normal text-[18px] transition-colors whitespace-nowrap ${
+                  isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"
+                }`}
               >
                 Contact Us
               </Link>
@@ -79,7 +98,9 @@ const NavBar = () => {
               {/* Beat My Quote */}
               <Link
                 href="/contact-us"
-                className="font-poppins font-normal text-[18px] text-[#000000] hover:text-[#5CACC4] transition-colors whitespace-nowrap"
+                className={`font-poppins font-normal text-[18px] transition-colors whitespace-nowrap ${
+                  isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"
+                }`}
               >
                 Beat My Quote
               </Link>
@@ -114,7 +135,7 @@ const NavBar = () => {
           <div className="hidden lg:flex xl:hidden items-center justify-between h-[100px] px-6">
             <Link href="/" className="shrink-0 flex items-center">
               <Image
-                src="/ZTlogo dark 1.png"
+                src={isAboutUs ? "/ZTlogo-white.png" : "/ZTlogo dark 1.png"}
                 alt="Zippy Travel"
                 width={150}
                 height={32}
@@ -124,10 +145,16 @@ const NavBar = () => {
             </Link>
 
             <nav className="flex items-center gap-4 text-[15px]">
-              <Link href="/airlines" className="font-poppins text-[#000000] hover:text-[#5CACC4]">
+              <Link
+                href="/airlines"
+                className={`font-poppins ${isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"}`}
+              >
                 Flights
               </Link>
-              <Link href="/continents" className="font-poppins text-[#000000] hover:text-[#5CACC4]">
+              <Link
+                href="/continents"
+                className={`font-poppins ${isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"}`}
+              >
                 Destination
               </Link>
               <Link
@@ -136,10 +163,16 @@ const NavBar = () => {
               >
                 Airline
               </Link>
-              <Link href="/contact-us" className="font-poppins text-[#000000] hover:text-[#5CACC4]">
+              <Link
+                href="/contact-us"
+                className={`font-poppins ${isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"}`}
+              >
                 Contact
               </Link>
-              <Link href="/contact-us" className="font-poppins text-[#000000] hover:text-[#5CACC4]">
+              <Link
+                href="/contact-us"
+                className={`font-poppins ${isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"}`}
+              >
                 Beat Quote
               </Link>
             </nav>
@@ -161,7 +194,7 @@ const NavBar = () => {
           <div className="flex lg:hidden items-center justify-between h-[75px] px-2 sm:px-4">
             <Link href="/" className="shrink-0 flex items-center">
               <Image
-                src="/ZTlogo dark 1.png"
+                src={isAboutUs ? "/ZTlogo-white.png" : "/ZTlogo dark 1.png"}
                 alt="Zippy Travel"
                 width={140}
                 height={30}
@@ -188,7 +221,9 @@ const NavBar = () => {
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 rounded-md text-gray-700 hover:text-black hover:bg-gray-100 transition-colors"
+                className={`p-2 rounded-md transition-colors ${
+                  isAboutUs ? "text-white hover:bg-white/10" : "text-gray-700 hover:text-black hover:bg-gray-100"
+                }`}
                 aria-label="Toggle navigation menu"
               >
                 {isMobileMenuOpen ? (

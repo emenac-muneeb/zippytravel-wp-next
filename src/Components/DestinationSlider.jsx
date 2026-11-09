@@ -149,18 +149,18 @@ function StableDestinationSwiper({ items, getKey, renderCard, loop, prevRef, nex
               width: 22px !important;
               height: 28px !important;
               border-radius: 12px !important;
-              border: 1px solid #d67938 !important;
+              border: 1px solid #1F0060 !important;
               background-color: transparent !important;
               opacity: 1 !important;
               display: flex !important;
               align-items: center !important;
               justify-content: center !important;
               margin: 0 !important;
-              color: #d67938 !important;
+              color: #1F0060 !important;
               transition: all 0.3s ease !important;
             }
             .dest-swiper .swiper-pagination-bullet-active {
-              background-color: #d67938 !important;
+              background-color: #1F0060 !important;
               color: white !important;
             }
           `}</style>

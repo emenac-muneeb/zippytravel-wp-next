@@ -1,21 +1,31 @@
 "use client";
-import React from 'react';
-import BrandingSection from '../../Components/BrandingSection';
-import useGeneralBreadcrumbs from '../../Hooks/useGeneralBreadcrumbs';
-import parse from 'html-react-parser';
-import '../../ExternalCSS/staticpages.css';
+import React from "react";
+import "../../ExternalCSS/staticpages.css";
 
 export default function CookiesClient({ initialData: CookiesPage }) {
-    const breadcrumbs = useGeneralBreadcrumbs();
+  const title = CookiesPage?.title || "Cookies Policy";
+  const description = CookiesPage?.description || "";
 
-    return (
-        <div className="container parseData">
-            <div className='pt-[87px] sm:pt-[100px] pb-[24px] sm:pb-[32px]'>
-                {breadcrumbs}
-                <div className="prose max-w-none text-[16px] leading-[28px] custom-quicksand lg:mt-[50px] mt-[30px]">
-                    {parse(CookiesPage?.description || "")}
-                </div>
-            </div>
-        </div>
-    );
+  return (
+    <div className="w-full bg-white font-poppins">
+      <main className="w-full max-w-[1360px] mx-auto px-4 sm:px-8 lg:px-[80px] py-10 sm:py-14 lg:py-16">
+        {/* Title: 28px, weight 600, color #5CACC4 */}
+        <h1 className="font-poppins font-semibold text-[20px] sm:text-[23px] md:text-[26px] text-[#5CACC4] leading-tight mb-6">
+          {title}
+        </h1>
+
+        {/* API Content */}
+        {description ? (
+          <div
+            className="parseData"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
+        ) : (
+          <p className="text-[#4C4C4C] text-[22px] font-normal">
+            Content not available.
+          </p>
+        )}
+      </main>
+    </div>
+  );
 }

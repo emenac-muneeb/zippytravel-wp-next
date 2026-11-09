@@ -1,84 +1,62 @@
 strong {
-  color: #A57233;
-  font-family: var(--font-inter), Inter, sans-serif;
+  color: #333333;
+  font-weight: 600;
+  font-family: var(--font-inter), Poppins, sans-serif;
 }
 
 .parseData {
-  font-family: var(--font-inter), Inter, sans-serif;
+  font-family: var(--font-inter), Poppins, sans-serif;
 }
 
 .parseData h1 {
-  font-size: 32px;
-  font-weight: 700;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  color: #A57233;
-  font-family: var(--font-inter), Inter, sans-serif;
-}
-
-.parseData h2 {
   font-size: 26px;
   font-weight: 600;
-  margin: 0.75rem 0;
-  color: #A57233;
-  font-family: var(--font-inter), Inter, sans-serif;
+  margin-top: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: #5CACC4;
+  font-family: var(--font-inter), Poppins, sans-serif;
 }
 
-.parseData h3 {
-  font-size: 22px;
-  font-weight: 600;
-  margin: 0.5rem 0;
-  color: #A57233;
-  font-family: var(--font-inter), Inter, sans-serif;
-}
-
+.parseData h2,
+.parseData h3,
 .parseData h4 {
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0.5rem 0;
-  color: #A57233;
-  font-family: var(--font-inter), Inter, sans-serif;
+  font-size: 26px;
+  font-weight: 500;
+  margin: 1rem 0 0.5rem 0;
+  color: #5CACC4;
+  font-family: var(--font-inter), Poppins, sans-serif;
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 768px) {
   .parseData h1 {
-    font-size: 40px;
+    font-size: 20px;
   }
-  .parseData h2 {
-    font-size: 32px;
-  }
-  .parseData h3 {
-    font-size: 26px;
-  }
+  .parseData h2,
+  .parseData h3,
   .parseData h4 {
-    font-size: 22px;
+    font-size: 18px;
   }
 }
 
-.parseData p {
-  font-size: 1rem;
-  line-height: 1.625;
-  margin: 0.5rem 0;
-  font-family: var(--font-inter), Inter, sans-serif;
+.parseData p,
+.static-uniform-text p {
+  font-size: 22px !important;
+  font-weight: 400 !important;
+  line-height: 1.65;
+  margin: 0.75rem 0;
+  color: #4C4C4C;
+  font-family: var(--font-inter), Poppins, sans-serif;
 }
 
 /* ---------- Anchor Styling With Underline Hover Animation ---------- */
 
-
-
-
-
-/* Last override: Blue anchor design (from your bottom code) */
-
 .parseData a {
-  color: #A57233;
-  /* blue-600 */
+  color: #5CACC4;
   text-decoration: underline;
 }
 
 .parseData a:hover {
-  color: #F1A868;
-  /* blue-800 */
+  color: #3ba0bd;
 }
 
 /* ---------- List Styles ---------- */
@@ -96,12 +74,14 @@ strong {
   margin: 0.5rem 0;
 }
 
-.parseData li {
-  font-size: 1rem;
-  line-height: 1.625;
-  color: #374151;
-  /* gray-700 */
-  margin-bottom: 0.25rem;
+.parseData li,
+.static-uniform-text li {
+  font-size: 22px !important;
+  font-weight: 400 !important;
+  line-height: 1.65;
+  color: #4C4C4C;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-inter), Poppins, sans-serif;
 }
 
 .parseData ul ul,

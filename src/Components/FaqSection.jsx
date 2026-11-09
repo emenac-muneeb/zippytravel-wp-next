@@ -162,7 +162,7 @@ const FaqSection = ({
     "Our customers can access our web site for a \u2018one-stop shop\u2019 including access to specially negotiated airfares, hotels, car rental and insurance.";
 
   return (
-    <section className="mt-[110px] w-full bg-white">
+    <section className="mt-[60px] sm:mt-[80px] lg:mt-[110px] w-full bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1320px]">
         {/* Top Header & Subtitle */}
         <div className="text-center max-w-[820px] mx-auto">
@@ -229,14 +229,14 @@ const FaqSection = ({
           </div>
         </div>
 
-        {/* 2. Responsive Layout (1023px and below): Heading -> Image -> Questions (2-per-row or 1-per-row on mobile with Load More) */}
-        <div className="block lg:hidden mt-[16px]">
-          {/* Image directly below heading & subtext */}
-          <div className="flex justify-center mb-6 sm:mb-8 -mt-6 sm:-mt-8">
+        {/* 2. Responsive Layout (1023px and below): Clean spacing, image sits properly below subtitle without overlapping */}
+        <div className="block lg:hidden mt-6 sm:mt-8">
+          {/* Center Illustration: Clean positive margin, NO negative margin so it never overlaps the heading */}
+          <div className="flex justify-center mb-6 sm:mb-8">
             <img
               src="/faq-center.png"
               alt="Frequently Asked Questions Illustration"
-              className="h-[260px] sm:h-[300px] md:h-[344px] w-auto object-contain"
+              className="h-[220px] sm:h-[270px] md:h-[310px] w-auto max-w-full object-contain mx-auto"
               width={393}
               height={344}
               loading="lazy"

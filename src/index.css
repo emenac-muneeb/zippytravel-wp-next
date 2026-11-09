@@ -18,6 +18,15 @@ html, body {
   font-family: 'Poppins', sans-serif !important;
 }
 
+.static-uniform-text p,
+.static-uniform-text li {
+  font-size: 22px !important;
+  font-weight: 400 !important;
+  line-height: 1.65 !important;
+  color: #4C4C4C !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+
 
 input[type="checkbox"].custom-check:checked::before {
   content: "✔";
@@ -172,6 +181,7 @@ h2 {
 p{
   font-size: 16px;
 }
+
 
 /* Destination slider: reserve slide height before Swiper init */
 .destination-stable-swiper .swiper-slide {

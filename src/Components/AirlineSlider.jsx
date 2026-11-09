@@ -63,28 +63,29 @@ const BASE_AIRLINES = [
   },
 ];
 
-// Extra airlines: Hidden at 1360px (and below) so 1360px keeps only original 9 items (3x3)
-// Visible only on full-screen (2xl: >= 1536px) to form a balanced 4-in-a-row (4x3) layout
+// Extra airlines:
+// - Item 9 (Qatar Airways) is visible on < 1024px (to balance 2-column grid to 10 items) and on 2xl (12 items)
+// - Items 10 & 11 are visible only on 2xl (4x3 grid)
 const EXTRA_AIRLINES = [
   {
     id: 9,
-    name: "Emirates",
-    logo: "/emirates.svg",
-    fallback: "/airlinebg.png",
+    name: "Qatar Airways",
+    logo: "/qatar-airways-logo.png",
+    fallback: "https://admin.premierflights.co.uk/media/airline/qatar-airways.png",
     href: "/airline",
   },
   {
     id: 10,
-    name: "Singapore Airlines",
-    logo: "/singapore-airlines.svg",
-    fallback: "/airlinebg.png",
+    name: "Emirates",
+    logo: "/emirates-logo.png",
+    fallback: "https://admin.premierflights.co.uk/media/airline/emirates.png",
     href: "/airline",
   },
   {
     id: 11,
     name: "British Airways",
-    logo: "/british-airways.svg",
-    fallback: "/airlinebg.png",
+    logo: "/british-airways-logo.png",
+    fallback: "https://admin.premierflights.co.uk/media/airline/british-airways.png",
     href: "/airline",
   },
 ];
@@ -167,16 +168,19 @@ export default function AirlineSlider({
               ))}
 
               {/* 
-                Extra 3 Airlines:
-                - HIDDEN at 1360px and smaller screens (hidden)
-                - VISIBLE ONLY on Full Screen (hidden 2xl:flex)
-                - This ensures 1360px displays strictly the original 3x3 (9 items) without any extras
+                Extra Airlines:
+                - 1st item (idx === 0: Qatar Airways) is visible on < 1024px (flex lg:hidden 2xl:flex)
+                  so the 2-column grid under 1024px has 10 items total (zero empty slot!)
+                - 1024px-1535px keeps exactly 9 items (3x3 grid)
+                - 2xl (>= 1536px) displays all 12 items (4x3 grid)
               */}
-              {EXTRA_AIRLINES.map((airline) => (
+              {EXTRA_AIRLINES.map((airline, idx) => (
                 <Link
                   key={airline.id}
                   href={airline.href}
-                  className="hidden 2xl:flex w-full h-[100px] sm:h-[110px] xl:h-[120px] bg-white rounded-[20px] items-center justify-center p-4 shadow-sm hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group cursor-pointer"
+                  className={`${
+                    idx === 0 ? "flex lg:hidden 2xl:flex" : "hidden 2xl:flex"
+                  } w-full h-[100px] sm:h-[110px] xl:h-[120px] bg-white rounded-[20px] items-center justify-center p-4 shadow-sm hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group cursor-pointer`}
                 >
                   <img
                     src={airline.logo}

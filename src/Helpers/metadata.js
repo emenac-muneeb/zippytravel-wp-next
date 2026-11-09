@@ -126,6 +126,10 @@ export function buildCmsPageUrlCandidates(pageUrl) {
   add(noExt);
   add(`${noExt}.htm`);
   add(`${noExt}.html`);
+  if (noExt === "terms-condition" || noExt === "terms-conditions") {
+    add("terms-and-conditions");
+    add("terms-and-conditions.html");
+  }
   return candidates;
 }
 
