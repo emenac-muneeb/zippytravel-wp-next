@@ -7,7 +7,7 @@ const JsonLdScripts = () => {
         "@type": ["Organization", "TravelAgency"],
         "name": "Emenac Travel",
         "url": "https://www.premierflights.co.uk",
-        "logo": "https://admin.premierflights.co.uk/storage/uploads/settings/1755082130_logo.svg",
+        "logo": "https://admin.zippytravel.co.uk/storage/uploads/settings/1755082130_logo.svg",
         "description": "Emenac Travel is a trusted UK-based travel agency offering cheap flights, holiday packages, and worldwide travel deals.",
         "contactPoint": {
             "@type": "ContactPoint",

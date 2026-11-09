@@ -13,7 +13,7 @@ export default function LatestNews() {
     const fetchLatestBlogs = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("https://admin.premierflights.co.uk/api/get-blogs?latestblog=1");
+        const res = await axios.get("https://admin.zippytravel.co.uk/api/get-blogs?latestblog=1");
         if (res.data && res.data.latest_blogs?.data) {
           // The bigger blog is the first blog (index 0) and the other 3 will be the next 3 (indices 1, 2, 3)
           setBlogs(res.data.latest_blogs.data.slice(0, 4));

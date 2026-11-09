@@ -26,7 +26,7 @@ export default function BlogSection() {
     const fetchBlogs = async () => {
       try {
         const res = await axios.get(
-          "https://admin.premierflights.co.uk/api/get-blogs?latestblog=1"
+          "https://admin.zippytravel.co.uk/api/get-blogs?latestblog=1"
         );
         if (res.data?.latest_blogs?.data?.length >= 2) {
           const apiBlogs = res.data.latest_blogs.data.slice(0, 2);
@@ -71,10 +71,10 @@ export default function BlogSection() {
         {/* Full-width responsive container: exactly 1360px at standard desktop, expands smoothly on 2xl (1536px) and 3xl (1920px+ full screen) */}
         <div className="w-full max-w-[1360px] 2xl:max-w-[1550px] 3xl:max-w-[1750px] mx-auto px-4 sm:px-6 lg:px-4 xl:px-8 2xl:px-10">
           <div className="w-full flex flex-col lg:flex-row items-center lg:items-end justify-center gap-4 lg:gap-[14px] xl:gap-[20px] 2xl:gap-[28px] 3xl:gap-[32px]">
-            
+
             {/* ── Left Group: background image + info card + overlay girl ── */}
             <div className="blog-left-group relative w-full max-w-[586px] lg:max-w-[495px] xl:max-w-[586px] 2xl:max-w-[650px] 3xl:max-w-[720px] h-[480px] sm:h-[513px] lg:h-[475px] xl:h-[513px] 2xl:h-[550px] 3xl:h-[580px] flex-shrink-0">
-              
+
               {/* 1. Background Image Card (288px x 513px at 1360px, scales up on 2xl/3xl) */}
               <div className="blog-bg-card absolute left-0 bottom-0 w-[240px] sm:w-[288px] lg:w-[245px] xl:w-[288px] 2xl:w-[320px] 3xl:w-[355px] h-[480px] sm:h-[513px] lg:h-[475px] xl:h-[513px] 2xl:h-[550px] 3xl:h-[580px] rounded-[24px] sm:rounded-[28px] 3xl:rounded-[32px] overflow-hidden z-[1]">
                 <img

@@ -5,7 +5,7 @@ import BlogDetailClient from './BlogDetailClient';
 import { notFound } from 'next/navigation';
 import ScriptInjector from '../../../Components/common/ScriptInjector';
 
-const url = `https://admin.premierflights.co.uk/api/get-blogs`
+const url = `https://admin.zippytravel.co.uk/api/get-blogs`
 
 async function getBlogDetailData(slug) {
     try {
@@ -39,7 +39,7 @@ import { GetCanonicalUrl } from '../../../Helpers/metadata';
 export async function generateMetadata({ params }) {
     const { slug } = await params;
     const data = await getBlogDetailData(slug);
-    
+
     if (!data) return { title: 'Blog Not Found' };
 
     const { blogPage } = data;

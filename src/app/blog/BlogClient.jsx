@@ -9,7 +9,7 @@ import BlogPostsSection, {
 } from "../../Components/BlogPostsSection";
 import "../../ExternalCSS/blog.css";
 
-const LATEST_BLOGS_URL = "https://admin.premierflights.co.uk/api/get-blogs";
+const LATEST_BLOGS_URL = "https://admin.zippytravel.co.uk/api/get-blogs";
 
 const STATIC_CTA = {
   heading: "The Taste Of Business Class / First Class",

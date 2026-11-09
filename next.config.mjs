@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 const SITEMAP_API_BASE =
-  process.env.SITEMAP_API_BASE ?? "https://admin.premierflights.co.uk/api";
+  process.env.SITEMAP_API_BASE ?? "https://admin.zippytravel.co.uk/api";
 
 /** Proxies blog media: public path stays /blog/wp-content/uploads/… on this host; origin pull from admin. */
 const ADMIN_BLOG_UPLOADS =
-  "https://admin.premierflights.co.uk/blog/wp-content/uploads";
-const ADMIN_BASE_ORIGIN = "https://admin.premierflights.co.uk";
+  "https://admin.zippytravel.co.uk/blog/wp-content/uploads";
+const ADMIN_BASE_ORIGIN = "admin.zippytravel.co.uk";
 
 /** Vercel production only — avoids pinning HSTS on preview URLs. */
 const isVercelProduction = process.env.VERCEL_ENV === "production";

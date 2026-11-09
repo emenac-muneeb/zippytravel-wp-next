@@ -44,9 +44,9 @@ export default function UmrahGeneralClient({ initialData, slug }) {
                         .map((w) => w.umrah_package_ids)
                         .filter(Boolean)
                         .join(",");
-                    
+
                     if (allIds) {
-                        url = `https://admin.premierflights.co.uk/api/umrah-type?package_id=${allIds}`;
+                        url = `https://admin.zippytravel.co.uk/api/umrah-type?package_id=${allIds}`;
                     } else {
                         url = endpoints.umrahType;
                     }

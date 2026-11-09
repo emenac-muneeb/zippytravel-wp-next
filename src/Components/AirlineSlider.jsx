@@ -71,21 +71,21 @@ const EXTRA_AIRLINES = [
     id: 9,
     name: "Qatar Airways",
     logo: "/qatar-airways-logo.png",
-    fallback: "https://admin.premierflights.co.uk/media/airline/qatar-airways.png",
+    fallback: "https://admin.zippytravel.co.uk/media/airline/qatar-airways.png",
     href: "/airline",
   },
   {
     id: 10,
     name: "Emirates",
     logo: "/emirates-logo.png",
-    fallback: "https://admin.premierflights.co.uk/media/airline/emirates.png",
+    fallback: "https://admin.zippytravel.co.uk/media/airline/emirates.png",
     href: "/airline",
   },
   {
     id: 11,
     name: "British Airways",
     logo: "/british-airways-logo.png",
-    fallback: "https://admin.premierflights.co.uk/media/airline/british-airways.png",
+    fallback: "https://admin.zippytravel.co.uk/media/airline/british-airways.png",
     href: "/airline",
   },
 ];
@@ -178,9 +178,8 @@ export default function AirlineSlider({
                 <Link
                   key={airline.id}
                   href={airline.href}
-                  className={`${
-                    idx === 0 ? "flex lg:hidden 2xl:flex" : "hidden 2xl:flex"
-                  } w-full h-[100px] sm:h-[110px] xl:h-[120px] bg-white rounded-[20px] items-center justify-center p-4 shadow-sm hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group cursor-pointer`}
+                  className={`${idx === 0 ? "flex lg:hidden 2xl:flex" : "hidden 2xl:flex"
+                    } w-full h-[100px] sm:h-[110px] xl:h-[120px] bg-white rounded-[20px] items-center justify-center p-4 shadow-sm hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group cursor-pointer`}
                 >
                   <img
                     src={airline.logo}

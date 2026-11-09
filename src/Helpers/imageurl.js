@@ -5,7 +5,7 @@
 export const BASE_URL_IMG = "";
 
 const NORMALIZABLE_HOSTS = new Set([
-  "admin.premierflights.co.uk",
+  "admin.zippytravel.co.uk",
   "new.premierflights.co.uk",
 ]);
 

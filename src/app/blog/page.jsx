@@ -4,7 +4,7 @@ import BlogClient from './BlogClient';
 import { GetCanonicalUrl } from '../../Helpers/metadata';
 import ScriptInjector from '../../Components/common/ScriptInjector';
 
-const url = `https://admin.premierflights.co.uk/api/get-blogs`;
+const url = `https://admin.zippytravel.co.uk/api/get-blogs`;
 
 async function getBlogData() {
     try {
