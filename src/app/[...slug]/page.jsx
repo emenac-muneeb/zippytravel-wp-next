@@ -64,16 +64,6 @@ async function fetchMatchLocationOk(url) {
   return data?.status === 1 ? data : null;
 }
 
-/** Fetch with the URL segment as-is — no slug candidate rewriting. */
-async function resolveCountryBySlug(countrySegment) {
-  if (!countrySegment) return null;
-  const data = await fetchMatchLocationOk(endpoints.CountriesCitiesBySlug(countrySegment));
-  if (!data) return null;
-  const country = data.result?.country;
-  if (!urlSegmentMatchesEntity(countrySegment, country)) return null;
-  return { data: data.result, resolvedSlug: countrySegment };
-}
-
 async function resolveCityBySlug(citySegment) {
   if (!citySegment) return null;
   const data = await fetchMatchLocationOk(endpoints.CityFaresByCityName(citySegment));
@@ -88,12 +78,17 @@ function urlSegmentMatchesEntity(urlSegment, entity, sanitize = sanitizeTitle) {
   return getEntityAllowedSlugs(entity, sanitize).has(normSlug(urlSegment));
 }
 
-function continentSlugMatches(urlSlug, countryData, sanitize = sanitizeTitle) {
-  return urlSegmentMatchesEntity(urlSlug, countryData?.continent, sanitize);
+/**
+ * City fares payload: `continent` is preferred; `country` is a compat alias
+ * that currently holds continent data in the 2-step destinations flow.
+ */
+function getCityContinentEntity(cityData) {
+  if (!cityData) return null;
+  return cityData.continent || cityData.country?.continent || cityData.country || null;
 }
 
-function countrySlugMatches(urlSlug, countryData, sanitize = sanitizeTitle) {
-  return urlSegmentMatchesEntity(urlSlug, countryData, sanitize);
+function cityContinentSlugMatches(urlSlug, cityData, sanitize = sanitizeTitle) {
+  return urlSegmentMatchesEntity(urlSlug, getCityContinentEntity(cityData), sanitize);
 }
 
 /** Continent, country, city destination slugs — exact admin/API match only. */
@@ -214,46 +209,45 @@ async function getPageData(slugArr) {
       return null;
     }
 
+    // 2-step flow: /{continent}/{city} → city fares (e.g. /africa/flights-to-ghana)
     if (len === 2) {
       const [s1, s2] = slugArr;
       // Holiday package URLs under /holidays-to-*/... disabled — re-enable later
       if (s1.startsWith('holidays-to-')) {
         return null;
       }
-      const countryResult = await resolveCountryBySlug(s2);
-      if (countryResult) {
-        const countryData = countryResult.data.country || {};
+      const cityResult = await resolveCityBySlug(s2);
+      if (cityResult) {
+        const cityData = cityResult.data;
         if (
-          urlSegmentMatchesEntity(s2, countryData, sanitize) &&
-          continentSlugMatches(s1, countryData, sanitize)
+          urlSegmentMatchesEntity(s2, cityData, sanitize) &&
+          cityContinentSlugMatches(s1, cityData, sanitize)
         ) {
           return {
-            type: 'country',
-            data: countryResult.data,
+            type: 'city',
+            data: cityData,
             continentSlug: s1,
-            countrySlug: s2,
+            citySlug: s2,
           };
         }
       }
       return null;
     }
 
+    // Legacy 3-segment URLs: resolve last segment as city (skip old country middle page)
     if (len === 3) {
-      const [s1, s2, s3] = slugArr;
+      const [s1, , s3] = slugArr;
       const cityResult = await resolveCityBySlug(s3);
       if (cityResult) {
         const cityData = cityResult.data;
-        const countryData = cityData.country || {};
         if (
           urlSegmentMatchesEntity(s3, cityData, sanitize) &&
-          countrySlugMatches(s2, countryData, sanitize) &&
-          continentSlugMatches(s1, countryData, sanitize)
+          cityContinentSlugMatches(s1, cityData, sanitize)
         ) {
           return {
             type: 'city',
             data: cityData,
             continentSlug: s1,
-            countrySlug: s2,
             citySlug: s3,
           };
         }
@@ -299,8 +293,6 @@ function getScrollDescriptionForResult(result) {
   switch (type) {
     case 'city':
       return data.description;
-    case 'country':
-      return data.country?.description || data.description;
     case 'umrahGeneral':
       return data.scroll_description;
     case 'cmsStatic': {
@@ -362,14 +354,6 @@ async function enrichPageResult(result) {
     }
   }
 
-  if (result.type === 'country') {
-    const country = enrichedData.country || {};
-    const scrollDescription2 = country.scroll_description_2 || enrichedData.scroll_description_2;
-    if (typeof scrollDescription2 === 'string' && scrollDescription2.trim()) {
-      enrichedData.parsedScrollContent2 = parseScrollDescription(scrollDescription2);
-    }
-  }
-
   const faqIds = parseFaqIds(
     enrichedData.faq_widget || enrichedData.country?.faq_widget
   );
@@ -415,13 +399,6 @@ export async function generateMetadata({ params }) {
     metaKeywords = continentInfo.meta_keywords;
     script = continentInfo.script || continentInfo.page_script || continentInfo.contents?.script;
     imageUrl = continentInfo.images?.[0]?.url ? `${BASE_URL_IMG}/${continentInfo.images[0].url}` : '';
-  } else if (type === 'country') {
-    const countryData = data.country || {};
-    pageTitle = countryData.browser_title || countryData.title;
-    metaDesc = countryData.meta_description;
-    metaKeywords = countryData.meta_keywords;
-    script = countryData.script || countryData.page_script || countryData.contents?.script;
-    imageUrl = countryData.images?.[0]?.url ? `${BASE_URL_IMG}/${countryData.images[0].url}` : '';
   } else if (type === 'holidaysCountry') {
     const countryData = Array.isArray(data) ? data[0] : data;
     pageTitle = `Holidays to ${countryData?.holiday_country_title || 'Destination'}`;

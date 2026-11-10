@@ -258,13 +258,97 @@ p{
 .no-underline{
   text-decoration: none !important;
 }
-.banner-description p{
-  color: white;
-  font-size: 18px ;
-  font-weight: 400 ;
-  line-height: 1.5;
-  margin-bottom: 0px;
-  font-family: var(--font-inter), Inter, sans-serif ;
+/* Home / hero banner description — CMS editor HTML (p, span, etc.) */
+.banner-description {
+  margin-top: 40px;
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+  color: rgba(255, 255, 255, 0.95);
+  font-family: var(--font-poppins), Poppins, sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.banner-description p,
+.banner-description span,
+.banner-description strong,
+.banner-description b,
+.banner-description em,
+.banner-description i,
+.banner-description a,
+.banner-description u,
+.banner-description li {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.banner-description p {
+  margin: 0 0 0.35em;
+  font-weight: 500;
+}
+
+.banner-description p:last-child {
+  margin-bottom: 0;
+}
+
+.banner-description span {
+  font-weight: inherit;
+}
+
+.banner-description strong,
+.banner-description b {
+  font-weight: 700;
+}
+
+.banner-description em,
+.banner-description i {
+  font-style: italic;
+}
+
+.banner-description a {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.banner-description a:hover {
+  opacity: 0.9;
+}
+
+.banner-description ul,
+.banner-description ol {
+  margin: 0.35em 0 0;
+  padding-left: 1.25em;
+  text-align: left;
+  display: inline-block;
+}
+
+.banner-description li {
+  margin-bottom: 0.2em;
+}
+
+.banner-description br {
+  display: block;
+  content: "";
+}
+
+@media (max-width: 1024px) {
+  .banner-description {
+    margin-top: 32px;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .banner-description {
+    margin-top: 24px;
+    font-size: 16px;
+  }
 }
 @media (max-width: 1200px) {
   .pre_heading {

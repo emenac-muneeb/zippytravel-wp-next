@@ -17,11 +17,17 @@ export default function ContinentCountryCard({
     metaData,
     classLabel = "Business Class"
 }) {
+    // 2-step destinations: /{continentTitle}/{citySlug} e.g. /africa/flights-to-ghana
     const rawContinent = continent || metaData?.continent?.title || '';
     const continentSlug = rawContinent
         ? rawContinent.toLowerCase().replace(/\s+/g, '-').replace(/\//g, '')
         : '';
-    const href = continentSlug ? `/${continentSlug}/${slug}` : `/${slug}`;
+    const citySlug = slug || metaData?.slug || '';
+    const href = citySlug
+        ? continentSlug
+            ? `/${continentSlug}/${citySlug}`
+            : `/${citySlug}`
+        : '#';
 
     const resolvedImgSrc = React.useMemo(() => {
         const raw = imageUrl || metaData?.image_url || metaData?.banner_img?.[0]?.url;
@@ -45,7 +51,7 @@ export default function ContinentCountryCard({
                 {/* Background Image */}
                 <img
                     src={resolvedImgSrc}
-                    alt={imageAlt || country || "Country destination"}
+                    alt={imageAlt || country || "Destination"}
                     title={browserTitle || country || ""}
                     onError={(e) => {
                         e.currentTarget.src = '/Photo.png';

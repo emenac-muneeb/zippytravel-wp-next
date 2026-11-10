@@ -8,10 +8,11 @@ import { BASE_URL_IMG } from "../../Helpers/imageurl";
 
 export default function SpecificContinentClient({ initialData }) {
     const breadcrumbs = useDestinationBreadcrumbs();
-    const [countries, setCountries] = useState(initialData?.data || []);
+    // continent_id payload: result.data[] are cities (type still ContinentsCountries)
+    const [destinations, setDestinations] = useState(initialData?.data || []);
     const [visibleCount, setVisibleCount] = useState(100);
 
-    const continentInfo = countries[0]?.continent || {};
+    const continentInfo = destinations[0]?.continent || {};
     const bannerSection = continentInfo.description || '';
 
     const loadMore = () => setVisibleCount(prev => prev + 6);
@@ -22,7 +23,7 @@ export default function SpecificContinentClient({ initialData }) {
                 {breadcrumbs}
 
                 <CommonHeroSection
-                    banners={countries.flatMap(c => c.continent?.images || [])}
+                    banners={destinations.flatMap(d => d.continent?.images || [])}
                     description={bannerSection}
                 />
 
@@ -39,25 +40,25 @@ export default function SpecificContinentClient({ initialData }) {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
-                    {countries.slice(0, visibleCount).map((country, index) => (
+                    {destinations.slice(0, visibleCount).map((destination, index) => (
                         <ContinentCountryCard
-                            key={index}
-                            id={country.id}
-                            metaData={country}
-                            continent={country.continent?.title}
-                            slug={country.slug}
-                            country={country.title}
-                            price={parseFloat(country.fare?.price) || 0}
-                            imageUrl={country.image_url}
-                            imageAlt={country.image_alt}
-                            browserTitle={country.browser_title}
-                            description={country.short_description}
+                            key={destination.id || destination.slug || index}
+                            id={destination.id}
+                            metaData={destination}
+                            continent={destination.continent?.title}
+                            slug={destination.slug}
+                            country={destination.title}
+                            price={parseFloat(destination.fare?.price) || 0}
+                            imageUrl={destination.image_url || destination.banner_img?.[0]?.url}
+                            imageAlt={destination.image_alt}
+                            browserTitle={destination.browser_title}
+                            description={destination.short_description}
                             ContinentCountries={null}
                         />
                     ))}
                 </div>
 
-                {countries.length > visibleCount && (
+                {destinations.length > visibleCount && (
                     <div className="flex justify-center mt-10">
                         <button
                             onClick={loadMore}

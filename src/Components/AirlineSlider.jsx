@@ -1,135 +1,125 @@
 "use client";
-import React from "react";
-import Image from "next/image";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import axios from "axios";
+import { endpoints } from "../Helpers/endpoints";
+import { useGeneralSettings } from "../Context/GeneralSettingsContext";
 
-// 8 primary partner airlines from the 1360px design image
-const BASE_AIRLINES = [
-  {
-    id: 1,
-    name: "Air China",
-    logo: "/air-china.png",
-    fallback: "/Air-China-Logo%202.png",
-    href: "/airline",
-  },
-  {
-    id: 2,
-    name: "Malaysia Airlines",
-    logo: "/malaysia-airlines.png",
-    fallback: "/587b51ad44060909aa603a8f%202.png",
-    href: "/airline",
-  },
-  {
-    id: 3,
-    name: "Etihad Airways",
-    logo: "/etihad.png",
-    fallback: "/Etihad-airways-logo.svg%202.png",
-    href: "/airline",
-  },
-  {
-    id: 4,
-    name: "Ethiopian Airlines",
-    logo: "/ethiopian.png",
-    fallback: "/Ethiopian_Airlines-Logo.wine%201.png",
-    href: "/airline",
-  },
-  {
-    id: 5,
-    name: "Gulf Air",
-    logo: "/gulf-air.png",
-    fallback: "/Gulf-Air-logo%202.png",
-    href: "/airline",
-  },
-  {
-    id: 6,
-    name: "EgyptAir",
-    logo: "/egyptair.png",
-    fallback: "/EgyptAir-Logo.wine%201.png",
-    href: "/airline",
-  },
-  {
-    id: 7,
-    name: "Royal Jordanian",
-    logo: "/royal-jordanian.png",
-    fallback: "/Royal_Jordanian-Logo.wine%202.png",
-    href: "/airline",
-  },
-  {
-    id: 8,
-    name: "Qantas",
-    logo: "/qantas.png",
-    fallback: "/qantas-logo-png-transparent%202.png",
-    href: "/airline",
-  },
-];
+const resolveImage = (path) => {
+  if (!path || typeof path !== "string") return null;
+  const trimmed = path.trim();
+  if (!trimmed || trimmed === "null") return null;
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://") || trimmed.startsWith("/")) {
+    return trimmed;
+  }
+  const clean = trimmed.replace(/^\/?(media\/)?/, "");
+  return `/media/${clean}`;
+};
 
-// Extra airlines:
-// - Item 9 (Qatar Airways) is visible on < 1024px (to balance 2-column grid to 10 items) and on 2xl (12 items)
-// - Items 10 & 11 are visible only on 2xl (4x3 grid)
-const EXTRA_AIRLINES = [
-  {
-    id: 9,
-    name: "Qatar Airways",
-    logo: "/qatar-airways-logo.png",
-    fallback: "https://admin.zippytravel.co.uk/media/airline/qatar-airways.png",
-    href: "/airline",
-  },
-  {
-    id: 10,
-    name: "Emirates",
-    logo: "/emirates-logo.png",
-    fallback: "https://admin.zippytravel.co.uk/media/airline/emirates.png",
-    href: "/airline",
-  },
-  {
-    id: 11,
-    name: "British Airways",
-    logo: "/british-airways-logo.png",
-    fallback: "https://admin.zippytravel.co.uk/media/airline/british-airways.png",
-    href: "/airline",
-  },
-];
+const normalizeAirline = (airline) => {
+  if (!airline) return null;
+  const slug = airline.page_url || airline.slug;
+  if (!slug) return null;
+
+  return {
+    id: airline.id || slug,
+    name: airline.title || airline.name || "Airline",
+    slug: String(slug).replace(/^\/+|\/+$/g, ""),
+    logo:
+      resolveImage(airline.image_url) ||
+      resolveImage(airline.logo) ||
+      resolveImage(airline.thumbnail_url),
+    alt: airline.image_alt || airline.title || airline.name || "Airline",
+  };
+};
+
+function AirlineLogoCard({ airline }) {
+  const [imgError, setImgError] = useState(false);
+  if (!airline?.slug) return null;
+
+  return (
+    <Link
+      href={`/airline/${airline.slug}`}
+      title={airline.name}
+      className="w-full h-[100px] sm:h-[110px] xl:h-[120px] bg-white rounded-[20px] flex items-center justify-center p-4 shadow-sm hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group cursor-pointer"
+    >
+      {airline.logo && !imgError ? (
+        <img
+          src={airline.logo}
+          alt={airline.alt}
+          loading="lazy"
+          onError={() => setImgError(true)}
+          className="max-h-[50px] sm:max-h-[55px] xl:max-h-[62px] max-w-[190px] xl:max-w-[220px] w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-105"
+        />
+      ) : (
+        <span className="text-[14px] sm:text-[15px] font-bold text-[#1F0060] font-poppins text-center line-clamp-2 px-2">
+          {airline.name}
+        </span>
+      )}
+    </Link>
+  );
+}
 
 export default function AirlineSlider({
   heading = "Association with Leading Airlines",
   subheading = "Our customers can access our web site for a 'one-stop shop' including access to specially negotiated airfares, hotels, car rental and insurance.",
 }) {
+  const { topAirlines: topAirlinesData } = useGeneralSettings();
+  const [airlines, setAirlines] = useState([]);
+
+  useEffect(() => {
+    const fetchAirlines = async () => {
+      try {
+        const res = await axios.get(endpoints.airlines);
+        if (res.data?.status === 1) {
+          setAirlines(res.data.result || []);
+        }
+      } catch (error) {
+        console.error("Error fetching airlines for slider:", error);
+      }
+    };
+
+    fetchAirlines();
+  }, []);
+
+  // Same source as airlines page: top_airlines from general settings, else first API airlines
+  const displayAirlines = useMemo(() => {
+    let source = [];
+
+    if (
+      topAirlinesData?.is_active &&
+      Array.isArray(topAirlinesData.airlines) &&
+      topAirlinesData.airlines.length > 0
+    ) {
+      source = topAirlinesData.airlines;
+    } else if (Array.isArray(airlines) && airlines.length > 0) {
+      source = airlines;
+    }
+
+    return source.map(normalizeAirline).filter(Boolean).slice(0, 11);
+  }, [topAirlinesData, airlines]);
+
+  const sectionHeading =
+    (topAirlinesData?.is_active && topAirlinesData?.heading) || heading;
+
+  // Keep visual grid fill: first 8 always, extras for responsive layouts, last slot = MORE
+  const primaryAirlines = displayAirlines.slice(0, 8);
+  const extraAirlines = displayAirlines.slice(8, 11);
+
   return (
     <section className="w-full py-10 sm:py-14 lg:py-16 bg-white font-poppins">
-      {/* 
-        Full-width Container: Takes full screen width with clean responsive edge padding
-        matches hero banner full-width style
-      */}
       <div className="w-full px-2 sm:px-4 md:px-6 lg:px-8">
-        {/* Section Heading & Subtitle (Centered) */}
         <div className="text-center max-w-[900px] mx-auto mb-8 sm:mb-12 lg:mb-14 px-4">
           <h2 className="font-poppins font-bold text-[28px] sm:text-[34px] lg:text-[42px] text-[#000000] tracking-tight leading-tight">
-            {heading}
+            {sectionHeading}
           </h2>
           <p className="font-poppins font-normal text-[15px] sm:text-[17px] lg:text-[18px] text-[#555555] mt-3 sm:mt-4 leading-relaxed">
             {subheading}
           </p>
         </div>
 
-        {/* 
-          Main Partner Card Container:
-          - Full-width dark navy (#1F0060) card
-          - Rounded corners rounded-[30px] sm:rounded-[40px]
-          - overflow-visible so the airhostess cap pops out above the top edge
-        */}
         <div className="w-full bg-[#1F0060] rounded-[30px] sm:rounded-[40px] shadow-2xl relative overflow-visible flex flex-col xl:flex-row items-center xl:items-stretch min-h-[480px]">
-          {/* 
-            Left Airhostess Div:
-            - 365px width at 1360px+
-            - 480px height
-            - Soft pale grey-blue background (#EEF3F7)
-          */}
           <div className="w-full xl:w-[365px] h-[380px] sm:h-[440px] xl:h-[480px] bg-[#EEF3F7] rounded-t-[30px] xl:rounded-t-none xl:rounded-l-[40px] xl:rounded-r-[40px] relative flex items-end justify-center shrink-0 overflow-visible">
-            {/* 
-              Airhostess Image:
-              - Width: 292px, Height: 528px
-              - bottom-0 anchored, sticks 48px out of top of 480px div
-            */}
             <img
               src="/airhostess.png"
               onError={(e) => {
@@ -140,69 +130,23 @@ export default function AirlineSlider({
             />
           </div>
 
-          {/* 
-            Right Grid Area:
-            - Full Screen (2xl: >= 1536px): 4-4 per row (2xl:grid-cols-4), all 12 items visible
-            - 1360px / Laptops (lg / xl): 3 per row (lg:grid-cols-3), extra items HIDDEN, only original 9 items visible
-            - Tablets (sm): 2 per row
-            - Mobile: 1 per row
-          */}
           <div className="flex-1 w-full p-4 sm:p-6 xl:py-[20px] xl:pl-[24px] xl:pr-[30px] 2xl:pr-[35px] flex items-center justify-center">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-[12px] sm:gap-[15px] xl:gap-[16px] 2xl:gap-[18px] w-full justify-items-stretch">
-              {/* Primary 8 Airline Cards — Always visible */}
-              {BASE_AIRLINES.map((airline) => (
-                <Link
-                  key={airline.id}
-                  href={airline.href}
-                  className="w-full h-[100px] sm:h-[110px] xl:h-[120px] bg-white rounded-[20px] flex items-center justify-center p-4 shadow-sm hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group cursor-pointer"
-                >
-                  <img
-                    src={airline.logo}
-                    onError={(e) => {
-                      if (airline.fallback) e.currentTarget.src = airline.fallback;
-                    }}
-                    alt={airline.name}
-                    className="max-h-[50px] sm:max-h-[55px] xl:max-h-[62px] max-w-[190px] xl:max-w-[220px] w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                  />
-                </Link>
+              {primaryAirlines.map((airline) => (
+                <AirlineLogoCard key={airline.id} airline={airline} />
               ))}
 
-              {/* 
-                Extra Airlines:
-                - 1st item (idx === 0: Qatar Airways) is visible on < 1024px (flex lg:hidden 2xl:flex)
-                  so the 2-column grid under 1024px has 10 items total (zero empty slot!)
-                - 1024px-1535px keeps exactly 9 items (3x3 grid)
-                - 2xl (>= 1536px) displays all 12 items (4x3 grid)
-              */}
-              {EXTRA_AIRLINES.map((airline, idx) => (
-                <Link
+              {extraAirlines.map((airline, idx) => (
+                <div
                   key={airline.id}
-                  href={airline.href}
-                  className={`${idx === 0 ? "flex lg:hidden 2xl:flex" : "hidden 2xl:flex"
-                    } w-full h-[100px] sm:h-[110px] xl:h-[120px] bg-white rounded-[20px] items-center justify-center p-4 shadow-sm hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group cursor-pointer`}
+                  className={idx === 0 ? "flex lg:hidden 2xl:flex" : "hidden 2xl:flex"}
                 >
-                  <img
-                    src={airline.logo}
-                    onError={(e) => {
-                      if (airline.fallback) e.currentTarget.src = airline.fallback;
-                    }}
-                    alt={airline.name}
-                    className="max-h-[50px] sm:max-h-[55px] xl:max-h-[62px] max-w-[190px] xl:max-w-[220px] w-auto h-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                  />
-                </Link>
+                  <AirlineLogoCard airline={airline} />
+                </div>
               ))}
 
-              {/* 
-                MORE AIRLINES Button Card (Always visible):
-                - At 1360px: 9th card (sitting in row 3, column 3 of the 3x3 grid)
-                - At 2xl Full Screen: 12th card (sitting in row 3, column 4 of the 4x3 grid)
-                - Background: #EBF3F6
-                - Rounded: rounded-[20px]
-                - "MORE": 66px 700 #1F0060
-                - "AIRLINES": 30px 700 #5CACC4
-              */}
               <Link
-                href="/airline"
+                href="/airlines"
                 className="w-full h-[100px] sm:h-[110px] xl:h-[120px] bg-[#EBF3F6] hover:bg-[#d8eaf1] rounded-[20px] flex flex-col items-center justify-center shadow-sm hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer select-none leading-none text-center"
               >
                 <span className="font-poppins font-bold text-[36px] sm:text-[46px] xl:text-[66px] text-[#1F0060] leading-[0.88] tracking-tight">

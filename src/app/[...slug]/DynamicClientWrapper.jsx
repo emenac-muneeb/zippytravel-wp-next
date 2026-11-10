@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
 import CityFlightFaresClient from './CityFlightFaresClient';
-import CountryFaresClient from './CountryFaresClient';
 import SpecificContinentClient from './SpecificContinentClient';
 import CountryPackagesClient from './CountryPackagesClient';
 import HolidayPackageDetailsClient from './HolidayPackageDetailsClient';
@@ -54,8 +53,6 @@ const DynamicClientWrapper = ({ result, params }) => {
       return renderCmsStaticPage(variant, data, pageUrl);
     case 'city':
       return <CityFlightFaresClient initialData={data} params={params} />;
-    case 'country':
-      return <CountryFaresClient initialData={data} params={params} />;
     case 'continent':
       return <SpecificContinentClient initialData={data} params={params} />;
     case 'holidaysCountry':

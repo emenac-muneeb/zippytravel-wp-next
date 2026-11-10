@@ -4,13 +4,18 @@ import { usePathname, useParams } from 'next/navigation';
 export default function useDestinationBreadcrumbs() {
   const pathname = usePathname();
   const { slug } = useParams();
-  const [continentSlug, countrySlug, citySlug] = Array.isArray(slug) ? slug : [slug];
+  // 2-step destinations: [continentSlug, citySlug]
+  // Legacy 3-segment URLs: [continentSlug, oldCountrySlug, citySlug] → use first + last
+  const segments = Array.isArray(slug) ? slug : [slug].filter(Boolean);
+  const continentSlug = segments[0];
+  const citySlug =
+    segments.length >= 3 ? segments[segments.length - 1] : segments[1];
 
   const breadcrumbs = [{ name: "Home", path: "/" }];
   breadcrumbs.push({ name: "Destinations", path: "/continents.htm" });
 
   // If we're on the destinations page itself, don't add further breadcrumbs
-  const isDestinationsPage = pathname === '/continents.htm';
+  const isDestinationsPage = pathname === '/continents.htm' || pathname === '/continents';
 
   if (continentSlug && !isDestinationsPage) {
     // Continent pages use admin slug (flights-to-africa); nested paths use title slug (africa)
@@ -23,17 +28,10 @@ export default function useDestinationBreadcrumbs() {
     });
   }
 
-  if (countrySlug) {
-    breadcrumbs.push({
-      name: formatSlug(countrySlug),
-      path: `/${continentSlug}/${countrySlug}`,
-    });
-  }
-
-  if (citySlug) {
+  if (citySlug && continentSlug) {
     breadcrumbs.push({
       name: formatSlug(citySlug),
-      path: `/${continentSlug}/${countrySlug}/${citySlug}`,
+      path: `/${continentSlug}/${citySlug}`,
     });
   }
 
