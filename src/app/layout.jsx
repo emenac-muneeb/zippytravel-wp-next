@@ -53,6 +53,7 @@ export async function generateMetadata() {
   const icons = faviconPath ? { icon: `${BASE_URL_IMG}${faviconPath}` } : undefined;
 
   return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://zippytravel.co.uk"),
     title: {
       default: websiteTitle,
       template: `%s | ${websiteTitle}`,
