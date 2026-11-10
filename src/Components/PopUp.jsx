@@ -13,9 +13,9 @@ const PopUp = ({ title = "Error", message, onClose, navigateOnClose, setNavigate
                 {/* Header with Title */}
                 <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 flex items-center justify-center bg-[#FFF6EC] rounded-full">
-                        <span className="text-[#A57233] text-xl font-bold">!</span>
+                        <span className="text-[#5CACC4] text-xl font-bold">!</span>
                     </div>
-                    <h1 className="text-lg font-semibold text-[#A57233]">{title}</h1>
+                    <h1 className="text-lg font-semibold text-[#5CACC4]">{title}</h1>
                 </div>
 
                 {/* Message Text */}
@@ -46,13 +46,13 @@ const PopUp = ({ title = "Error", message, onClose, navigateOnClose, setNavigate
                                 }}
                                 className="px-4 py-2 bg-[#A57233] text-white text-sm font-medium rounded-md shadow-md hover:bg-[#A57233]/80 hover:shadow-lg transition duration-200"
                             >
-                               Search Again
+                                Search Again
                             </button>
                         </>
                     ) : (
                         <button
                             onClick={onClose}
-                            className="px-4 py-2 bg-[#A57233] text-white text-sm font-medium rounded-md shadow-md hover:bg-[#A57233]/80 hover:shadow-lg transition duration-200"
+                            className="px-4 py-2 bg-[#5CACC4] text-white text-sm font-medium rounded-md shadow-md hover:bg-[#5CACC4]/80 hover:shadow-lg transition duration-200"
                         >
                             Close
                         </button>

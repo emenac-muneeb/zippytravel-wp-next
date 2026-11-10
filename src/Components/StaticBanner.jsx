@@ -131,7 +131,7 @@ const StaticBanner = ({
               <>
                 <h1 className="text-[18px] text-white">
                   {bannerTitle && (
-                    <span className="text-[50px] font-semibold text-[#F5BA87] block">
+                    <span className="text-[36px] sm:text-[48px] lg:text-[56px] font-bold text-white font-poppins block">
                       {bannerTitle}
                     </span>
                   )}
@@ -139,11 +139,11 @@ const StaticBanner = ({
                 </h1>
                 {bannerDescription ? (
                   <div
-                    className="mt-3 text-white/90 text-[16px] sm:text-[18px] leading-relaxed font-quicksand text-white banner-description"
+                    className="mt-3 text-white/90 text-[16px] sm:text-[18px] leading-relaxed font-poppins text-white banner-description"
                     dangerouslySetInnerHTML={{ __html: bannerDescription }}
                   />
                 ) : heroSupport ? (
-                  <p className="mt-3 text-white/90 text-[16px] sm:text-[18px] leading-relaxed font-quicksand">
+                  <p className="mt-3 text-white/90 text-[16px] sm:text-[18px] leading-relaxed font-poppins">
                     {heroSupport}
                   </p>
                 ) : null}

@@ -230,7 +230,7 @@ const HomePageClient = ({
               />
             </div>
             )} */}
-          <BlogSection />
+          {/* <BlogSection /> */}
         </>
       )}
     </>

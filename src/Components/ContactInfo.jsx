@@ -5,17 +5,11 @@ import { useGeneralSettings } from "../Context/GeneralSettingsContext";
 import { BASE_URL_IMG } from "../Helpers/imageurl";
 import { FaFacebookF, FaInstagram, FaWhatsapp, FaYoutube } from "react-icons/fa";
 
-const CircleIcon = ({ children }) => (
-  <div className="w-[72px] h-[72px] sm:w-[80px] sm:h-[80px] rounded-full border-[1.5px] border-[#D4A373] shadow-[3px_3px_0_0_#F7CCA5] flex items-center justify-center bg-white shrink-0">
-    {children}
-  </div>
-);
-
 const SectionDivider = () => (
   <div className="flex items-center justify-center my-3 w-28 sm:w-32">
-    <div className="h-[1px] bg-[#E0B892] flex-1"></div>
-    <div className="w-2.5 h-2.5 rounded-full border border-[#E0B892] bg-white mx-1.5 flex-shrink-0"></div>
-    <div className="h-[1px] bg-[#E0B892] flex-1"></div>
+    <div className="h-[1.5px] bg-[#5CACC4] flex-1"></div>
+    <div className="w-2.5 h-2.5 rounded-full border border-[#5CACC4] bg-white mx-1.5 flex-shrink-0"></div>
+    <div className="h-[1.5px] bg-[#5CACC4] flex-1"></div>
   </div>
 );
 
@@ -34,17 +28,19 @@ export default function ContactInfo({ heading = "", subHeading = "" }) {
     : null;
 
   return (
-    <div className="w-full py-6 font-quicksand">
-      {/* Header Section */}
-      <div className="section_heading heading_section mb-8">
-        {heading ? <h2 className="pre_heading">{heading}</h2> : null}
-        {subHeading ? <p className="sub_text">{subHeading}</p> : null}
-      </div>
+    <div className="w-full py-6 font-poppins">
+      {/* Header Section without line above */}
+      {(heading || subHeading) && (
+        <div className="text-center max-w-[800px] mx-auto mb-8">
+          {heading ? <h2 className="pre_heading">{heading}</h2> : null}
+          {subHeading ? <p className="sub_text mt-2 sm:mt-3">{subHeading}</p> : null}
+        </div>
+      )}
 
       {/* 4 Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
         {/* Card 1: Call Us On */}
-        <div className="bg-white rounded-[28px] sm:rounded-[32px] p-6 shadow-[0_8px_28px_rgba(0,0,0,0.12)] border border-gray-100 flex flex-col items-center justify-start text-center transition-all hover:shadow-[0_12px_35px_rgba(0,0,0,0.18)] h-full">
+        <div className="bg-white rounded-[24px] sm:rounded-[28px] p-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[#E2E8F0] flex flex-col items-center justify-start text-center transition-all hover:shadow-[0_10px_30px_rgba(92,172,196,0.18)] hover:-translate-y-1 h-full">
           <img src="/media/fr-svgs/phone-c.png" alt="call us on icon" width={102} height={102} className="w-[102px] h-[102px] object-contain" />
 
           <SectionDivider />
@@ -53,12 +49,12 @@ export default function ContactInfo({ heading = "", subHeading = "" }) {
             Call Us On
           </span>
 
-          <div className="flex flex-col gap-0.5 text-sm sm:text-base font-semibold text-[#333333]">
-            <a href={`tel:${phoneVal}`} className="hover:text-[#F1A868] transition-colors">
+          <div className="flex flex-col gap-1 text-sm sm:text-base font-semibold text-[#1F0060]">
+            <a href={`tel:${phoneVal}`} className="hover:text-[#5CACC4] transition-colors">
               {phoneVal}
             </a>
             {altPhoneVal && (
-              <a href={`tel:${altPhoneVal}`} className="hover:text-[#F1A868] transition-colors">
+              <a href={`tel:${altPhoneVal}`} className="hover:text-[#5CACC4] transition-colors">
                 {altPhoneVal}
               </a>
             )}
@@ -66,7 +62,7 @@ export default function ContactInfo({ heading = "", subHeading = "" }) {
         </div>
 
         {/* Card 2: Send us Email */}
-        <div className="bg-white rounded-[28px] sm:rounded-[32px] p-6 shadow-[0_8px_28px_rgba(0,0,0,0.12)] border border-gray-100 flex flex-col items-center justify-start text-center transition-all hover:shadow-[0_12px_35px_rgba(0,0,0,0.18)] h-full">
+        <div className="bg-white rounded-[24px] sm:rounded-[28px] p-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[#E2E8F0] flex flex-col items-center justify-start text-center transition-all hover:shadow-[0_10px_30px_rgba(92,172,196,0.18)] hover:-translate-y-1 h-full">
           <img src="/media/fr-svgs/email-c.png" alt="email icon" width={102} height={102} className="w-[102px] h-[102px] object-contain" />
           <SectionDivider />
 
@@ -76,14 +72,14 @@ export default function ContactInfo({ heading = "", subHeading = "" }) {
 
           <a
             href={`mailto:${emailVal}`}
-            className="text-xs sm:text-sm font-semibold text-[#333333] hover:text-[#F1A868] transition-colors break-all"
+            className="text-xs sm:text-sm font-semibold text-[#1F0060] hover:text-[#5CACC4] transition-colors break-all"
           >
             {emailVal}
           </a>
         </div>
 
         {/* Card 3: Our Office Address */}
-        <div className="bg-white rounded-[28px] sm:rounded-[32px] p-6 shadow-[0_8px_28px_rgba(0,0,0,0.12)] border border-gray-100 flex flex-col items-center justify-start text-center transition-all hover:shadow-[0_12px_35px_rgba(0,0,0,0.18)] h-full">
+        <div className="bg-white rounded-[24px] sm:rounded-[28px] p-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[#E2E8F0] flex flex-col items-center justify-start text-center transition-all hover:shadow-[0_10px_30px_rgba(92,172,196,0.18)] hover:-translate-y-1 h-full">
           <img src="/media/fr-svgs/pin-c.png" alt="address icon" width={102} height={102} className="w-[102px] h-[102px] object-contain" />
 
           <SectionDivider />
@@ -92,13 +88,13 @@ export default function ContactInfo({ heading = "", subHeading = "" }) {
             Our Office Address
           </span>
 
-          <p className="text-xs sm:text-sm font-semibold text-[#333333] leading-relaxed max-w-[220px]">
+          <p className="text-xs sm:text-sm font-semibold text-[#1F0060] leading-relaxed max-w-[220px]">
             {addressVal}
           </p>
         </div>
 
         {/* Card 4: Visit Our Social Media */}
-        <div className="bg-white rounded-[28px] sm:rounded-[32px] p-6 shadow-[0_8px_28px_rgba(0,0,0,0.12)] border border-gray-100 flex flex-col items-center justify-start text-center transition-all hover:shadow-[0_12px_35px_rgba(0,0,0,0.18)] h-full">
+        <div className="bg-white rounded-[24px] sm:rounded-[28px] p-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-[#E2E8F0] flex flex-col items-center justify-start text-center transition-all hover:shadow-[0_10px_30px_rgba(92,172,196,0.18)] hover:-translate-y-1 h-full">
           <img src="/media/fr-svgs/social-c.png" alt="social icon" width={102} height={102} className="w-[102px] h-[102px] object-contain" />
 
           <SectionDivider />
@@ -143,13 +139,7 @@ export default function ContactInfo({ heading = "", subHeading = "" }) {
                   );
                 })}
             </div>
-          ) : (
-            <div className="flex items-center justify-center gap-3 flex-wrap">
-              <p className="text-xs sm:text-sm text-[#777777] font-medium mb-2.5 min-h-[20px] flex items-center justify-center">
-                No social media icons found
-              </p>
-            </div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

@@ -75,14 +75,14 @@ const NavBar = () => {
 
               {/* Airline Badge / Link */}
               <Link
-                href="/airline"
+                href="/airlines"
                 className={`transition-colors whitespace-nowrap ${
                   isAboutUs
                     ? "font-poppins font-normal text-[18px] text-white hover:text-[#5CACC4]"
-                    : "w-[85px] h-[30px] bg-[#1F0060] hover:bg-[#340b8a] text-white rounded-[6px] flex items-center justify-center font-poppins font-normal text-[16px] shadow-sm"
+                    : "w-[94px] h-[32px] bg-[#1F0060] hover:bg-[#340b8a] text-white rounded-[6px] flex items-center justify-center font-poppins font-normal text-[16px] shadow-sm"
                 }`}
               >
-                Airline
+                Airlines
               </Link>
 
               {/* Contact Us */}
@@ -158,10 +158,10 @@ const NavBar = () => {
                 Destination
               </Link>
               <Link
-                href="/airline"
-                className="px-3 py-1 bg-[#1F0060] text-white rounded text-[14px]"
+                href="/airlines"
+                className="px-3.5 py-1 bg-[#1F0060] text-white rounded text-[14px]"
               >
-                Airline
+                Airlines
               </Link>
               <Link
                 href="/contact-us"
@@ -259,11 +259,11 @@ const NavBar = () => {
                 Destination
               </Link>
               <Link
-                href="/airline"
+                href="/airlines"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="inline-flex w-[90px] h-[32px] bg-[#1F0060] text-white rounded-[6px] items-center justify-center font-poppins font-normal text-[15px]"
+                className="inline-flex px-4 h-[32px] bg-[#1F0060] text-white rounded-[6px] items-center justify-center font-poppins font-normal text-[15px]"
               >
-                Airline
+                Airlines
               </Link>
               <Link
                 href="/contact-us"

@@ -12,15 +12,15 @@ function normalizeSlugParam(slug) {
 }
 
 const FieldLabel = ({ children, required = false }) => (
-    <label className="block text-[13px] sm:text-[14px] font-semibold font-quicksand text-[#A57233] mb-1.5">
+    <label className="block text-[14px] font-semibold font-poppins text-[#1F0060] mb-2">
         {children}
         {required && <span className="text-[#E11D48] ml-0.5">*</span>}
     </label>
 );
 
 const IconBox = ({ src, alt }) => (
-    <div className="mr-[-15px] bg-white z-10 flex items-center justify-center w-[34px] h-[34px] shrink-0 border rounded-[4px] border-[#A57233] shadow-[0_0px_2px_rgba(0,0,0,0.06)]">
-        <img src={src} alt={alt} className="w-[15px] h-[15px] object-contain" />
+    <div className="mr-[-15px] bg-[#F8FAFC] z-10 flex items-center justify-center w-[36px] h-[36px] shrink-0 border rounded-[6px] border-[#CBD5E1] shadow-sm">
+        <img src={src} alt={alt} className="w-[16px] h-[16px] object-contain" />
     </div>
 );
 
@@ -48,7 +48,7 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
     const generateCaptcha = () => {
         const a = Math.floor(Math.random() * 9) + 1;
         const b = Math.floor(Math.random() * 9) + 1;
-        setCaptcha({ question: `${a}+${b}`, answer: a + b });
+        setCaptcha({ question: `${a} + ${b}`, answer: a + b });
         setUserInput("");
     };
 
@@ -129,28 +129,21 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
     };
 
     const inputClass =
-        "w-full h-[48px] px-3 pl-6 outline-none bg-transparent text-[14px] font-quicksand text-[#2a211c] placeholder:text-[#A9A3AF] placeholder:font-medium border rounded-[7px] border-[#A57233]";
+        "w-full h-[50px] px-3 pl-6 outline-none bg-white text-[14px] sm:text-[15px] font-poppins text-[#222222] placeholder:text-[#8FA0AD] placeholder:font-normal border rounded-[10px] border-[#CBD5E1] focus:border-[#5CACC4] transition-colors";
 
     return (
-        <div className="w-full py-6 font-quicksand">
-            {/* Header Section */}
-            <div className="section_heading heading_section mb-8">
-                {heading ? <h2 className="pre_heading">{heading}</h2> : null}
-                {subHeading ? <p className="sub_text">{subHeading}</p> : null}
-            </div>
+        <div className="w-full py-6 font-poppins">
+            {/* Header Section without line above */}
+            {(heading || subHeading) && (
+                <div className="text-center max-w-[800px] mx-auto mb-8">
+                    {heading ? <h2 className="pre_heading">{heading}</h2> : null}
+                    {subHeading ? <p className="sub_text mt-2 sm:mt-3">{subHeading}</p> : null}
+                </div>
+            )}
 
             {/* Form Container */}
-            <div className="w-full bg-[#FFF9F4] border border-[#A57233] rounded-[15px] relative
-            before:content-[''] before:absolute before:top-0 before:left-1/2 before:-translate-x-1/2 before:w-[239px] before:h-[4px] 
-            before:bg-[#F1A868] before:z-[1]
-            after:content-[''] after:absolute after:top-[8px] after:left-1/2 after:-translate-x-1/2 after:w-[239px] after:h-[1px] 
-            after:bg-[#F1A868] after:z-[1]">
-                <form onSubmit={handleSubmit} className="relative p-5 sm:p-8 md:p-10
-                before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:w-[239px] before:h-[4px] 
-                before:bg-[#F1A868] before:z-[1]
-                after:content-[''] after:absolute after:bottom-[8px] after:left-1/2 after:-translate-x-1/2 after:w-[239px] after:h-[1px] 
-                after:bg-[#F1A868] after:z-[1] space-y-5">
-
+            <div className="w-full bg-white border border-[#E2E8F0] rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.06)] relative overflow-hidden">
+                <form onSubmit={handleSubmit} className="p-5 sm:p-8 md:p-10 space-y-5">
                     {/* Row 1: Passenger Name, Phone Number, Email Address */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                         <div>
@@ -218,25 +211,24 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
                                 <input
                                     className={inputClass}
                                     value={userInput}
-                                    placeholder="Select Answer"
+                                    placeholder="Enter Answer"
                                     onChange={(e) => setUserInput(e.target.value.replace(/[^0-9]/g, ""))}
                                     required
                                 />
-                                <span className="pr-4 text-[14px] font-semibold text-[#A57233] whitespace-nowrap absolute right-0 top-[50%] -translate-y-1/2">
-                                    {captcha?.question || ""}
+                                <span className="pr-4 text-[15px] font-bold text-[#1F0060] whitespace-nowrap absolute right-0 top-[50%] -translate-y-1/2 font-poppins">
+                                    {captcha?.question ? `${captcha.question} = ?` : ""}
                                 </span>
                             </InputShell>
                         </div>
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className={`h-[48px] px-8 rounded-[10px] bg-[#A57233] text-white text-[15px] sm:text-[16px] font-semibold font-quicksand flex items-center justify-center gap-2.5 hover:bg-[#8f622c] transition-colors w-full ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""
-                                }`}
+                            className={`h-[50px] px-8 rounded-[12px] bg-[#5CACC4] text-white text-[16px] font-bold font-poppins flex items-center justify-center gap-2.5 hover:bg-[#4ea0b8] transition-colors w-full shadow-md ${
+                                isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                            }`}
                         >
-                            {isSubmitting ? "Submitting..." : "Send Message"}
-                            {!isSubmitting && (
-                                <img src="/media/fr-svgs/send.svg" alt="Send" className="w-[16px] h-[16px]" />
-                            )}
+                            <span>{isSubmitting ? "Submitting..." : "Send Message"}</span>
+                            <img src="/send.svg" alt="Send Message" className="w-[18px] h-[18px] object-contain" />
                         </button>
                     </div>
 
@@ -245,16 +237,17 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
                         <button
                             type="button"
                             onClick={() => setAgreed((prev) => !prev)}
-                            className={`mt-0.5 w-[18px] h-[18px] rounded-[4px] border flex items-center justify-center shrink-0 transition-colors ${agreed
-                                ? "bg-[#F1A868] border-[#F1A868]"
-                                : "bg-white border-[#D9CFC0]"
-                                }`}
+                            className={`mt-0.5 w-[20px] h-[20px] rounded-[5px] border flex items-center justify-center shrink-0 transition-colors ${
+                                agreed
+                                    ? "bg-[#5CACC4] border-[#5CACC4]"
+                                    : "bg-white border-[#CBD5E1]"
+                            }`}
                             aria-pressed={agreed}
                             aria-label="Agree to terms"
                         >
                             {agreed && (
                                 <svg
-                                    className="w-3 h-3 text-white"
+                                    className="w-3.5 h-3.5 text-white"
                                     fill="none"
                                     stroke="currentColor"
                                     strokeWidth="3"
@@ -268,8 +261,8 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
                                 </svg>
                             )}
                         </button>
-                        <p className="text-[12px] sm:text-[13px] leading-relaxed text-[#000] font-quicksand">
-                            By checking this box you confirm that you have read and agreed to the terms and conditions of Brightsun Travel (UK) Ltd. T/A Emenac Travel. It is the passengers responsibility to ensure that all the details of the booking is correct prior to confirming.
+                        <p className="text-[12px] sm:text-[13px] leading-relaxed text-[#4A5568] font-poppins">
+                            By checking this box you confirm that you have read and agreed to the terms and conditions of Zippy Travel (zippytravel.co.uk). It is the passenger&apos;s responsibility to ensure that all the details of the booking are correct prior to confirming.
                         </p>
                     </div>
                 </form>

@@ -513,7 +513,7 @@ const HeroSectionNew = ({
               aria-label="Search Flights"
             >
               <Image
-                src="/Icon.png"
+                src="/send.svg"
                 alt="Search"
                 width={32}
                 height={32}
@@ -731,7 +731,7 @@ const HeroSectionNew = ({
               onClick={handleSearch}
               className="mt-4 w-full h-[52px] bg-[#5CACC4] hover:bg-[#4ea0b8] text-white font-poppins font-bold rounded-[12px] flex items-center justify-center gap-2 shadow-md cursor-pointer"
             >
-              <Image src="/Icon.png" alt="Search" width={22} height={22} />
+              <Image src="/send.svg" alt="Search" width={22} height={22} className="w-[22px] h-[22px] object-contain" />
               <span>Search Flights</span>
             </button>
           </div>
