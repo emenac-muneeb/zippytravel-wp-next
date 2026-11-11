@@ -14,9 +14,9 @@ const parseStoredDate = (value) => {
 };
 
 /* Reusable small icon box matching the original design */
-const IconBox = ({ src, alt, imgClassName = "" }) => (
+const IconBox = ({ src, alt, imgClassName = "", style }) => (
   <div className="mr-[-12px] bg-white z-10 flex items-center justify-center w-[30px] h-[30px] shrink-0 border rounded-[4px] border-[#A57233]">
-    <img src={src} alt={alt} className={`w-[13px] h-[13px] object-contain ${imgClassName}`} />
+    <img src={src} alt={alt} className={`w-[13px] h-[13px] object-contain ${imgClassName}`} style={style} />
   </div>
 );
 
@@ -222,7 +222,7 @@ const EnquiryModalCompact = ({ onClose }) => {
               <FieldLabel required>Passenger Name</FieldLabel>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <InputShell>
-                  <IconBox src="/Layer_1.png" alt="User" />
+                  <IconBox src="/media/fr-svgs/Layer_1.png" alt="User" />
                   <input className={inputClass} value={firstName} placeholder="First Name"
                     onChange={(e) => setFirstName(e.target.value.replace(/[^a-zA-Z\s]/g, ""))} />
                 </InputShell>
@@ -242,7 +242,7 @@ const EnquiryModalCompact = ({ onClose }) => {
               <div>
                 <FieldLabel required>Phone Number</FieldLabel>
                 <InputShell>
-                  <IconBox src="/Layer_2.png" alt="Phone" />
+                  <IconBox src="/media/fr-svgs/Layer_2.png" alt="Phone" />
                   <input className={inputClass} value={contact} placeholder="Type your contact number"
                     onChange={(e) => setContact(e.target.value.replace(/[^0-9]/g, ""))} />
                 </InputShell>
@@ -250,7 +250,7 @@ const EnquiryModalCompact = ({ onClose }) => {
               <div>
                 <FieldLabel required>Email Address</FieldLabel>
                 <InputShell>
-                  <IconBox src="/Layer_3.png" alt="Email" />
+                  <IconBox src="/media/fr-svgs/Layer_3.png" alt="Email" />
                   <input type="email" className={inputClass} value={email}
                     placeholder="Type your email address"
                     onChange={(e) => setEmail(e.target.value)} />
@@ -262,7 +262,7 @@ const EnquiryModalCompact = ({ onClose }) => {
             <div>
               <FieldLabel>Type Message</FieldLabel>
               <InputShell>
-                <IconBox src="/Layer_4.png" alt="Message" />
+                <IconBox src="/media/fr-svgs/Layer_4.png" alt="Message" />
                 <input className={inputClass} value={addNote} placeholder="Type Message..."
                   onChange={(e) => setAddNote(e.target.value)} />
               </InputShell>
@@ -274,9 +274,11 @@ const EnquiryModalCompact = ({ onClose }) => {
                 <FieldLabel>Answer</FieldLabel>
                 <InputShell className="relative">
                   <IconBox
-                    src="/media/fr-svgs/calander.svg"
+                    src="/media/fr-svgs/dateicon.png"
                     alt="Answer"
-                    imgClassName="[filter:brightness(0)_saturate(100%)_invert(7%)_sepia(85%)_saturate(6314%)_hue-rotate(266deg)_brightness(68%)_contrast(124%)]"
+                    style={{
+                      filter: "brightness(0) saturate(100%) invert(8%) sepia(87%) saturate(5412%) hue-rotate(264deg) brightness(69%) contrast(124%)"
+                    }}
                   />
                   <input
                     className={inputClass}
@@ -284,7 +286,7 @@ const EnquiryModalCompact = ({ onClose }) => {
                     placeholder="Select Answer"
                     onChange={(e) => setUserInput(e.target.value.replace(/[^0-9]/g, ""))}
                   />
-                  <span className="pr-3 text-[13px] font-semibold text-[#A57233] whitespace-nowrap absolute right-0 top-1/2 -translate-y-1/2">
+                  <span className="pr-3 text-[13px] font-semibold text-[#1F0060] whitespace-nowrap absolute right-0 top-1/2 -translate-y-1/2">
                     {captchaQuestion}
                   </span>
                 </InputShell>
@@ -293,7 +295,7 @@ const EnquiryModalCompact = ({ onClose }) => {
                 type="button"
                 onClick={handleSubmit}
                 disabled={loading}
-                className={`h-[40px] px-6 rounded-[10px] bg-[#A57233] text-white text-[14px] font-semibold font-quicksand flex items-center justify-center gap-2 hover:bg-[#8f622c] transition-colors ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
+                className={`h-[42px] px-6 rounded-[10px] bg-[#5CACC4] text-white text-[14px] font-bold font-poppins flex items-center justify-center gap-2 hover:bg-[#4ea0b8] transition-colors shadow-sm ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
               >
                 {loading ? "Submitting..." : "Send Message"}
                 {!loading && <img src="/media/fr-svgs/send.svg" alt="" className="w-[14px] h-[14px]" />}
@@ -305,7 +307,7 @@ const EnquiryModalCompact = ({ onClose }) => {
               <button
                 type="button"
                 onClick={() => setAgreed((p) => !p)}
-                className={`mt-0.5 w-[16px] h-[16px] rounded-[3px] border flex items-center justify-center shrink-0 transition-colors ${agreed ? "bg-[#F1A868] border-[#F1A868]" : "bg-white border-[#D9CFC0]"}`}
+                className={`mt-0.5 w-[16px] h-[16px] rounded-[3px] border flex items-center justify-center shrink-0 transition-colors ${agreed ? "bg-[#5CACC4] border-[#5CACC4]" : "bg-white border-[#CBD5E1]"}`}
                 aria-pressed={agreed}
                 aria-label="Agree to terms"
               >

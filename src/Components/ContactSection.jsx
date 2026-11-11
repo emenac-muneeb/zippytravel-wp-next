@@ -18,9 +18,9 @@ const FieldLabel = ({ children, required = false }) => (
     </label>
 );
 
-const IconBox = ({ src, alt }) => (
+const IconBox = ({ src, alt, imgClassName = "", style }) => (
     <div className="mr-[-15px] bg-[#F8FAFC] z-10 flex items-center justify-center w-[36px] h-[36px] shrink-0 border rounded-[6px] border-[#CBD5E1] shadow-sm">
-        <img src={src} alt={alt} className="w-[16px] h-[16px] object-contain" />
+        <img src={src} alt={alt} className={`w-[16px] h-[16px] object-contain ${imgClassName}`} style={style} />
     </div>
 );
 
@@ -149,7 +149,7 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
                         <div>
                             <FieldLabel required>Passenger Name</FieldLabel>
                             <InputShell>
-                                <IconBox src="/Layer_1.png" alt="User" />
+                                <IconBox src="/media/fr-svgs/Layer_1.png" alt="User" />
                                 <input
                                     className={inputClass}
                                     value={name}
@@ -162,7 +162,7 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
                         <div>
                             <FieldLabel required>Phone Number</FieldLabel>
                             <InputShell>
-                                <IconBox src="/Layer_2.png" alt="Phone" />
+                                <IconBox src="/media/fr-svgs/Layer_2.png" alt="Phone" />
                                 <input
                                     className={inputClass}
                                     value={contact}
@@ -175,7 +175,7 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
                         <div>
                             <FieldLabel required>Email Address</FieldLabel>
                             <InputShell>
-                                <IconBox src="/Layer_3.png" alt="Email" />
+                                <IconBox src="/media/fr-svgs/Layer_3.png" alt="Email" />
                                 <input
                                     type="email"
                                     className={inputClass}
@@ -192,7 +192,7 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
                     <div>
                         <FieldLabel>Type Message</FieldLabel>
                         <InputShell>
-                            <IconBox src="/Layer_4.png" alt="Message" />
+                            <IconBox src="/media/fr-svgs/Layer_4.png" alt="Message" />
                             <input
                                 className={inputClass}
                                 value={note}
@@ -208,9 +208,11 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
                             <FieldLabel>Answer</FieldLabel>
                             <InputShell className="relative">
                                 <IconBox
-                                    src="/media/fr-svgs/calander.svg"
+                                    src="/media/fr-svgs/dateicon.png"
                                     alt="Answer"
-                                    imgClassName="[filter:brightness(0)_saturate(100%)_invert(7%)_sepia(85%)_saturate(6314%)_hue-rotate(266deg)_brightness(68%)_contrast(124%)]"
+                                    style={{
+                                        filter: "brightness(0) saturate(100%) invert(8%) sepia(87%) saturate(5412%) hue-rotate(264deg) brightness(69%) contrast(124%)"
+                                    }}
                                 />
                                 <input
                                     className={inputClass}
@@ -227,11 +229,11 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className={`h-[48px] px-8 rounded-[10px] bg-[#A57233] text-white text-[15px] sm:text-[16px] font-semibold font-quicksand flex items-center justify-center gap-2.5 hover:bg-[#8f622c] transition-colors w-full ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                            className={`h-[50px] px-8 rounded-[12px] bg-[#5CACC4] text-white text-[16px] font-bold font-poppins flex items-center justify-center gap-2.5 hover:bg-[#4ea0b8] transition-colors w-full shadow-md ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""
                                 }`}
                         >
                             <span>{isSubmitting ? "Submitting..." : "Send Message"}</span>
-                            <img src="/send.svg" alt="Send Message" className="w-[18px] h-[18px] object-contain" />
+                            <img src="/media/fr-svgs/send.svg" alt="Send Message" className="w-[18px] h-[18px] object-contain" />
                         </button>
                     </div>
 
@@ -240,9 +242,9 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
                         <button
                             type="button"
                             onClick={() => setAgreed((prev) => !prev)}
-                            className={`mt-0.5 w-[18px] h-[18px] rounded-[4px] border flex items-center justify-center shrink-0 transition-colors ${agreed
-                                ? "bg-[#F1A868] border-[#F1A868]"
-                                : "bg-white border-[#D9CFC0]"
+                            className={`mt-0.5 w-[20px] h-[20px] rounded-[5px] border flex items-center justify-center shrink-0 transition-colors ${agreed
+                                ? "bg-[#5CACC4] border-[#5CACC4]"
+                                : "bg-white border-[#CBD5E1]"
                                 }`}
                             aria-pressed={agreed}
                             aria-label="Agree to terms"

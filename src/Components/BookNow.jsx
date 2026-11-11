@@ -1518,7 +1518,7 @@ const BookingProgressTabs = () => {
                                                     onClick={() => setIsCodeOpen(!isCodeOpen)}
                                                 >
                                                     <div className="mr-[-15px] bg-white z-2 flex items-center justify-center w-[34px] h-[34px] shrink-0 border rounded-[4px] border-[#A57233] shadow-[0_0px_2px_rgba(0,0,0,0.06)]">
-                                                        <img src="/Layer_2.png" alt="" className="w-[15px] h-[15px] object-contain" aria-hidden />
+                                                        <img src="/media/fr-svgs/Layer_2.png" alt="" className="w-[15px] h-[15px] object-contain" aria-hidden />
                                                     </div>
                                                     <input
                                                         type="text"
@@ -1555,7 +1555,7 @@ const BookingProgressTabs = () => {
                                                 </label>
                                                 <div className="flex items-center w-full bg-white overflow-hidden">
                                                     <div className="mr-[-15px] bg-white z-2 flex items-center justify-center w-[34px] h-[34px] shrink-0 border rounded-[4px] border-[#A57233] shadow-[0_0px_2px_rgba(0,0,0,0.06)]">
-                                                        <img src="/Layer_2.png" alt="" className="w-[15px] h-[15px] object-contain" aria-hidden />
+                                                        <img src="/media/fr-svgs/Layer_2.png" alt="" className="w-[15px] h-[15px] object-contain" aria-hidden />
                                                     </div>
                                                     <input
                                                         type="text"
@@ -1585,7 +1585,7 @@ const BookingProgressTabs = () => {
                                                 </label>
                                                 <div className="flex items-center w-full bg-white overflow-hidden">
                                                     <div className="mr-[-15px] bg-white z-2 flex items-center justify-center w-[34px] h-[34px] shrink-0 border rounded-[4px] border-[#A57233] shadow-[0_0px_2px_rgba(0,0,0,0.06)]">
-                                                        <img src="/Layer_3.png" alt="" className="w-[15px] h-[15px] object-contain" aria-hidden />
+                                                        <img src="/media/fr-svgs/Layer_3.png" alt="" className="w-[15px] h-[15px] object-contain" aria-hidden />
                                                     </div>
                                                     <input
                                                         type="text"

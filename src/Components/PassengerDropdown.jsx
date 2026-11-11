@@ -22,7 +22,7 @@ const PassengerDropdown = ({
         <div className="flex items-center gap-[14px]">
           <div className="w-[22px] h-[26px] flex items-center justify-center flex-shrink-0">
             <Image
-              src="/Layer_1.png"
+              src="/media/fr-svgs/Layer_1.png"
               alt="Adult"
               width={20}
               height={26}
@@ -52,11 +52,10 @@ const PassengerDropdown = ({
               }
             }}
             disabled={adults <= 1}
-            className={`w-[26px] h-[26px] rounded-[6px] text-white flex items-center justify-center font-bold text-[18px] leading-none transition-colors ${
-              adults > 1
-                ? "bg-[#180048] hover:bg-[#25006b] cursor-pointer"
-                : "bg-[#B5ABC9] disabled:opacity-50 disabled:cursor-not-allowed"
-            }`}
+            className={`w-[26px] h-[26px] rounded-[6px] text-white flex items-center justify-center font-bold text-[18px] leading-none transition-colors ${adults > 1
+              ? "bg-[#180048] hover:bg-[#25006b] cursor-pointer"
+              : "bg-[#B5ABC9] disabled:opacity-50 disabled:cursor-not-allowed"
+              }`}
             aria-label="Decrease Adults"
           >
             -
@@ -83,7 +82,7 @@ const PassengerDropdown = ({
         <div className="flex items-center gap-[14px]">
           <div className="w-[22px] h-[26px] flex items-center justify-center flex-shrink-0">
             <Image
-              src="/Layer_2.png"
+              src="/media/fr-svgs/Layer_2.png"
               alt="Child"
               width={20}
               height={26}
@@ -102,11 +101,10 @@ const PassengerDropdown = ({
               if (childCount > 0) setChildren(childCount - 1);
             }}
             disabled={childCount <= 0}
-            className={`w-[26px] h-[26px] rounded-[6px] text-white flex items-center justify-center font-bold text-[18px] leading-none transition-colors ${
-              childCount > 0
-                ? "bg-[#180048] hover:bg-[#25006b] cursor-pointer"
-                : "bg-[#B5ABC9] disabled:opacity-50 disabled:cursor-not-allowed"
-            }`}
+            className={`w-[26px] h-[26px] rounded-[6px] text-white flex items-center justify-center font-bold text-[18px] leading-none transition-colors ${childCount > 0
+              ? "bg-[#180048] hover:bg-[#25006b] cursor-pointer"
+              : "bg-[#B5ABC9] disabled:opacity-50 disabled:cursor-not-allowed"
+              }`}
             aria-label="Decrease Children"
           >
             -
@@ -137,7 +135,7 @@ const PassengerDropdown = ({
         <div className="flex items-center gap-[14px]">
           <div className="w-[22px] h-[26px] flex items-center justify-center flex-shrink-0">
             <Image
-              src="/Layer_3.png"
+              src="/media/fr-svgs/Layer_3.png"
               alt="Infant"
               width={20}
               height={26}
@@ -156,11 +154,10 @@ const PassengerDropdown = ({
               if (infants > 0) setInfants(infants - 1);
             }}
             disabled={infants <= 0}
-            className={`w-[26px] h-[26px] rounded-[6px] text-white flex items-center justify-center font-bold text-[18px] leading-none transition-colors ${
-              infants > 0
-                ? "bg-[#180048] hover:bg-[#25006b] cursor-pointer"
-                : "bg-[#B5ABC9] disabled:opacity-50 disabled:cursor-not-allowed"
-            }`}
+            className={`w-[26px] h-[26px] rounded-[6px] text-white flex items-center justify-center font-bold text-[18px] leading-none transition-colors ${infants > 0
+              ? "bg-[#180048] hover:bg-[#25006b] cursor-pointer"
+              : "bg-[#B5ABC9] disabled:opacity-50 disabled:cursor-not-allowed"
+              }`}
             aria-label="Decrease Infants"
           >
             -
