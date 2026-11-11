@@ -219,7 +219,7 @@ const HomePageClient = ({
            
 
           {homePage?.faq_widget?.[0]?.faq_ids && (
-            <div className="sm:pt-16 pt-8">
+            <div className="sm:pt-0 pt-0">
               <FaqSection
                 faq_ids={homePage.faq_widget[0].faq_ids.split(",").map(Number)}
                 heading={homePage.faq_widget[0]?.heading || ""}

@@ -6,6 +6,8 @@ import { showToast } from "../Helpers/Helper";
 import PassengerDropdown from "./PassengerDropdown";
 import CalendarDropdown from "./CalendarDropdown";
 import { BASE_URL_IMG } from "../Helpers/imageurl";
+import { endpoints } from "../Helpers/endpoints";
+import api from "../Helpers/apiHelper";
 
 const classOptions = [
   {
@@ -51,6 +53,8 @@ const AirlineHeroWithForm = ({
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [userIp, setUserIp] = useState("");
 
   // Input and container refs
   const originInputRef = useRef(null);
@@ -80,6 +84,19 @@ const AirlineHeroWithForm = ({
     }
     return "/BG%20Banner.png";
   }, [bgImageOverride, initialBanners]);
+
+  useEffect(() => {
+    const fetchIp = async () => {
+      try {
+        const res = await fetch("https://api64.ipify.org?format=json");
+        const data = await res.json();
+        setUserIp(data.ip || "");
+      } catch (err) {
+        console.error("Error fetching IP:", err);
+      }
+    };
+    fetchIp();
+  }, []);
 
   // Close dropdowns on click outside
   useEffect(() => {
@@ -124,8 +141,9 @@ const AirlineHeroWithForm = ({
     }
   };
 
-  const handleSearch = (e) => {
+  const handleSubmit = async (e) => {
     if (e) e.preventDefault();
+    if (submitting) return;
 
     if (!origin.trim() || !destination.trim() || !departureDate) {
       const msg = "Please enter origin, destination, and departure date.";
@@ -141,22 +159,50 @@ const AirlineHeroWithForm = ({
       return;
     }
 
-    const queryParams = new URLSearchParams({
-      TripType: tripType === "Round Trip" ? "Round-Trip" : "One-Way",
-      Origin: origin.trim(),
-      Originlabel: origin.trim(),
-      Destination: destination.trim(),
-      Destinationlabel: destination.trim(),
-      DepartDate: departureDate,
-      ArrivalDate: tripType === "Round Trip" ? returnDate : "",
-      Class: selectedClass || "Business",
-      NoOfAdultPax: adults,
-      NoOfChildPax: children,
-      NoOfInfantPax: infants,
-    });
+    const trip = tripType === "Round Trip" ? "Round-Trip" : "One-Way";
+    const fromLabel = origin.trim();
+    const toLabel = destination.trim();
+    const returnValue = tripType === "Round Trip" ? returnDate : "";
+    const travelClass = selectedClass || "Business";
 
-    if (typeof setFlightLoading === "function") setFlightLoading(true);
-    router.push(`/flightDetails?${queryParams.toString()}`);
+    const payload = {
+      name: fromLabel,
+      email: "",
+      contact: "",
+      contact_detail: {
+        subject: "Banner Flight Enquiry",
+        message: `Flight enquiry from ${fromLabel} to ${toLabel}`,
+        Inquiry: "Banner Flight Form",
+        user_ip: userIp,
+        trip_type: trip,
+        origin: fromLabel,
+        destination: toLabel,
+        DepartureDate: departureDate,
+        Return: returnValue,
+        Class: travelClass,
+        adults,
+        children,
+        infants,
+        pageURL: typeof window !== "undefined" ? window.location.href : "",
+        formType: "banner flight form",
+      },
+    };
+
+    setSubmitting(true);
+    try {
+      const { data } = await api.post(endpoints.sendEmail, payload);
+      if (data?.status === 1 || data?.success === 1) {
+        showToast("Form submitted successfully!", "success");
+        router.push("/thankyou.html");
+      } else {
+        showToast(data?.message || "Something went wrong. Please try again.", "error");
+      }
+    } catch (err) {
+      console.error("Banner form submit error:", err);
+      showToast("Server error occurred. Please try again later.", "error");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const passengerDisplayText = `${String(adults).padStart(2, "0")} adt - ${String(
@@ -164,7 +210,7 @@ const AirlineHeroWithForm = ({
   ).padStart(2, "0")} chd - ${String(infants).padStart(2, "0")} inf`;
 
   return (
-    <section className="relative w-full mb-[50px] sm:mb-[65px] lg:mb-[75px] font-poppins">
+    <section className="relative w-full mb-[20px] sm:mb-[30px] lg:mb-[30px] font-poppins">
       {/* 
         Full-width Hero Banner with Flight Attendant / Airline Background:
         rounded-b-[36px] sm:rounded-b-[48px] lg:rounded-b-[60px]
@@ -472,11 +518,13 @@ const AirlineHeroWithForm = ({
                 </div>
               </div>
 
-              {/* Search Flights Button */}
+              {/* Submit Button */}
               <button
                 type="button"
-                onClick={handleSearch}
-                className="absolute right-[32px] top-[37px] w-[112px] h-[186px] bg-[#5CACC4] hover:bg-[#4ea0b8] rounded-[10px] flex flex-col items-center justify-center cursor-pointer transition-all duration-200 select-none shadow-md group"
+                onClick={handleSubmit}
+                disabled={submitting}
+                className="absolute right-[32px] top-[37px] w-[112px] h-[186px] bg-[#5CACC4] hover:bg-[#4ea0b8] rounded-[10px] flex flex-col items-center justify-center cursor-pointer transition-all duration-200 select-none shadow-md group disabled:opacity-70 disabled:cursor-not-allowed"
+                aria-label="Submit"
               >
                 <div className="w-[38px] h-[38px] flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Image
@@ -488,7 +536,7 @@ const AirlineHeroWithForm = ({
                   />
                 </div>
                 <span className="font-poppins font-bold text-[18px] text-white text-center leading-[22px] mt-[10px] px-2">
-                  Search Flights
+                  {submitting ? "..." : "Submit"}
                 </span>
               </button>
             </div>
@@ -694,11 +742,12 @@ const AirlineHeroWithForm = ({
                 </div>
               </div>
 
-              {/* Mobile Search Button */}
+              {/* Mobile Submit Button */}
               <button
                 type="button"
-                onClick={handleSearch}
-                className="mt-4 w-full h-[52px] bg-[#5CACC4] hover:bg-[#4ea0b8] text-white font-poppins font-bold rounded-[12px] flex items-center justify-center gap-2 shadow-md cursor-pointer transition-colors"
+                onClick={handleSubmit}
+                disabled={submitting}
+                className="mt-4 w-full h-[52px] bg-[#5CACC4] hover:bg-[#4ea0b8] text-white font-poppins font-bold rounded-[12px] flex items-center justify-center gap-2 shadow-md cursor-pointer transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 <Image src="/media/fr-svgs/send.svg" alt="Search" width={20} height={20} className="w-[20px] h-[20px] object-contain" />
                 <span>Search Flights</span>
@@ -714,7 +763,7 @@ const AirlineHeroWithForm = ({
         Left (Premium Class) and Right (First Class) buttons are shorter with clean rounded outer corners.
         Styled in Zippy Travel colors (#5CACC4, #1F0060, white, #E2E8F0)
       */}
-      <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 z-[30] w-[92%] container flex items-center justify-center">
+      <div className="hidden absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 z-[30] w-[92%] container flex items-center justify-center">
         <div className="flex flex-wrap justify-center min-[576px]:grid min-[576px]:grid-cols-3 w-full items-stretch gap-2.5 min-[576px]:gap-0">
           {classOptions.map((option, index) => {
             const isCenter = index === 1;

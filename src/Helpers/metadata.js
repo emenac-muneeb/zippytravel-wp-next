@@ -174,8 +174,12 @@ export function resolveCmsStaticPageType(pageData) {
   }
 
   if (widgets.includes("AIRLINES")) return "airlines";
-  if (widgets.includes("HOLIDAYCOUNTRY") || widgets.includes("HOLIDAY")) return "holidays";
   if (widgets.includes("DESTINATIONS")) return "continents";
+  // Template 4 is "page with banner". Airlines and destinations also use it,
+  // and those widgets are handled above. Every other template 4 page
+  // (including /flights) uses the city-style fare layout.
+  if (String(pageData.page_template) === "4") return "bannerFares";
+  if (widgets.includes("HOLIDAYCOUNTRY") || widgets.includes("HOLIDAY")) return "holidays";
   if (pageUrl.includes("thankyou")) return "thankyou";
   if (pageUrl.includes("customer-reviews")) return "customer-reviews";
   if (pageUrl.includes("about-us")) return "about-us";

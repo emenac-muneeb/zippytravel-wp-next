@@ -6,6 +6,17 @@ import ScriptInjector from '../../Components/common/ScriptInjector';
 
 const url = `https://admin.zippytravel.co.uk/api/get-blogs`;
 
+async function safeJson(res) {
+    if (!res?.ok) return {};
+    const contentType = res.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) return {};
+    try {
+        return await res.json();
+    } catch {
+        return {};
+    }
+}
+
 async function getBlogData() {
     try {
         const [pageRes, featuredRes, latestRes, airlineRes, indexRes] = await Promise.all([
@@ -16,11 +27,11 @@ async function getBlogData() {
             fetch(`${url}?index_blogs=1`, { next: { revalidate: 3600 } }),
         ]);
 
-        const pageData = await pageRes.json();
-        const featuredData = await featuredRes.json();
-        const latestData = await latestRes.json();
-        const airlineData = await airlineRes.json().catch(() => ({}));
-        const indexData = await indexRes.json().catch(() => ({}));
+        const pageData = await safeJson(pageRes);
+        const featuredData = await safeJson(featuredRes);
+        const latestData = await safeJson(latestRes);
+        const airlineData = await safeJson(airlineRes);
+        const indexData = await safeJson(indexRes);
 
         const airlineBlogsList =
             latestData.airline_blogs?.data ||

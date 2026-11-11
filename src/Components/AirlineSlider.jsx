@@ -109,7 +109,7 @@ export default function AirlineSlider({
   return (
     <section className="w-full py-10 sm:py-14 lg:py-16 bg-white font-poppins">
       <div className="w-full px-2 sm:px-4 md:px-6 lg:px-8">
-        <div className="text-center max-w-[900px] mx-auto mb-8 sm:mb-12 lg:mb-14 px-4">
+        <div className="text-center max-w-[900px] mx-auto mb-14 sm:mb-12 lg:mb-14 px-4">
           <h2 className="font-poppins font-bold text-[28px] sm:text-[34px] lg:text-[42px] text-[#000000] tracking-tight leading-tight">
             {sectionHeading}
           </h2>

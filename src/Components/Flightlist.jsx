@@ -233,45 +233,45 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
         return (
             <div className="flex flex-col min-[500px]:grid min-[500px]:grid-cols-3 items-center gap-3 min-[500px]:gap-2 sm:gap-4">
                 <div className="flex flex-col text-center min-[500px]:text-left truncate">
-                    <span className="text-secondary text-[18px] sm:text-[20px] font-extrabold font-quicksand leading-none">
+                    <span className="text-secondary text-[18px] sm:text-[20px] font-extrabold font-poppins leading-none">
                         {segFirst?.departTime || "N/A"}
                     </span>
-                    <span className="text-black/50 text-[12px] sm:text-[13px] font-quicksand mt-1">
+                    <span className="text-black/50 text-[12px] sm:text-[13px] font-poppins mt-1">
                         {formatDate(segFirst?.departDate)}
                     </span>
-                    <span className="text-black/70 text-[12px] sm:text-[13px] font-bold font-quicksand truncate">
+                    <span className="text-black/70 text-[12px] sm:text-[13px] font-bold font-poppins truncate">
                         {segFirst?.origin || "N/A"}
                     </span>
                 </div>
 
                 <div className="flex flex-col items-center justify-center relative px-1 sm:px-2 min-w-0 w-full max-w-[240px] min-[500px]:max-w-none">
-                    <span className="text-secondary text-[11px] sm:text-[12px] font-medium font-quicksand mb-1">
+                    <span className="text-secondary text-[11px] sm:text-[12px] font-medium font-poppins mb-1">
                         {stopLabel(infoItem)}
                         {infoItem?.totalFlightDuration ? ` · ${infoItem.totalFlightDuration}` : ''}
                     </span>
                     <div className="flex items-center w-full justify-between gap-1 sm:gap-2">
-                        <span className="text-[#A57C38] text-[15px] sm:text-[17px] min-[1360px]:text-[18px] font-bold font-quicksand shrink-0">
+                        <span className="text-[#5CACC4] text-[15px] sm:text-[17px] min-[1360px]:text-[18px] font-bold font-poppins shrink-0">
                             {segFirst?.origin || "—"}
                         </span>
-                        <div className="flex-grow h-[1px] bg-[#E3DAC9] relative flex items-center justify-center min-w-[15px] sm:min-w-[20px]">
+                        <div className="flex-grow h-[1px] bg-[#D7E6EC] relative flex items-center justify-center min-w-[15px] sm:min-w-[20px]">
                             <div className="-mt-[15px] scale-90 sm:scale-100">
                                 {isReturn ? <LandingIcon /> : <TakeoffIcon />}
                             </div>
                         </div>
-                        <span className="text-[#A57C38] text-[15px] sm:text-[17px] min-[1360px]:text-[18px] font-bold font-quicksand shrink-0">
+                        <span className="text-[#5CACC4] text-[15px] sm:text-[17px] min-[1360px]:text-[18px] font-bold font-poppins shrink-0">
                             {segLast?.destination || "—"}
                         </span>
                     </div>
                 </div>
 
                 <div className="flex flex-col text-center min-[500px]:text-right truncate">
-                    <span className="text-secondary text-[18px] sm:text-[20px] font-extrabold font-quicksand leading-none">
+                    <span className="text-secondary text-[18px] sm:text-[20px] font-extrabold font-poppins leading-none">
                         {segLast?.arrivalTime || "N/A"}
                     </span>
-                    <span className="text-black/50 text-[12px] sm:text-[13px] font-quicksand mt-1">
+                    <span className="text-black/50 text-[12px] sm:text-[13px] font-poppins mt-1">
                         {formatDate(segLast?.arrivalDate)}
                     </span>
-                    <span className="text-black/70 text-[12px] sm:text-[13px] font-bold font-quicksand truncate">
+                    <span className="text-black/70 text-[12px] sm:text-[13px] font-bold font-poppins truncate">
                         {segLast?.destination || "N/A"}
                     </span>
                 </div>
@@ -289,23 +289,23 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
         return (
             <div
                 key={`${index}-${optIndex}`}
-                className="bg-white rounded-[24px] border border-[#F2ECE4] p-3.5 sm:p-4 min-[1360px]:p-5 flex flex-col md:flex-row justify-between items-stretch shadow-[0_8px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all duration-300 gap-4 sm:gap-5 min-[1360px]:gap-6 overflow-hidden"
+                className="bg-white rounded-[24px] border border-[#E3E8EC] p-3.5 sm:p-4 min-[1360px]:p-5 flex flex-col md:flex-row justify-between items-stretch shadow-[0_8px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all duration-300 gap-4 sm:gap-5 min-[1360px]:gap-6 overflow-hidden"
             >
                 <div className="flex flex-col flex-grow justify-between gap-4 pr-0 md:pr-5 min-w-0">
                     {journeys.map((journeyItem, jIndex) => {
                         const infoItem = journeyItem?.optionInfos?.[optIndex];
                         if (!infoItem) return null;
                         return (
-                            <div key={`${jIndex}-${optIndex}`} className={jIndex > 0 ? 'pt-3 border-t border-[#F5EFEB]' : ''}>
+                            <div key={`${jIndex}-${optIndex}`} className={jIndex > 0 ? 'pt-3 border-t border-[#E8EEF2]' : ''}>
                                 {renderJourneyLeg(infoItem, jIndex > 0)}
                             </div>
                         );
                     })}
 
-                    <div className="grid grid-cols-2 min-[640px]:flex min-[640px]:flex-wrap items-center justify-between border-t border-[#F5EFEB] pt-3 sm:pt-4 mt-1 gap-2 sm:gap-4">
+                    <div className="grid grid-cols-2 min-[640px]:flex min-[640px]:flex-wrap items-center justify-between border-t border-[#E8EEF2] pt-3 sm:pt-4 mt-1 gap-2 sm:gap-4">
                         <div className="flex items-center gap-1.5 sm:gap-2">
                             <SeatIcon />
-                            <span className="text-black text-[12px] sm:text-[13px] min-[1360px]:text-[14px] font-semibold font-quicksand">
+                            <span className="text-black text-[12px] sm:text-[13px] min-[1360px]:text-[14px] font-semibold font-poppins">
                                 {cabinClass} Class
                             </span>
                         </div>
@@ -317,12 +317,12 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                                 className="w-auto max-w-[130px] max-h-[54px] object-contain flex-shrink-0"
                             />
                         ) : (
-                            <span className="text-[#727272] text-[12px] sm:text-[13px] font-bold font-quicksand">{airlineName}</span>
+                            <span className="text-[#727272] text-[12px] sm:text-[13px] font-bold font-poppins">{airlineName}</span>
                         )}
 
                         <div className="flex items-center gap-1.5 sm:gap-2 col-span-2 min-[640px]:col-span-1">
                             <PhoneIcon />
-                            <a href="tel:02070434343" className="text-black text-[12px] sm:text-[13px] min-[1360px]:text-[14px] font-semibold font-quicksand hover:text-secondary">
+                            <a href="tel:02070434343" className="text-black text-[12px] sm:text-[13px] min-[1360px]:text-[14px] font-semibold font-poppins hover:text-secondary">
                                 0207 043 4343
                             </a>
                         </div>
@@ -331,7 +331,7 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2 justify-between">
                         <button
                             type="button"
-                            className="bg-[#FBEFE4] text-secondary font-quicksand text-[13px] sm:text-[14px] py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 group hover:bg-secondary hover:text-white"
+                            className="bg-[#E8F4F8] text-secondary font-poppins text-[13px] sm:text-[14px] py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 group hover:bg-secondary hover:text-white"
                             onClick={() => setEnquiryOpen(true)}
                         >
                             Enquire Now <ArrowIcon />
@@ -339,7 +339,7 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                         {journeys?.[0]?.optionInfos?.length > 1 && optIndex === 0 && (
                             <button
                                 type="button"
-                                className="flex items-center gap-1 text-[13px] sm:text-[14px] font-medium text-[#A57232] font-quicksand hover:underline"
+                                className="flex items-center gap-1 text-[13px] sm:text-[14px] font-medium text-[#5CACC4] font-poppins hover:underline"
                                 onClick={() => openOptionsModal(flight)}
                             >
                                 More Options ({journeys?.[0]?.optionInfos?.length})<ArrowIcon />
@@ -347,7 +347,7 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                         )}
                         <button
                             type="button"
-                            className="bg-[#FBEFE4] text-secondary font-quicksand text-[13px] sm:text-[14px] py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 group hover:bg-secondary hover:text-white"
+                            className="bg-[#E8F4F8] text-secondary font-poppins text-[13px] sm:text-[14px] py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 group hover:bg-secondary hover:text-white"
                             onClick={() =>
                                 handleOpenModal({
                                     departure: journeys?.[0]?.optionInfos?.[optIndex]?.airSegmentInfos || [],
@@ -366,24 +366,24 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
 
                 <div className="hidden md:block w-[1px] bg-[#F0E6D8] self-stretch my-2 shrink-0" />
 
-                <div className="flex flex-col items-center justify-center shrink-0 text-center gap-2.5 sm:gap-3 py-2 mx-0 sm:mx-2 min-[1200px]:mx-3 min-[1360px]:mx-[40px] border-t md:border-t-0 border-[#F5EFEB] pt-4 md:pt-2">
+                <div className="flex flex-col items-center justify-center shrink-0 text-center gap-2.5 sm:gap-3 py-2 mx-0 sm:mx-2 min-[1200px]:mx-3 min-[1360px]:mx-[40px] border-t md:border-t-0 border-[#E8EEF2] pt-4 md:pt-2">
                     <div className="flex flex-col items-center">
-                        <span className="text-black/50 text-[11px] font-quicksand">from</span>
+                        <span className="text-black/50 text-[11px] font-poppins">from</span>
                         <div className="flex items-baseline mt-0.5 sm:mt-1">
-                            <span className="text-[#A57C38] text-[13px] sm:text-[14px] font-bold font-quicksand self-start mt-[3px]">£</span>
-                            <span className="text-secondary text-[25px] sm:text-[27px] min-[1360px]:text-[29px] font-extrabold font-quicksand leading-none">
+                            <span className="text-[#5CACC4] text-[13px] sm:text-[14px] font-bold font-poppins self-start mt-[3px]">£</span>
+                            <span className="text-secondary text-[25px] sm:text-[27px] min-[1360px]:text-[29px] font-extrabold font-poppins leading-none">
                                 {adultPrice(flight)}
                             </span>
                         </div>
-                        <span className="text-black/50 text-[11px] font-quicksand mt-1">Total Per Adult</span>
+                        <span className="text-black/50 text-[11px] font-poppins mt-1">Total Per Adult</span>
                     </div>
                     <div className="h-[1px] w-[82px] bg-[#F0E6D8]" />
                     <div className="flex flex-col items-center w-full gap-2">
-                        <span className="text-black text-[12px] sm:text-[13px] font-quicksand">Subject to Availability</span>
+                        <span className="text-black text-[12px] sm:text-[13px] font-poppins">Subject to Availability</span>
                         <button
                             type="button"
                             onClick={() => (onBook ? onBook() : handleFlightPrice(flight, optIndex))}
-                            className="w-full min-w-[140px] bg-[#FBEFE4] text-secondary font-quicksand text-[13px] sm:text-[14px] py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 group hover:bg-secondary hover:text-white"
+                            className="w-full min-w-[140px] bg-[#E8F4F8] text-secondary font-poppins text-[13px] sm:text-[14px] py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 group hover:bg-secondary hover:text-white"
                         >
                             Book Now
                             <ArrowIcon />
@@ -402,17 +402,17 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
         return (
             <div className="space-y-4">
                 <div>
-                    <h3 className="text-[22px] sm:text-[26px] font-bold text-[#3D3D3D] font-quicksand leading-tight">
+                    <h3 className="text-[22px] sm:text-[26px] font-bold text-[#3D3D3D] font-poppins leading-tight">
                         {journeyLabel}
                     </h3>
                     <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[18px] sm:text-[20px] font-bold text-[#A57C38] font-quicksand">
+                        <span className="text-[18px] sm:text-[20px] font-bold text-[#5CACC4] font-poppins">
                             {first?.origin || routeFrom || '—'}
                         </span>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden className="text-[#A57C38]">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden className="text-[#5CACC4]">
                             <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" fill="currentColor" />
                         </svg>
-                        <span className="text-[18px] sm:text-[20px] font-bold text-[#A57C38] font-quicksand">
+                        <span className="text-[18px] sm:text-[20px] font-bold text-[#5CACC4] font-poppins">
                             {last?.destination || routeTo || '—'}
                         </span>
                     </div>
@@ -447,14 +447,14 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                                             className="h-7 sm:h-8 w-auto max-w-[110px] object-contain"
                                         />
                                     ) : (
-                                        <span className="text-[13px] font-semibold text-[#3D3D3D] font-quicksand">
+                                        <span className="text-[13px] font-semibold text-[#3D3D3D] font-poppins">
                                             {flightData?.airlineName || 'Airline'}
                                         </span>
                                     )}
-                                    <span className="text-[13px] sm:text-[14px] text-[#6B6B6B] font-quicksand">
+                                    <span className="text-[13px] sm:text-[14px] text-[#6B6B6B] font-poppins">
                                         Flight : {flightData?.flightNumber || '—'}
                                     </span>
-                                    <span className="text-[13px] sm:text-[14px] text-[#6B6B6B] font-quicksand">
+                                    <span className="text-[13px] sm:text-[14px] text-[#6B6B6B] font-poppins">
                                         Equipment {equipment}
                                     </span>
                                 </div>
@@ -464,7 +464,7 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                                     {duration ? (
                                         <div className="w-5 shrink-0 flex items-center justify-center">
                                             <span
-                                                className="text-[11px] sm:text-[12px] text-[#9A9A9A] font-quicksand tracking-[0.12em] whitespace-nowrap"
+                                                className="text-[11px] sm:text-[12px] text-[#9A9A9A] font-poppins tracking-[0.12em] whitespace-nowrap"
                                                 style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
                                             >
                                                 {duration}
@@ -476,24 +476,24 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
 
                                     <div className="flex flex-col items-center pt-1.5 pb-1.5 shrink-0">
                                         <span className="w-2.5 h-2.5 rounded-full border-2 border-[#C4B5A0] bg-white" />
-                                        <span className="w-px flex-1 min-h-[52px] bg-[#E3DAC9]" />
+                                        <span className="w-px flex-1 min-h-[52px] bg-[#D7E6EC]" />
                                         <span className="w-2.5 h-2.5 rounded-full border-2 border-[#C4B5A0] bg-white" />
                                     </div>
 
                                     <div className="flex-1 min-w-0 space-y-5">
                                         <div className="flex items-start gap-3 sm:gap-4">
-                                            <span className="text-[14px] sm:text-[15px] font-semibold text-[#3D3D3D] font-quicksand w-[48px] shrink-0">
+                                            <span className="text-[14px] sm:text-[15px] font-semibold text-[#3D3D3D] font-poppins w-[48px] shrink-0">
                                                 {flightData?.departTime || '—'}
                                             </span>
-                                            <span className="text-[14px] sm:text-[15px] text-[#3D3D3D] font-quicksand leading-snug">
+                                            <span className="text-[14px] sm:text-[15px] text-[#3D3D3D] font-poppins leading-snug">
                                                 {airportLabel(flightData, 'origin')}
                                             </span>
                                         </div>
                                         <div className="flex items-start gap-3 sm:gap-4">
-                                            <span className="text-[14px] sm:text-[15px] font-semibold text-[#3D3D3D] font-quicksand w-[48px] shrink-0">
+                                            <span className="text-[14px] sm:text-[15px] font-semibold text-[#3D3D3D] font-poppins w-[48px] shrink-0">
                                                 {flightData?.arrivalTime || '—'}
                                             </span>
-                                            <span className="text-[14px] sm:text-[15px] text-[#3D3D3D] font-quicksand leading-snug">
+                                            <span className="text-[14px] sm:text-[15px] text-[#3D3D3D] font-poppins leading-snug">
                                                 {airportLabel(flightData, 'destination')}
                                             </span>
                                         </div>
@@ -505,23 +505,23 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                                     <div className="flex items-center gap-2 text-secondary">
                                         <span className='flex items-center gap-1'>
                                             <img src={`${BASE_URL_IMG}/assets/svgs/baggage.svg`} alt="" className="w-[18px] h-[18px] object-contain" aria-hidden />
-                                            <span className='text-[13px] sm:text-[14px] font-medium font-quicksand text-[#686868]'>Baggage:</span>
+                                            <span className='text-[13px] sm:text-[14px] font-medium font-poppins text-[#686868]'>Baggage:</span>
                                         </span>
 
-                                        <span className="text-[13px] sm:text-[14px] font-medium font-quicksand text-[#686868]">{baggage}</span>
+                                        <span className="text-[13px] sm:text-[14px] font-medium font-poppins text-[#686868]">{baggage}</span>
                                     </div>
                                     <div className="flex items-center gap-2 text-secondary">
                                         <span className='flex items-center gap-1'>
                                             <img src={`/seaticon.png`} alt="" className="w-[18px] h-[18px] object-contain" aria-hidden />
-                                            <span className='text-[13px] sm:text-[16px] font-medium font-quicksand text-[#686868]'>Class:</span>
+                                            <span className='text-[13px] sm:text-[16px] font-medium font-poppins text-[#686868]'>Class:</span>
                                         </span>
-                                        <span className="text-[13px] sm:text-[16px] font-medium font-quicksand text-[#686868]">{cabin}</span>
+                                        <span className="text-[13px] sm:text-[16px] font-medium font-poppins text-[#686868]">{cabin}</span>
                                     </div>
                                 </div>
                             </div>
 
                             {layover && (
-                                <div className="bg-secondary text-white rounded-xl py-2.5 px-4 text-center text-[13px] sm:text-[14px] font-semibold font-quicksand tracking-wide">
+                                <div className="bg-secondary text-white rounded-xl py-2.5 px-4 text-center text-[13px] sm:text-[14px] font-semibold font-poppins tracking-wide">
                                     StopOver &mdash; {layover}
                                 </div>
                             )}
@@ -558,18 +558,18 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                     <div className="w-full max-w-[520px] h-[92vh] max-h-[760px] ml-0 sm:ml-0 md:ml-0">
                         <DialogPanel
                             transition
-                            className="relative w-full h-full bg-white rounded-tr-[24px] rounded-br-[24px]  shadow-2xl overflow-hidden flex flex-col transform transition-transform duration-300 ease-out data-closed:-translate-x-full data-enter:translate-x-0 data-leave:-translate-x-full border border-[#F2ECE4]"
+                            className="relative w-full h-full bg-white rounded-tr-[24px] rounded-br-[24px]  shadow-2xl overflow-hidden flex flex-col transform transition-transform duration-300 ease-out data-closed:-translate-x-full data-enter:translate-x-0 data-leave:-translate-x-full border border-[#E3E8EC]"
                         >
                             <button
                                 type="button"
                                 onClick={() => setFightDetailOpen(false)}
-                                className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center text-[#A57233] hover:text-[#A57233] text-xl font-light"
+                                className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center text-[#5CACC4] hover:text-[#5CACC4] text-xl font-light"
                                 aria-label="Close"
                             >
                                 ✕
                             </button>
 
-                            <div className="flex-1 overflow-y-auto px-5 sm:px-7 pt-6 pb-4 font-quicksand space-y-8">
+                            <div className="flex-1 overflow-y-auto px-5 sm:px-7 pt-6 pb-4 font-poppins space-y-8">
                                 {FightDetailData?.departure?.length > 0 && renderDetailSegments(
                                     FightDetailData.departure,
                                     'Flight 01',
@@ -586,7 +586,7 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                             </div>
 
                             {/* Sticky footer */}
-                            <div className="shrink-0 bg-[#FBF8F4] border-t border-[#F2ECE4] px-5 sm:px-7 py-5">
+                            <div className="shrink-0 bg-[#FBF8F4] border-t border-[#E3E8EC] px-5 sm:px-7 py-5">
                                 <div className="grid grid-cols-1 md:grid-cols-2 sm:items-end gap-4 sm:gap-6">
                                     <div className="flex flex-col gap-2.5 w-full sm:flex-1">
                                         <button
@@ -596,7 +596,7 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                                                 setFightDetailOpen(false);
                                                 handleFlightPrice(detailFlight, detailOptIndex);
                                             }}
-                                            className="w-full bg-secondary text-white font-quicksand text-[13px] sm:text-[14px] font-bold uppercase tracking-wide py-3.5 px-5 rounded-xl hover:bg-secondary/90 transition-colors"
+                                            className="w-full bg-secondary text-white font-poppins text-[13px] sm:text-[14px] font-bold uppercase tracking-wide py-3.5 px-5 rounded-xl hover:bg-secondary/90 transition-colors"
                                         >
                                             Book Now
                                         </button>
@@ -607,7 +607,7 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                                                 setFightDetailOpen(false);
                                                 setEnquiryOpen(true);
                                             }}
-                                            className="w-full bg-white text-[#3D3D3D] border border-[#E5E0D8] font-quicksand text-[13px] sm:text-[14px] font-semibold uppercase tracking-wide py-3.5 px-5 rounded-xl hover:border-secondary hover:text-secondary transition-colors"
+                                            className="w-full bg-white text-[#3D3D3D] border border-[#E3E8EC] font-poppins text-[13px] sm:text-[14px] font-semibold uppercase tracking-wide py-3.5 px-5 rounded-xl hover:border-secondary hover:text-secondary transition-colors"
                                         >
                                             Enquire Fare
                                         </button>
@@ -616,13 +616,13 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                                     <div className="text-left sm:text-right sm:pb-1 shrink-0 flex flex-col gap-2.5">
                                         <div>
                                             <div className="flex items-baseline gap-1 sm:justify-end">
-                                                <span className="text-[13px] text-[#6B6B6B] font-quicksand">from</span>
-                                                <span className="text-[16px] font-bold text-[#A57233] font-quicksand">£</span>
-                                                <span className="text-[28px] sm:text-[30px] font-extrabold text-[#A57233] font-quicksand leading-none">
+                                                <span className="text-[13px] text-[#6B6B6B] font-poppins">from</span>
+                                                <span className="text-[16px] font-bold text-[#5CACC4] font-poppins">£</span>
+                                                <span className="text-[28px] sm:text-[30px] font-extrabold text-[#5CACC4] font-poppins leading-none">
                                                     {adultPrice(detailFlight)}
                                                 </span>
                                             </div>
-                                            <p className="text-[12px] text-[#6B6B6B] font-quicksand mt-1">Total Per Adult</p>
+                                            <p className="text-[12px] text-[#6B6B6B] font-poppins mt-1">Total Per Adult</p>
                                         </div>
 
                                         {detailOptionsCount > 1 && (
@@ -632,7 +632,7 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                                                     setFightDetailOpen(false);
                                                     openOptionsModal(detailFlight);
                                                 }}
-                                                className="w-full bg-white text-[#3D3D3D] border border-[#E5E0D8] font-quicksand text-[13px] sm:text-[14px] font-semibold uppercase tracking-wide py-3.5 px-5 rounded-xl hover:border-secondary hover:text-secondary transition-colors"
+                                                className="w-full bg-white text-[#3D3D3D] border border-[#E3E8EC] font-poppins text-[13px] sm:text-[14px] font-semibold uppercase tracking-wide py-3.5 px-5 rounded-xl hover:border-secondary hover:text-secondary transition-colors"
                                             >
                                                 {String(detailOptionsCount).padStart(2, '0')} Options More
                                             </button>
@@ -673,9 +673,9 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                     <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0 mt-[70px]">
                         <DialogPanel
                             transition
-                            className="relative transform overflow-hidden rounded-[24px] bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-3xl data-closed:sm:translate-y-0 data-closed:sm:scale-95 border border-[#F2ECE4]"
+                            className="relative transform overflow-hidden rounded-[24px] bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-3xl data-closed:sm:translate-y-0 data-closed:sm:scale-95 border border-[#E3E8EC]"
                         >
-                            <div className="w-full bg-white p-4 sm:px-6 sm:pt-6 sm:pb-6 space-y-4 font-quicksand">
+                            <div className="w-full bg-white p-4 sm:px-6 sm:pt-6 sm:pb-6 space-y-4 font-poppins">
                                 <button
                                     type="button"
                                     onClick={() => setFlightOptionsOpen(false)}
@@ -687,7 +687,7 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                                 <div>
                                     <h3 className="text-[22px] font-bold text-secondary">Fare options for your search</h3>
                                     <p className="text-[14px] sm:text-[16px] text-black/70 mt-1">
-                                        Flight — <span className="text-[#F1A868]">{origin}</span> to <span className="text-[#F1A868]">{destination}</span>
+                                        Flight — <span className="text-[#5CACC4]">{origin}</span> to <span className="text-[#5CACC4]">{destination}</span>
                                     </p>
                                 </div>
 
@@ -702,9 +702,9 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                                     )}
                                 </div>
 
-                                <div className="hidden sm:flex justify-between items-start gap-4 pt-2 border-t border-[#F5EFEB]">
+                                <div className="hidden sm:flex justify-between items-start gap-4 pt-2 border-t border-[#E8EEF2]">
                                     <div className="flex flex-col gap-1">
-                                        <Link href="/contact-us" className="text-[14px] font-bold text-[#F1A868] hover:underline">
+                                        <Link href="/contact-us" className="text-[14px] font-bold text-[#5CACC4] hover:underline">
                                             Request a Call Back
                                         </Link>
                                         <span className="text-[12px] text-black/50">Too busy to dial a call?</span>
@@ -721,7 +721,7 @@ const Flightlist = ({ results, setBookNowLoading, setPopupMessage, TokenResult }
                                         <span className="text-[12px] text-black/50">0207 - 043 - 4343</span>
                                     </div>
                                     <div className="flex flex-col gap-1">
-                                        <a href="tel:02070434343" className="text-[14px] font-bold text-[#F1A868] hover:underline">
+                                        <a href="tel:02070434343" className="text-[14px] font-bold text-[#5CACC4] hover:underline">
                                             Call Us Now
                                         </a>
                                         <span className="text-[12px] text-black/50">0207 - 043 - 4343</span>

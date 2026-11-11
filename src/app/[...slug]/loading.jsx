@@ -41,7 +41,7 @@ export default function SlugLoading() {
     return <LegalStaticPageSkeleton />;
   }
 
-  if (isCityFaresPath(path)) {
+  if (path === '/flights' || isCityFaresPath(path)) {
     return <CityFlightFaresSkeleton />;
   }
 

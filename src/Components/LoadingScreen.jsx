@@ -49,10 +49,10 @@ export default function LoadingScreen() {
                 {/* Left Section */}
                 <div className="flex-1 pl-2 sm:pl-6 md:pl-10 lg:pl-16 xl:pl-20 max-w-full lg:max-w-[43%] justify-center items-center mb-12 lg:mb-0">
                     <div className="mb-8 lg:mb-16 text-center lg:text-left flex flex-col justify-center items-center lg:items-start px-4 sm:px-6 lg:px-0">
-                        <span className="text-[2.5rem] sm:text-[3rem] md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-4 text-[#A57233]">
+                        <span className="text-[2.5rem] sm:text-[3rem] md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-4 text-[#5CACC4]">
                             Get Ready
                         </span>
-                        <span className="text-[3rem] sm:text-[3.5rem] md:text-6xl lg:text-8xl xl:text-8xl font-bold leading-tight flex text-[#A57233]">
+                        <span className="text-[3rem] sm:text-[3.5rem] md:text-6xl lg:text-8xl xl:text-8xl font-bold leading-tight flex text-[#5CACC4]">
                             To Fly
                             <span className="ml-2 flex space-x-1 animate-pulseDots">
                                 <span className="">.</span>

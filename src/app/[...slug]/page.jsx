@@ -142,13 +142,22 @@ async function loadCmsStaticPageResult(pageUrl) {
   if (!variant) return null;
 
   if (variant === 'holidays') {
-    const countriesRes = await fetch(endpoints.holidaysCountries, { next: { revalidate: 3600 } });
-    const countriesData = await countriesRes.json();
+    let countries = [];
+    try {
+      const countriesRes = await fetch(endpoints.holidaysCountries, { next: { revalidate: 3600 } });
+      const contentType = countriesRes.headers.get('content-type') || '';
+      if (countriesRes.ok && contentType.includes('application/json')) {
+        const countriesData = await countriesRes.json();
+        countries = Array.isArray(countriesData?.data) ? countriesData.data : [];
+      }
+    } catch (error) {
+      console.error('Error fetching holiday countries:', error);
+    }
     return {
       type: 'cmsStatic',
       variant,
       pageUrl: resolvedUrl,
-      data: { holidayPage: pageData, countries: countriesData.data || [] },
+      data: { holidayPage: pageData, countries },
     };
   }
 
@@ -308,6 +317,42 @@ function getScrollDescriptionForResult(result) {
  * City `match-location` returns Economy fares.
  * `city-fares` default (no class / class=0) is Business; class=1 Premium; class=3 First.
  */
+function collectCityFareIds(widgets) {
+  if (!Array.isArray(widgets)) return '';
+  const ids = [];
+  widgets.forEach((widget) => {
+    String(widget?.city_ids || '')
+      .split(',')
+      .map((id) => id.trim())
+      .filter((id) => /^\d+$/.test(id))
+      .forEach((id) => {
+        if (!ids.includes(id)) ids.push(id);
+      });
+  });
+  return ids.join(',');
+}
+
+/** CMS "page with banner" fares: /city-fares?city_ids=255,219 (default class). */
+async function fetchBannerCityFares(cityIds) {
+  if (!cityIds) return null;
+  try {
+    const params = new URLSearchParams({
+      city_ids: cityIds,
+      page: '1',
+      per_page: '12',
+    });
+    const res = await fetch(`${endpoints.cityFares}?${params.toString()}`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (data?.status === 1 && data?.result?.fares) return data.result.fares;
+  } catch (error) {
+    console.error('Error fetching banner city fares:', error);
+  }
+  return null;
+}
+
 async function fetchCityFaresByClass(citySlug, classParam) {
   if (!citySlug) return null;
   try {
@@ -351,6 +396,25 @@ async function enrichPageResult(result) {
     const defaultFares = await fetchCityFaresByClass(enrichedData.slug, 1);
     if (defaultFares && (defaultFares.data?.length > 0 || defaultFares.length > 0)) {
       enrichedData.fares = defaultFares;
+    }
+  }
+
+  if (result.type === 'cmsStatic' && result.variant === 'bannerFares') {
+    const pageData = enrichedData.pageData || {};
+    const scrollDescription2 = pageData.scroll_description_2;
+    if (typeof scrollDescription2 === 'string' && scrollDescription2.trim()) {
+      enrichedData.parsedScrollContent2 = parseScrollDescription(scrollDescription2);
+    }
+
+    const cityIds = collectCityFareIds(pageData.cityfares_widget);
+    enrichedData.cityIds = cityIds;
+    if (cityIds) {
+      const bannerFares = await fetchBannerCityFares(cityIds);
+      if (bannerFares) enrichedData.fares = bannerFares;
+    }
+
+    if (!enrichedData.faq_widget && pageData.faq_widget) {
+      enrichedData.faq_widget = pageData.faq_widget;
     }
   }
 
