@@ -1,92 +1,175 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
-import { BASE_URL_IMG } from "../../Helpers/imageurl";
+import Image from "next/image";
 
 export default function ThankYouPageClient() {
+  useEffect(() => {
+    document.body.dataset.pageType = "thank-you";
+    return () => {
+      delete document.body.dataset.pageType;
+    };
+  }, []);
+
   return (
     <>
-      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-12">
-        <div className="flex flex-col min-[1150px]:flex-row items-center justify-center min-[1150px]:justify-between gap-8 min-[1150px]:gap-[24px]">
-          {/* Left Column: Thank You Text + Smiley SVG + Subtext + Buttons */}
-          <div className="w-full min-[1150px]:w-auto flex flex-col items-center min-[1150px]:items-start shrink-0">
-            {/* Wrapper to keep THANK above YOU left-aligned, while centering the wrapper itself on mobile */}
-            <div className="flex flex-col items-start text-left w-fit">
-              {/* THANK */}
-              <h1 className="text-[44px] sm:text-[68px] md:text-[80px] min-[1150px]:text-[84px] xl:text-[96px] font-black text-[#EB9448] tracking-wider leading-none uppercase select-none">
-                THANK
-              </h1>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          footer,
+          #need-help-section,
+          [data-needhelp] {
+            display: none !important;
+          }
 
-              {/* Y + Smiley SVG + U + Subtext */}
-              <div className="flex flex-wrap sm:flex-nowrap items-center">
-                <div className="flex items-center shrink-0">
-                  <span className="text-[44px] sm:text-[68px] md:text-[80px] min-[1150px]:text-[84px] xl:text-[96px] font-black text-[#EB9448] tracking-wider leading-none uppercase select-none">
-                    Y
-                  </span>
+          /* ── Subheading forced 32px on desktop ── */
+          .ty-subheading p {
+            font-size: clamp(18px, 2.35vw, 32px) !important;
+            font-weight: 700 !important;
+            line-height: 1.4 !important;
+          }
 
-                  {/* Smiley SVG replacing "O" */}
-                  <svg
-                    width="92"
-                    height="92"
-                    viewBox="0 0 100 100"
-                    className="w-10 h-10 sm:w-[56px] sm:h-[56px] md:w-[68px] md:h-[68px] min-[1150px]:w-[76px] min-[1150px]:h-[76px] xl:w-[86px] xl:h-[86px] drop-shadow-md shrink-0 inline-block"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    {/* Golden circular border with cream background */}
-                    <circle cx="50" cy="50" r="45" fill="#FAF4EB" stroke="#C89B65" strokeWidth="6" />
-                    {/* Left eye arc */}
-                    <path d="M30 42 C 34 33, 42 33, 46 42" stroke="#8C5C2B" strokeWidth="5" strokeLinecap="round" fill="none" />
-                    {/* Right eye arc */}
-                    <path d="M54 42 C 58 33, 66 33, 70 42" stroke="#8C5C2B" strokeWidth="5" strokeLinecap="round" fill="none" />
-                    {/* Smile mouth */}
-                    <path d="M34 58 C 42 74, 58 74, 66 58" stroke="#8C5C2B" strokeWidth="5" strokeLinecap="round" fill="none" />
-                  </svg>
+          /* ── Suitcase horizontal overlap + vertical drop ── */
+          @media (min-width: 1024px) {
+            .luggage-responsive-wrapper {
+              margin-right: clamp(-245px, -17.5vw, -145px) !important;
+              transform: translateX(clamp(15px, 1.8vw, 28px)) translateY(38px) !important;
+            }
+          }
+          @media (min-width: 768px) and (max-width: 1023px) {
+            .luggage-responsive-wrapper {
+              margin-right: clamp(-160px, -14vw, -80px) !important;
+              transform: translateX(10px) translateY(28px) !important;
+            }
+          }
+          @media (max-width: 767px) {
+            .luggage-responsive-wrapper {
+              margin-right: 0 !important;
+              transform: none !important;
+              margin-bottom: -12px !important;
+            }
+          }
+        `
+      }} />
 
-                  <span className="text-[44px] sm:text-[68px] md:text-[80px] min-[1150px]:text-[84px] xl:text-[96px] font-black text-[#EB9448] tracking-wider leading-none uppercase select-none">
-                    U
-                  </span>
-                </div>
+      {/* ── Page wrapper ── */}
+      <div className="relative w-full overflow-x-hidden bg-white font-poppins min-h-[calc(100vh-80px)] flex items-center justify-center pb-16 sm:pb-20">
 
-                {/* Message subtext */}
-                <div className="flex flex-col text-[#555555] text-xs sm:text-sm md:text-[16px] xl:text-[17px] font-normal leading-relaxed max-w-[280px] sm:max-w-[300px]">
-                  <span>We have received your enquiry</span>
-                  <span>One of Our agent will get back to</span>
-                  <span>you with in 24 Hours</span>
-                </div>
+        {/* ── Watermark Background ── */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none z-0"
+          style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "16px 0" }}
+        >
+          {Array.from({ length: 7 }).map((_, r) => (
+            <div
+              key={r}
+              className="flex whitespace-nowrap overflow-hidden"
+              style={{ marginLeft: r % 2 === 0 ? "-30px" : "-160px", lineHeight: "1.15" }}
+            >
+              {Array.from({ length: 12 }).map((_, c) => (
+                <span
+                  key={c}
+                  style={{
+                    fontFamily: "Poppins, sans-serif",
+                    fontWeight: 800,
+                    fontSize: "clamp(55px, 6.5vw, 96px)",
+                    color: "transparent",
+                    WebkitTextStroke: "1.5px #E8ECF2",
+                    marginRight: "48px",
+                    letterSpacing: "2px",
+                  }}
+                >
+                  THANK YOU
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+
+        {/* ── Main Content ── */}
+        <div
+          className="relative z-10 w-full max-w-[1360px] mx-auto px-4 sm:px-8 flex items-center justify-center"
+          style={{ marginTop: "clamp(30px, 5vh, 80px)" }}
+        >
+          {/* Flex row: bag left, text right */}
+          <div className="flex flex-col md:flex-row items-center md:items-end justify-center w-full max-w-[1200px]">
+
+            {/* ── Suitcase ── */}
+            <div
+              className="luggage-responsive-wrapper relative flex-shrink-0 z-30 select-none pointer-events-none"
+              style={{
+                width: "clamp(200px, 32vw, 441px)",
+                maxWidth: "441px",
+                alignSelf: "flex-end",
+              }}
+            >
+              <div className="relative w-full" style={{ aspectRatio: "441 / 404" }}>
+                <Image
+                  src="/luggage.png"
+                  alt="Zippy Travel Suitcase"
+                  fill
+                  sizes="(max-width: 767px) 220px, (max-width: 1023px) 300px, 441px"
+                  className="object-contain"
+                  priority
+                />
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center justify-center min-[1150px]:justify-start gap-4 sm:gap-6 min-[1150px]:gap-8 min-[1250px]:gap-16 min-[1360px]:gap-[166px] mt-6 sm:mt-10 w-full min-[1150px]:w-auto">
-              <Link
-                href="/"
-                className="bg-[#A57233] hover:bg-[#8f622c] text-white text-xs sm:text-sm md:text-base font-semibold px-4 sm:px-5 min-[1360px]:px-6 py-2.5 sm:py-3 rounded-[12px] shadow-md transition-colors flex items-center gap-2 shrink-0"
-              >
-                Done <span className="text-sm md:text-base">→</span>
-              </Link>
+            {/* ── Text + Button ── */}
+            <div className="flex flex-col items-center text-center max-w-[600px] mt-3 md:mt-8 lg:mt-10">
 
-              <Link
-                href="/"
-                className="bg-[#A57233] hover:bg-[#8f622c] text-white text-xs sm:text-sm md:text-base font-semibold px-4 sm:px-5 min-[1360px]:px-6 py-2.5 sm:py-3 rounded-[12px] shadow-md transition-colors flex items-center gap-2 shrink-0"
-              >
-                Continue More Searching <span className="text-sm md:text-base">→</span>
-              </Link>
+              {/* Text section — z-10 so suitcase appears in front of heading */}
+              <div className="relative z-10">
+
+                {/* Thank You! */}
+                <h1
+                  className="font-poppins font-bold text-[#1F0060] leading-none tracking-tight select-none"
+                  style={{
+                    fontSize: "clamp(44px, 6.5vw, 92px)",
+                    marginLeft: "clamp(-70px, -5vw, -30px)",
+                    marginTop: "clamp(8px, 1.5vw, 20px)",
+                  }}
+                >
+                  Thank You!
+                </h1>
+
+                {/* Sub-heading */}
+                <div className="ty-subheading font-poppins text-[#1F0060] leading-snug mt-2 sm:mt-3">
+                  <p>We&apos;ll contact back to you</p>
+                  <p>As Soon As Possible</p>
+                </div>
+
+                {/* Paragraph */}
+                <p
+                  className="font-poppins font-normal text-[#4A5568] mt-2 sm:mt-3 leading-relaxed max-w-[500px]"
+                  style={{ fontSize: "clamp(13px, 1.15vw, 17px)" }}
+                >
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                  eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+              </div>
+
+              {/* Button — z-50, outside z-10 so always above suitcase */}
+              <div className="mt-5 sm:mt-7 relative z-50 pointer-events-auto">
+                <Link
+                  href="/"
+                  className="font-poppins font-bold text-white rounded-[14px] transition-all hover:brightness-105 active:scale-95 flex items-center justify-center shadow-md whitespace-nowrap"
+                  style={{
+                    width: "clamp(220px, 21vw, 286px)",
+                    height: "clamp(52px, 4.4vw, 60px)",
+                    backgroundColor: "#5CACC4",
+                    fontSize: "clamp(16px, 1.8vw, 24px)",
+                    fontWeight: 700,
+                  }}
+                >
+                  Go to Home Page
+                </Link>
+              </div>
+
             </div>
           </div>
-
-          {/* Right Column: Image scaling smoothly below 1360px and exactly 760px x 460px on 1360px+ */}
-          <div className="w-full min-[1150px]:flex-1 min-[1150px]:max-w-[580px] min-[1250px]:max-w-[650px] min-[1360px]:max-w-[760px] min-[1360px]:w-[760px] flex items-center justify-center min-[1150px]:justify-end">
-            <img
-              // src={`${BASE_URL_IMG}/assets/svgs/thank-you`}
-              src={'/thank-you.png'}
-              alt="Thank You Customer Flight Cabin"
-              width={760}
-              height={460}
-              className="w-full max-w-[760px] h-[240px] sm:h-[340px] md:h-[380px] min-[1150px]:h-[400px] min-[1250px]:h-[430px] min-[1360px]:h-[460px] object-cover rounded-[24px] sm:rounded-[32px]"
-            />
-          </div>
         </div>
+
       </div>
     </>
   );

@@ -129,7 +129,7 @@ const PassengerForm = ({ index, type, setPassengerList, paxSummary = '' }) => {
                                 setIsGenderOpen(false);
                             }}
                         >
-                            <IconBox src="/media/fr-svgs/user.svg" alt="Title" />
+                            <IconBox src="/Layer_1.png" alt="Title" />
                             <input
                                 type="text"
                                 aria-label="Select Title"
@@ -167,7 +167,7 @@ const PassengerForm = ({ index, type, setPassengerList, paxSummary = '' }) => {
                                 setIsTitleOpen(false);
                             }}
                         >
-                            <IconBox src="/media/fr-svgs/user.svg" alt="Gender" />
+                            <IconBox src="/Layer_1.png" alt="Gender" />
                             <input
                                 type="text"
                                 aria-label="Select Gender"
@@ -201,7 +201,7 @@ const PassengerForm = ({ index, type, setPassengerList, paxSummary = '' }) => {
                     <FieldLabel required>Passenger Name</FieldLabel>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <InputShell>
-                            <IconBox src="/media/fr-svgs/user.svg" alt="User" />
+                            <IconBox src="/Layer_1.png" alt="User" />
                             <input
                                 type="text"
                                 aria-label="First Name"

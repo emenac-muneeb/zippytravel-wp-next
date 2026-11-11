@@ -393,3 +393,11 @@ p{
   font-weight: 500;
   text-decoration: none;
 }
+
+/* Hide footer and NeedHelp on 404 and Thank You pages */
+body[data-page-type="not-found"] footer,
+body[data-page-type="not-found"] [data-needhelp],
+body[data-page-type="thank-you"] footer,
+body[data-page-type="thank-you"] [data-needhelp] {
+  display: none !important;
+}

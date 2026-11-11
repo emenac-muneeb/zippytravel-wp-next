@@ -14,9 +14,9 @@ const parseStoredDate = (value) => {
 };
 
 /* Reusable small icon box matching the original design */
-const IconBox = ({ src, alt }) => (
+const IconBox = ({ src, alt, imgClassName = "" }) => (
   <div className="mr-[-12px] bg-white z-10 flex items-center justify-center w-[30px] h-[30px] shrink-0 border rounded-[4px] border-[#A57233]">
-    <img src={src} alt={alt} className="w-[13px] h-[13px] object-contain" />
+    <img src={src} alt={alt} className={`w-[13px] h-[13px] object-contain ${imgClassName}`} />
   </div>
 );
 
@@ -222,7 +222,7 @@ const EnquiryModalCompact = ({ onClose }) => {
               <FieldLabel required>Passenger Name</FieldLabel>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <InputShell>
-                  <IconBox src="/media/fr-svgs/user.svg" alt="User" />
+                  <IconBox src="/Layer_1.png" alt="User" />
                   <input className={inputClass} value={firstName} placeholder="First Name"
                     onChange={(e) => setFirstName(e.target.value.replace(/[^a-zA-Z\s]/g, ""))} />
                 </InputShell>
@@ -242,7 +242,7 @@ const EnquiryModalCompact = ({ onClose }) => {
               <div>
                 <FieldLabel required>Phone Number</FieldLabel>
                 <InputShell>
-                  <IconBox src="/media/fr-svgs/phonenumber.svg" alt="Phone" />
+                  <IconBox src="/Layer_2.png" alt="Phone" />
                   <input className={inputClass} value={contact} placeholder="Type your contact number"
                     onChange={(e) => setContact(e.target.value.replace(/[^0-9]/g, ""))} />
                 </InputShell>
@@ -250,7 +250,7 @@ const EnquiryModalCompact = ({ onClose }) => {
               <div>
                 <FieldLabel required>Email Address</FieldLabel>
                 <InputShell>
-                  <IconBox src="/media/fr-svgs/email.svg" alt="Email" />
+                  <IconBox src="/Layer_3.png" alt="Email" />
                   <input type="email" className={inputClass} value={email}
                     placeholder="Type your email address"
                     onChange={(e) => setEmail(e.target.value)} />
@@ -262,7 +262,7 @@ const EnquiryModalCompact = ({ onClose }) => {
             <div>
               <FieldLabel>Type Message</FieldLabel>
               <InputShell>
-                <IconBox src="/media/fr-svgs/writeicon.svg" alt="Message" />
+                <IconBox src="/Layer_4.png" alt="Message" />
                 <input className={inputClass} value={addNote} placeholder="Type Message..."
                   onChange={(e) => setAddNote(e.target.value)} />
               </InputShell>
@@ -273,7 +273,11 @@ const EnquiryModalCompact = ({ onClose }) => {
               <div>
                 <FieldLabel>Answer</FieldLabel>
                 <InputShell className="relative">
-                  <IconBox src="/media/fr-svgs/calander.svg" alt="Answer" />
+                  <IconBox
+                    src="/media/fr-svgs/calander.svg"
+                    alt="Answer"
+                    imgClassName="[filter:brightness(0)_saturate(100%)_invert(7%)_sepia(85%)_saturate(6314%)_hue-rotate(266deg)_brightness(68%)_contrast(124%)]"
+                  />
                   <input
                     className={inputClass}
                     value={userInput}

@@ -126,30 +126,34 @@ export default function ContactInfo({ heading = "", subHeading = "" }) {
                   const link = footerSocialData[inputKey] || "#";
                   const altText = footerSocialData[altKey] || "";
 
+                  const hint = `${iconUrl || ""} ${link || ""} ${altText || ""}`.toLowerCase();
+                  let localIcon = null;
+                  if (hint.includes("facebook") || hint.includes("fb")) {
+                    localIcon = "/fb.png";
+                  } else if (hint.includes("instagram") || hint.includes("insta")) {
+                    localIcon = "/insta.png";
+                  } else if (hint.includes("twitter") || hint.includes("x.com")) {
+                    localIcon = "/icons/twitter.png";
+                  }
+
                   return (
                     <a
                       key={index}
                       href={link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:scale-110 transition-transform"
+                      className="w-[41px] h-[39px] bg-white rounded-[10px] flex items-center justify-center shadow-md hover:scale-110 active:scale-95 transition-all duration-200"
                     >
                       <img
-                        src={`${BASE_URL_IMG}/${iconUrl}`}
+                        src={localIcon || `${BASE_URL_IMG}/${iconUrl}`}
                         alt={altText}
-                        className="w-[41px] h-[39px] object-contain"
+                        className="w-[20px] h-[20px] object-contain"
                       />
                     </a>
                   );
                 })}
             </div>
-          ) : (
-            <div className="flex items-center justify-center gap-3 flex-wrap">
-              <p className="text-xs sm:text-sm text-[#777777] font-medium mb-2.5 min-h-[20px] flex items-center justify-center">
-                No social media icons found
-              </p>
-            </div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

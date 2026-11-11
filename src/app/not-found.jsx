@@ -1,36 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import BrandingSection from "../Components/BrandingSection";
-import CallbackPopup from "../Components/CallbackPopup";
-import EnquiryModalCompact from "../Components/EnquiryModalCompact";
-import { endpoints } from "../Helpers/endpoints";
-import { BASE_URL_IMG } from "../Helpers/imageurl";
-import axios from "axios";
-import bg404 from "../../public/404.png";
-
-const BACKGROUND_IMAGE_URL = bg404.src;
+import Image from "next/image";
 
 export default function NotFound() {
   const router = useRouter();
-  const [showPopup, setShowPopup] = useState(false);
-  const [footerData, setFooterData] = useState(null);
-  const [showEnquiryModal, setShowEnquiryModal] = useState(false);
-
-  useEffect(() => {
-    const fetchHelpData = async () => {
-      try {
-        const response = await axios.get(endpoints.generalSettings);
-        if (response.data.status === 1) {
-          setFooterData(response.data.result.footer_setting);
-        }
-      } catch (error) {
-        console.error("Error fetching Help data:", error);
-      }
-    };
-    fetchHelpData();
-  }, []);
 
   useEffect(() => {
     document.body.dataset.pageType = "not-found";
@@ -39,84 +14,234 @@ export default function NotFound() {
     };
   }, []);
 
-  const openEnquiryModal = () => {
-    localStorage.removeItem('flightFormData');
-    setShowEnquiryModal(true);
-  };
-
-  const formatDate = (date) => {
-    if (!date) return "";
-    const d = new Date(date);
-    return `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
-  };
-
   return (
     <>
-      {/* Popup */}
-      {showPopup && (
-        <CallbackPopup
-          show={showPopup}
-          onClose={() => setShowPopup(false)}
-          phone={footerData?.contents?.footer_phone}
-          whatsapp="442070434343"
-        />
-      )}
+      {/* Hide footer, need help section, and define smooth responsive airplane scaling */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          footer,
+          #need-help-section,
+          [data-needhelp] {
+            display: none !important;
+          }
+          /* > 1152px: Exact previous desktop styling */
+          @media (min-width: 1153px) {
+            .airplane-responsive-wrapper {
+              margin-top: -170px !important;
+              transform: translateX(45px) !important;
+            }
+          }
+          /* 768px - 1152px: Proportionally scaled so airplane never jumps up into text */
+          @media (min-width: 768px) and (max-width: 1152px) {
+            .airplane-responsive-wrapper {
+              margin-top: clamp(-85px, -7.5vw, -45px) !important;
+              transform: translateX(clamp(10px, 2vw, 30px)) !important;
+            }
+          }
+          /* < 768px (Mobile): Clean natural spacing */
+          @media (max-width: 767px) {
+            .airplane-responsive-wrapper {
+              margin-top: 16px !important;
+              transform: none !important;
+            }
+          }
+        `
+      }} />
 
-      {showEnquiryModal && (
-        <EnquiryModalCompact onClose={() => setShowEnquiryModal(false)} />
-      )}
-
-      {/* Main 404 Section with absolute background cover for transparent navbar overlay */}
-      <div className="relative w-full max-w-[100%] mx-auto h-[480px] sm:h-[600px] md:h-[680px] lg:h-[780px] xl:h-[840px] flex flex-col justify-between pt-24 sm:pt-28 md:pt-36 pb-12 sm:pb-16 px-4 font-quicksand overflow-hidden rounded-b-[24px] sm:rounded-b-[32px] shadow-2xl mb-8 sm:mb-12">
-        {/* Background Image Slot */}
-        <img
-          src={BACKGROUND_IMAGE_URL}
-          onError={(e) => {
-            // Fallback image if remote url fails or doesn't load
-            e.currentTarget.src = "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1920&q=80";
+      <div className="relative w-full overflow-hidden bg-white font-poppins min-h-[calc(100vh-80px)] flex items-center justify-center">
+        {/* ── Repeating Outlined "404 ERROR" Watermark Background ── */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none z-0"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            padding: "16px 0",
           }}
-          alt="404 Background"
-          className="absolute inset-0 w-full h-full object-cover -z-10"
-        />
-
-        {/* Top Text Content */}
-        <div className="flex flex-col items-center text-center mt-4 sm:mt-4 md:mt-8 z-10">
-          <p className="text-gray-500 font-400 text-sm sm:text-base md:text-[16px] lg:text-[20px] mb-2 leading-relaxed">
-            Error: Could not find your Query
-          </p>
-          <p className="text-gray-500 font-400 text-sm sm:text-base md:text-[16px] lg:text-[20px] leading-relaxed">
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                openEnquiryModal();
+        >
+          {Array.from({ length: 7 }).map((_, r) => (
+            <div
+              key={r}
+              className="flex whitespace-nowrap overflow-hidden"
+              style={{
+                marginLeft: r % 2 === 0 ? "-30px" : "-160px",
+                lineHeight: "1.15",
               }}
-              className="text-gray-500 underline hover:text-black cursor-pointer font-400"
             >
-              Send us your Query
-            </a>{" "}
-            and we will get back to you
-          </p>
+              {Array.from({ length: 12 }).map((_, c) => (
+                <span
+                  key={c}
+                  style={{
+                    fontFamily: "Poppins, sans-serif",
+                    fontWeight: 800,
+                    fontSize: "clamp(55px, 6.5vw, 96px)",
+                    color: "transparent",
+                    WebkitTextStroke: "1.5px #E8ECF2",
+                    marginRight: "48px",
+                    letterSpacing: "2px",
+                  }}
+                >
+                  404 ERROR
+                </span>
+              ))}
+            </div>
+          ))}
         </div>
 
-        {/* Bottom Buttons Content */}
-        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-[3rem] md:gap-[8rem] z-10">
-          <button
-            onClick={() => router.back()}
-            className="bg-[#A57233] hover:bg-[#8f622c] text-white text-sm sm:text-[17px] font-semibold px-6 sm:px-12 py-3 rounded-[12px] sm:rounded-[16px] shadow-md transition-colors shrink-0"
-          >
-            Previous Page
-          </button>
-          <Link
-            href="/"
-            className="bg-[#A57233] hover:bg-[#8f622c] text-white text-sm sm:text-[17px] font-semibold px-6 sm:px-12 py-3 rounded-[12px] sm:rounded-[16px] shadow-md transition-colors shrink-0"
-          >
-            Go to Home Page
-          </Link>
+        {/* ── Main 1360px Unified Composition ── */}
+        <div className="relative z-10 w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-[80px] py-4 sm:py-6 -mt-4 sm:-mt-6 md:-mt-10 lg:-mt-12 flex flex-col items-center">
+          
+          {/* ═══ Desktop / Tablet Row (md+): Buttons vertically centered with "404" ═══ */}
+          <div className="hidden md:flex items-center justify-between w-full relative z-10">
+            {/* Left Button: Go to Previous Page */}
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  if (window.history.length > 1) {
+                    router.back();
+                  } else {
+                    router.push("/");
+                  }
+                }
+              }}
+              className="font-poppins font-bold text-white rounded-[14px] transition-all hover:brightness-105 active:scale-95 flex items-center justify-center shadow-sm flex-shrink-0 whitespace-nowrap px-3 pointer-events-auto"
+              style={{
+                width: "clamp(180px, 21vw, 286px)",
+                height: "clamp(48px, 4.4vw, 60px)",
+                backgroundColor: "#5CACC4",
+                fontSize: "clamp(13px, 1.76vw, 24px)",
+                fontWeight: 700,
+              }}
+            >
+              Go to Previous Page
+            </button>
+
+            {/* Center: "404" text - Vertically centered with the buttons */}
+            <h1
+              className="font-poppins font-bold text-[#1F0060] leading-none select-none tracking-tight text-center px-2 sm:px-4"
+              style={{ fontSize: "clamp(64px, 8.8vw, 120px)" }}
+            >
+              404
+            </h1>
+
+            {/* Right Button: Go to Home Page */}
+            <Link
+              href="/"
+              className="font-poppins font-bold text-white rounded-[14px] transition-all hover:brightness-105 active:scale-95 flex items-center justify-center shadow-sm flex-shrink-0 whitespace-nowrap px-3 pointer-events-auto"
+              style={{
+                width: "clamp(180px, 21vw, 286px)",
+                height: "clamp(48px, 4.4vw, 60px)",
+                backgroundColor: "#5CACC4",
+                fontSize: "clamp(13px, 1.76vw, 24px)",
+                fontWeight: 700,
+              }}
+            >
+              Go to Home Page
+            </Link>
+          </div>
+
+          {/* Mobile View (< md): "404" text */}
+          <div className="flex md:hidden flex-col items-center text-center w-full relative z-20">
+            <h1
+              className="font-poppins font-bold text-[#1F0060] leading-none select-none tracking-tight"
+              style={{ fontSize: "clamp(64px, 18vw, 96px)" }}
+            >
+              404
+            </h1>
+          </div>
+
+          {/* ═══ Center Sub-Text Block (Layered cleanly on top of airplane) ═══ */}
+          <div className="flex flex-col items-center text-center w-full max-w-[640px] mx-auto mt-1 sm:mt-2 relative z-30">
+            {/* Oooops ... Page Not Found */}
+            <h2
+              className="font-poppins font-bold text-[#1F0060] leading-snug"
+              style={{ fontSize: "clamp(18px, 2.35vw, 32px)" }}
+            >
+              Oooops ... Page Not Found
+            </h2>
+
+            {/* Error : Could not find your Query */}
+            <p
+              className="font-poppins font-normal text-[#2D3748] mt-1"
+              style={{ fontSize: "clamp(13px, 1.45vw, 20px)" }}
+            >
+              Error : Could not find your Query
+            </p>
+
+            {/* Send Us Your Query and we'll get back to you */}
+            <p
+              className="font-poppins font-normal text-[#2D3748] mt-1"
+              style={{ fontSize: "clamp(13px, 1.45vw, 20px)" }}
+            >
+              <Link
+                href="/contact-us"
+                className="text-[#5CACC4] underline hover:text-[#4396ad] transition-colors font-medium pointer-events-auto"
+              >
+                Send Us Your Query
+              </Link>
+              {" "}and we&apos;ll get back to you
+            </p>
+
+            {/* Mobile Buttons: shown only on screens < md */}
+            <div className="flex md:hidden flex-col sm:flex-row items-center justify-center gap-3 w-full mt-4">
+              <button
+                type="button"
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    if (window.history.length > 1) {
+                      router.back();
+                    } else {
+                      router.push("/");
+                    }
+                  }
+                }}
+                className="font-poppins font-bold text-white rounded-[12px] py-3 px-6 w-full sm:w-auto transition-all shadow-sm"
+                style={{
+                  backgroundColor: "#5CACC4",
+                  fontSize: "clamp(16px, 4.5vw, 24px)",
+                  fontWeight: 700,
+                }}
+              >
+                Go to Previous Page
+              </button>
+              <Link
+                href="/"
+                className="font-poppins font-bold text-white rounded-[12px] py-3 px-6 w-full sm:w-auto transition-all shadow-sm text-center"
+                style={{
+                  backgroundColor: "#5CACC4",
+                  fontSize: "clamp(16px, 4.5vw, 24px)",
+                  fontWeight: 700,
+                }}
+              >
+                Go to Home Page
+              </Link>
+            </div>
+          </div>
+
+          {/* ═══ Airplane Image: flight-1.png (1123px x 357px) ═══
+              > 1152px: Exact previous styling (-mt-[170px], translateX(45px))
+              768px - 1152px: Proportional scaling so it never jumps into text
+              < 768px: Mobile clean placement */}
+          <div className="airplane-responsive-wrapper relative z-20 w-full flex justify-center pointer-events-none select-none">
+            <div
+              className="relative w-full max-w-[1123px]"
+              style={{ aspectRatio: "1123 / 357" }}
+            >
+              <Image
+                src="/flight-1.png"
+                alt="Airplane"
+                fill
+                sizes="(max-width: 1200px) 100vw, 1123px"
+                className="object-contain"
+                priority
+              />
+            </div>
+          </div>
+
         </div>
       </div>
-
-      <BrandingSection />
     </>
   );
 }
