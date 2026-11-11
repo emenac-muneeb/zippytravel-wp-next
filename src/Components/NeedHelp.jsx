@@ -12,10 +12,10 @@ const NeedHelp = () => {
   const footerData = footerSetting;
   const phone = footerData?.contents?.footer_phone || "";
 
-  // Hide on static policy & about pages as per design
-  const isHidden = ["about-us", "cookies", "terms", "privacy"].some((key) =>
+  // Hide on static policy & about pages as per design, and on 404/thank-you pages
+  const isHidden = ["about-us", "cookies", "terms", "privacy", "thank-you", "not-found", "_not-found"].some((key) =>
     pathname?.toLowerCase().includes(key)
-  );
+  ) || (typeof window !== "undefined" && document.body.dataset.pageType === "not-found");
   if (isHidden) return null;
 
   return (
@@ -29,7 +29,7 @@ const NeedHelp = () => {
         />
       )}
 
-      <section className="w-full bg-white py-8">
+      <section id="need-help-section" className="w-full bg-white py-8">
         <div className="w-full max-w-[1202px] mx-auto px-4">
 
           {/* ── Desktop: one row ── Mobile: stacked ── */}

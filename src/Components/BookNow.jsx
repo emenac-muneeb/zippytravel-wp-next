@@ -1019,20 +1019,20 @@ const BookingProgressTabs = () => {
                                                 <svg width="134.17" height="8.541" viewBox="0 0 134.17 8.541" aria-hidden>
                                                     <defs>
                                                         <clipPath id="book-now-clip-path">
-                                                        <rect width="8.54" height="5.257" transform="translate(0 0)" fill="#710c5c" stroke="rgba(0,0,0,0)" strokeWidth="1"/>
+                                                            <rect width="8.54" height="5.257" transform="translate(0 0)" fill="#710c5c" stroke="rgba(0,0,0,0)" strokeWidth="1" />
                                                         </clipPath>
                                                     </defs>
                                                     <g transform="translate(-418.214 -1071.73)" opacity="0.7">
-                                                        <line x2="133.17" transform="translate(418.714 1076)" fill="none" stroke="#a57233" strokeLinecap="round" strokeWidth="1"/>
+                                                        <line x2="133.17" transform="translate(418.714 1076)" fill="none" stroke="#a57233" strokeLinecap="round" strokeWidth="1" />
                                                         <g transform="translate(448.714 1080.271) rotate(-90)">
-                                                        <g transform="translate(0 0)" clipPath="url(#book-now-clip-path)">
-                                                            <path d="M3.756,5.12a1.147,1.147,0,0,1-.248-.19L2.368,3.807c-.666-.656-1.354-1.335-2.033-2A1.076,1.076,0,0,1,0,1.037,1.008,1.008,0,0,1,.015.859,1.028,1.028,0,0,1,.6.1,1.029,1.029,0,0,1,1.651.2a1.294,1.294,0,0,1,.162.14L4.269,2.763,6.737.33A1.039,1.039,0,0,1,8.027.146,1.075,1.075,0,0,1,8.517.8l.024.08v.295l-.015.066a1.3,1.3,0,0,1-.392.632q-1.1,1.085-2.207,2.173l-.888.876a1.049,1.049,0,0,1-1.283.2" transform="translate(0 0)" fill="#a57233" stroke="rgba(0,0,0,0)" strokeWidth="1"/>
-                                                        </g>
+                                                            <g transform="translate(0 0)" clipPath="url(#book-now-clip-path)">
+                                                                <path d="M3.756,5.12a1.147,1.147,0,0,1-.248-.19L2.368,3.807c-.666-.656-1.354-1.335-2.033-2A1.076,1.076,0,0,1,0,1.037,1.008,1.008,0,0,1,.015.859,1.028,1.028,0,0,1,.6.1,1.029,1.029,0,0,1,1.651.2a1.294,1.294,0,0,1,.162.14L4.269,2.763,6.737.33A1.039,1.039,0,0,1,8.027.146,1.075,1.075,0,0,1,8.517.8l.024.08v.295l-.015.066a1.3,1.3,0,0,1-.392.632q-1.1,1.085-2.207,2.173l-.888.876a1.049,1.049,0,0,1-1.283.2" transform="translate(0 0)" fill="#a57233" stroke="rgba(0,0,0,0)" strokeWidth="1" />
+                                                            </g>
                                                         </g>
                                                         <g transform="translate(517.402 1080.271) rotate(-90)">
-                                                        <g transform="translate(0 0)" clipPath="url(#book-now-clip-path)">
-                                                            <path d="M3.756,5.12a1.147,1.147,0,0,1-.248-.19L2.368,3.807c-.666-.656-1.354-1.335-2.033-2A1.076,1.076,0,0,1,0,1.037,1.008,1.008,0,0,1,.015.859,1.028,1.028,0,0,1,.6.1,1.029,1.029,0,0,1,1.651.2a1.294,1.294,0,0,1,.162.14L4.269,2.763,6.737.33A1.039,1.039,0,0,1,8.027.146,1.075,1.075,0,0,1,8.517.8l.024.08v.295l-.015.066a1.3,1.3,0,0,1-.392.632q-1.1,1.085-2.207,2.173l-.888.876a1.049,1.049,0,0,1-1.283.2" transform="translate(0 0)" fill="#a57233" stroke="rgba(0,0,0,0)" strokeWidth="1"/>
-                                                        </g>
+                                                            <g transform="translate(0 0)" clipPath="url(#book-now-clip-path)">
+                                                                <path d="M3.756,5.12a1.147,1.147,0,0,1-.248-.19L2.368,3.807c-.666-.656-1.354-1.335-2.033-2A1.076,1.076,0,0,1,0,1.037,1.008,1.008,0,0,1,.015.859,1.028,1.028,0,0,1,.6.1,1.029,1.029,0,0,1,1.651.2a1.294,1.294,0,0,1,.162.14L4.269,2.763,6.737.33A1.039,1.039,0,0,1,8.027.146,1.075,1.075,0,0,1,8.517.8l.024.08v.295l-.015.066a1.3,1.3,0,0,1-.392.632q-1.1,1.085-2.207,2.173l-.888.876a1.049,1.049,0,0,1-1.283.2" transform="translate(0 0)" fill="#a57233" stroke="rgba(0,0,0,0)" strokeWidth="1" />
+                                                            </g>
                                                         </g>
                                                     </g>
                                                 </svg>
@@ -1518,7 +1518,7 @@ const BookingProgressTabs = () => {
                                                     onClick={() => setIsCodeOpen(!isCodeOpen)}
                                                 >
                                                     <div className="mr-[-15px] bg-white z-2 flex items-center justify-center w-[34px] h-[34px] shrink-0 border rounded-[4px] border-[#A57233] shadow-[0_0px_2px_rgba(0,0,0,0.06)]">
-                                                        <img src="/media/fr-svgs/phonenumber.svg" alt="" className="w-[15px] h-[15px] object-contain" aria-hidden />
+                                                        <img src="/Layer_2.png" alt="" className="w-[15px] h-[15px] object-contain" aria-hidden />
                                                     </div>
                                                     <input
                                                         type="text"
@@ -1555,7 +1555,7 @@ const BookingProgressTabs = () => {
                                                 </label>
                                                 <div className="flex items-center w-full bg-white overflow-hidden">
                                                     <div className="mr-[-15px] bg-white z-2 flex items-center justify-center w-[34px] h-[34px] shrink-0 border rounded-[4px] border-[#A57233] shadow-[0_0px_2px_rgba(0,0,0,0.06)]">
-                                                        <img src="/media/fr-svgs/phonenumber.svg" alt="" className="w-[15px] h-[15px] object-contain" aria-hidden />
+                                                        <img src="/Layer_2.png" alt="" className="w-[15px] h-[15px] object-contain" aria-hidden />
                                                     </div>
                                                     <input
                                                         type="text"
@@ -1585,7 +1585,7 @@ const BookingProgressTabs = () => {
                                                 </label>
                                                 <div className="flex items-center w-full bg-white overflow-hidden">
                                                     <div className="mr-[-15px] bg-white z-2 flex items-center justify-center w-[34px] h-[34px] shrink-0 border rounded-[4px] border-[#A57233] shadow-[0_0px_2px_rgba(0,0,0,0.06)]">
-                                                        <img src="/media/fr-svgs/email.svg" alt="" className="w-[15px] h-[15px] object-contain" aria-hidden />
+                                                        <img src="/Layer_3.png" alt="" className="w-[15px] h-[15px] object-contain" aria-hidden />
                                                     </div>
                                                     <input
                                                         type="text"

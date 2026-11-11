@@ -5,6 +5,7 @@ import { endpoints } from "../Helpers/endpoints";
 import api from "../Helpers/apiHelper";
 import { BASE_URL_IMG } from "../Helpers/imageurl";
 import { useGeneralSettings } from "../Context/GeneralSettingsContext";
+import { usePathname } from "next/navigation";
 
 function decodeHtmlEntities(text) {
   if (!text || typeof text !== "string") return "";
@@ -24,7 +25,11 @@ function decodeHtmlEntities(text) {
 
 const Footer = () => {
   const { footerSetting } = useGeneralSettings();
+  const pathname = usePathname();
   const [footerData, setFooterData] = useState(() => footerSetting ?? {});
+
+  // Hide footer on 404 and thank-you pages
+  if (pathname?.includes("thank-you") || pathname?.includes("not-found") || pathname === "/_not-found") return null;
 
   useEffect(() => {
     if (footerSetting) {
