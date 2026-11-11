@@ -48,46 +48,9 @@ export default function NotFound() {
         `
       }} />
 
-      <div className="relative w-full overflow-hidden bg-white font-poppins min-h-[calc(100vh-80px)] flex items-center justify-center">
+      <div className="bg-[url('/zippy404.png')] bg-contain bg-center bg-repeat relative w-full overflow-hidden bg-white font-poppins xl:min-h-[calc(100vh-147px)] md:min-h-[calc(100vh-100px)] min-h-[calc(100vh-80px)] flex items-center justify-center">
         {/* ── Repeating Outlined "404 ERROR" Watermark Background ── */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none z-0"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            padding: "16px 0",
-          }}
-        >
-          {Array.from({ length: 7 }).map((_, r) => (
-            <div
-              key={r}
-              className="flex whitespace-nowrap overflow-hidden"
-              style={{
-                marginLeft: r % 2 === 0 ? "-30px" : "-160px",
-                lineHeight: "1.15",
-              }}
-            >
-              {Array.from({ length: 12 }).map((_, c) => (
-                <span
-                  key={c}
-                  style={{
-                    fontFamily: "Poppins, sans-serif",
-                    fontWeight: 800,
-                    fontSize: "clamp(55px, 6.5vw, 96px)",
-                    color: "transparent",
-                    WebkitTextStroke: "1.5px #E8ECF2",
-                    marginRight: "48px",
-                    letterSpacing: "2px",
-                  }}
-                >
-                  404 ERROR
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
+       
 
         {/* ── Main 1360px Unified Composition ── */}
         <div className="relative z-10 w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-[80px] py-4 sm:py-6 -mt-4 sm:-mt-6 md:-mt-10 lg:-mt-12 flex flex-col items-center">
