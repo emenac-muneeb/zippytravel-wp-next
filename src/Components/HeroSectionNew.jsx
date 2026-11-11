@@ -10,6 +10,16 @@ import { BASE_URL_IMG } from "../Helpers/imageurl";
 import { endpoints } from "../Helpers/endpoints";
 import api from "../Helpers/apiHelper";
 
+const toInputDate = (value) => {
+  if (!value) return "";
+  // Already YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+  // DD-MM-YYYY from legacy search forms
+  const dmy = value.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+  if (dmy) return `${dmy[3]}-${dmy[2]}-${dmy[1]}`;
+  return value;
+};
+
 const resolveMediaSrc = (url) => {
   if (!url || typeof url !== "string") return "";
   if (url.startsWith("http") || url.startsWith("/")) return url;
@@ -25,6 +35,7 @@ const HeroSectionNew = ({
   bgImageOverride,
   initialBanners = [],
   bannerSlug = "flights",
+  initialSearch = null,
 }) => {
   const router = useRouter();
 
@@ -54,6 +65,8 @@ const HeroSectionNew = ({
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [userIp, setUserIp] = useState("");
 
   // Input and container refs
   const originInputRef = useRef(null);
@@ -72,6 +85,52 @@ const HeroSectionNew = ({
       setBanners(initialBanners);
     }
   }, [initialBanners]);
+
+  useEffect(() => {
+    const fetchIp = async () => {
+      try {
+        const res = await fetch("https://api64.ipify.org?format=json");
+        const data = await res.json();
+        setUserIp(data.ip || "");
+      } catch (err) {
+        console.error("Error fetching IP:", err);
+      }
+    };
+    fetchIp();
+  }, []);
+
+  // Prefill search form when parent provides current search values (flight details)
+  useEffect(() => {
+    if (!initialSearch) return;
+
+    let saved = {};
+    try {
+      saved = JSON.parse(localStorage.getItem("flightFormData") || "{}");
+    } catch {
+      saved = {};
+    }
+
+    const trip = initialSearch.tripType || saved.tripType || "One-Way";
+    setTripType(trip === "Round-Trip" || trip === "Round Trip" ? "Round Trip" : "One-Way");
+    setOrigin(initialSearch.origin || saved.origin || "");
+    setOriginLabel(
+      initialSearch.originLabel || saved.originLabel || initialSearch.origin || ""
+    );
+    setDestination(initialSearch.destination || saved.destination || "");
+    setDestinationLabel(
+      initialSearch.destinationLabel ||
+        saved.destinationLabel ||
+        initialSearch.destination ||
+        ""
+    );
+    setDepartureDate(
+      toInputDate(initialSearch.departureDate || saved.departureDate || "")
+    );
+    setReturnDate(toInputDate(initialSearch.returnDate || saved.returnDate || ""));
+    setAdults(Number(initialSearch.adults ?? saved.adults ?? 1));
+    setChildren(Number(initialSearch.children ?? saved.children ?? 0));
+    setInfants(Number(initialSearch.infants ?? saved.infants ?? 0));
+  }, [initialSearch]);
 
   // Home banner fallback: fetch /banner when no SSR banners and no page overrides
   useEffect(() => {
@@ -231,8 +290,9 @@ const HeroSectionNew = ({
     }
   };
 
-  const handleSearch = (e) => {
+  const handleSubmit = async (e) => {
     if (e) e.preventDefault();
+    if (submitting) return;
 
     if (!origin.trim() || !destination.trim() || !departureDate) {
       const msg =
@@ -251,22 +311,51 @@ const HeroSectionNew = ({
       return;
     }
 
-    const queryParams = new URLSearchParams({
-      TripType: tripType === "Round Trip" ? "Round-Trip" : "One-Way",
-      Origin: origin.trim(),
-      Originlabel: originLabel.trim(),
-      Destination: destination.trim(),
-      Destinationlabel: destinationLabel.trim(),
-      DepartDate: departureDate,
-      ArrivalDate: tripType === "Round Trip" ? returnDate : "",
-      Class: "Business",
-      NoOfAdultPax: adults,
-      NoOfChildPax: children,
-      NoOfInfantPax: infants,
-    });
+    const trip = tripType === "Round Trip" ? "Round-Trip" : "One-Way";
+    const fromLabel = originLabel.trim() || origin.trim();
+    const toLabel = destinationLabel.trim() || destination.trim();
+    const returnValue = tripType === "Round Trip" ? returnDate : "";
 
-    if (typeof setFlightLoading === "function") setFlightLoading(true);
-    router.push(`/flightDetails?${queryParams.toString()}`);
+    const payload = {
+      name: fromLabel,
+      email: "",
+      contact: "",
+      contact_detail: {
+        subject: "Banner Flight Enquiry",
+        message: `Flight enquiry from ${fromLabel} to ${toLabel}`,
+        Inquiry: "Banner Flight Form",
+        user_ip: userIp,
+        trip_type: trip,
+        origin: fromLabel,
+        destination: toLabel,
+        OriginCode: origin.trim(),
+        DestinationCode: destination.trim(),
+        DepartureDate: departureDate,
+        Return: returnValue,
+        Class: "Business",
+        adults,
+        children,
+        infants,
+        pageURL: typeof window !== "undefined" ? window.location.href : "",
+        formType: "banner flight form",
+      },
+    };
+
+    setSubmitting(true);
+    try {
+      const { data } = await api.post(endpoints.sendEmail, payload);
+      if (data?.status === 1 || data?.success === 1) {
+        showToast("Form submitted successfully!", "success");
+        router.push("/thankyou.html");
+      } else {
+        showToast(data?.message || "Something went wrong. Please try again.", "error");
+      }
+    } catch (err) {
+      console.error("Banner form submit error:", err);
+      showToast("Server error occurred. Please try again later.", "error");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const renderAirportSuggestions = (items, type) => {
@@ -688,20 +777,24 @@ const HeroSectionNew = ({
               </div>
             </div>
 
-            {/* Right Search Button: Width 112px, Height 185px, Right 32px, Top 38px, Bottom 37px */}
+            {/* Right Submit Button: Width 112px, Height 185px, Right 32px, Top 38px, Bottom 37px */}
             <button
               type="button"
-              onClick={handleSearch}
-              className="absolute right-[32px] top-[38px] bottom-[37px] w-[112px] h-[185px] bg-[#5CACC4] hover:bg-[#4ea0b8] rounded-[15px] flex items-center justify-center transition-all cursor-pointer shadow-md hover:scale-[1.02] active:scale-[0.99]"
-              aria-label="Search Flights"
+              onClick={handleSubmit}
+              disabled={submitting}
+              className="absolute right-[32px] top-[38px] bottom-[37px] w-[112px] h-[185px] bg-[#5CACC4] hover:bg-[#4ea0b8] rounded-[15px] flex flex-col items-center justify-center gap-2 transition-all cursor-pointer shadow-md hover:scale-[1.02] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed"
+              aria-label="Submit"
             >
               <Image
                 src="/send.svg"
-                alt="Search"
+                alt="Submit"
                 width={32}
                 height={32}
                 className="w-[32px] h-[32px] object-contain"
               />
+              <span className="font-poppins font-bold text-[16px] text-white">
+                {submitting ? "..." : "Submit"}
+              </span>
             </button>
           </div>
 
@@ -940,14 +1033,15 @@ const HeroSectionNew = ({
               </div>
             </div>
 
-            {/* Mobile Search Button */}
+            {/* Mobile Submit Button */}
             <button
               type="button"
-              onClick={handleSearch}
-              className="mt-4 w-full h-[52px] bg-[#5CACC4] hover:bg-[#4ea0b8] text-white font-poppins font-bold rounded-[12px] flex items-center justify-center gap-2 shadow-md cursor-pointer"
+              onClick={handleSubmit}
+              disabled={submitting}
+              className="mt-4 w-full h-[52px] bg-[#5CACC4] hover:bg-[#4ea0b8] text-white font-poppins font-bold rounded-[12px] flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              <Image src="/send.svg" alt="Search" width={22} height={22} className="w-[22px] h-[22px] object-contain" />
-              <span>Search Flights</span>
+              <Image src="/send.svg" alt="Submit" width={22} height={22} className="w-[22px] h-[22px] object-contain" />
+              <span>{submitting ? "Submitting..." : "Submit"}</span>
             </button>
           </div>
         </div>

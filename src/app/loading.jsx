@@ -50,7 +50,7 @@ export default function Loading() {
     return <LegalStaticPageSkeleton />;
   }
 
-  if (isCityFaresPath(path)) {
+  if (path === '/flights' || isCityFaresPath(path)) {
     return <CityFlightFaresSkeleton />;
   }
 

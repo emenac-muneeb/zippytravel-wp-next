@@ -43,8 +43,8 @@ input[type="checkbox"].custom-check:checked::before {
 .react-datepicker__month-select,
 .react-datepicker__year-select {
   background-color: #ffffff;
-  border: 1px solid #F1A868;
-    color: #F1A868;
+  border: 1px solid #5CACC4;
+    color: #5CACC4;
   font-weight: 600;
   border-radius: 8px;
   padding: 6px 34px 6px 12px;
@@ -64,12 +64,12 @@ body{
   overflow-x: hidden;
 }
 h1 {
-  color: #A57233;
+  color: #1F0060;
   font-size: 32px;
 }
 
 h2 {
-  color: #A57233;
+  color: #1F0060;
   font-size: 26px;
 }
 
@@ -79,17 +79,17 @@ h3 {
 }
 
 h4 {
-  color: #A57233;
+  color: #1F0060;
   font-size: 20px;
 }
 
 h5 {
-  color: #A57233;
+  color: #1F0060;
   font-size: 16px;
 }
 
 h6 {
-  color: #A57233;
+  color: #1F0060;
   font-size: 15px;
 }
 p {
@@ -118,7 +118,7 @@ p {
 }
 strong,
 .prose strong {
-    color: #A57233;
+    color: #1F0060;
     font-family: var(--font-inter), Inter, sans-serif !important;
 }
 .white_tags {
@@ -126,7 +126,7 @@ strong,
 }
 
 .red_tag {
-  color: #F1A868 !important;
+  color: #5CACC4 !important;
 }
 
 .black_tag {
@@ -167,10 +167,10 @@ strong,
 }
 
 .h3-black {
-  color: #A57233 !important;
+  color: #1F0060 !important;
 }
 text-red {
-  color: #F1A868 !important;
+  color: #5CACC4 !important;
 } 
 h1 {
     font-family: var(--font-inter), system-ui, sans-serif;
@@ -190,11 +190,11 @@ p{
 
 /* NProgress custom color */
 #nprogress .bar {
-  background: #F1A868 !important;
+  background: #5CACC4 !important;
 }
 
 #nprogress .peg {
-  box-shadow: 0 0 10px #F1A868, 0 0 5px #F1A868 !important;
+  box-shadow: 0 0 10px #5CACC4, 0 0 5px #5CACC4 !important;
 }
 .faq_question{
   font-size: 16px !important;
@@ -224,7 +224,7 @@ p{
   left: 0;
   width: 100px;
   height: 4px;
-  background-color: #F1A868;
+  background-color: #5CACC4;
   z-index: 1;
 }
 .heading_section::after,
@@ -235,13 +235,13 @@ p{
   left: 0;
   width: 100px;
   height: 1px;
-  background-color: #F1A868;
+  background-color: #5CACC4;
   z-index: 1;
 }
 .pre_heading{
   font-size: 42px;
   font-weight: 800;
-  color: #3F3F3F;
+  color: #1F0060;
   margin-bottom: 0px;
   line-height: 1.2;
 }
@@ -447,7 +447,7 @@ p{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #A57233;
+  background: #1F0060;
   color: #fff;
   font-size: 16px;
   font-weight: 600;
@@ -473,7 +473,7 @@ p{
   }
 }
 .prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  color:#A57233;
+  color:#1F0060;
   font-weight: 500;
   text-decoration: none;
 }

@@ -13,14 +13,14 @@ module.exports = {
       },
       css: {
         h1: {
-          color: "#A57233 !important",
+          color: "#1F0060 !important",
         },
         h2: {
-          color: "#A57233 !important",
+          color: "#1F0060 !important",
         },
         h4: {
           fontSize: "18px !important",
-          color: "#A57233",
+          color: "#1F0060",
         },
       },
       fontFamily: {
@@ -32,11 +32,11 @@ module.exports = {
         poppins: ["var(--font-inter)", "Inter", "sans-serif"],
       },
       colors: {
-        primary: "#F1A868",
-        primaryHover: "#B2001B",
-        secondary: "#A57233",
-        tertiary: "#EB9448",
-        secondaryHover: "#561849",
+        primary: "#5CACC4",
+        primaryHover: "#4ea0b8",
+        secondary: "#1F0060",
+        tertiary: "#5CACC4",
+        secondaryHover: "#16004a",
         white: "#FFFFFF",
         dark: "#000000",
         grayText: "#4C4C4C",

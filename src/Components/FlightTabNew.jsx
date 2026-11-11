@@ -548,9 +548,10 @@ const FlightTabNew = ({
         }
     };
 
-    // Navigate to results — FlightCardList owns the single /flightsearch call
-    const searchFlights = () => {
-        const isOnFlightDetails = pathname && pathname.replace(/\/$/, "") === "/flightDetails";
+    // Submit banner form via enquire / send-email API
+    const [bannerSubmitting, setBannerSubmitting] = useState(false);
+    const submitBannerForm = async () => {
+        if (bannerSubmitting) return;
 
         if (!origin || !destination || !departureDate) {
             if (typeof setPopupMessage === 'function') {
@@ -570,49 +571,48 @@ const FlightTabNew = ({
             return;
         }
 
-        const formState = {
-            tripType,
-            origin,
-            destination,
-            originLabel,
-            destinationLabel,
-            departureDate,
-            returnDate,
-            selectedClass,
-            adults,
-            children,
-            infants,
-            selectedAirlines
+        const fromLabel = originLabel || origin;
+        const toLabel = destinationLabel || destination;
+        const payload = {
+            name: fromLabel,
+            email: "",
+            contact: "",
+            contact_detail: {
+                subject: "Banner Flight Enquiry",
+                message: `Flight enquiry from ${fromLabel} to ${toLabel}`,
+                Inquiry: "Banner Flight Form",
+                user_ip: userIp,
+                trip_type: tripType,
+                origin: fromLabel,
+                destination: toLabel,
+                OriginCode: origin,
+                DestinationCode: destination,
+                DepartureDate: departureDate ? formatLocalDate(departureDate) : "",
+                Return: returnDate ? formatLocalDate(returnDate) : "",
+                Class: selectedClass,
+                adults,
+                children,
+                infants,
+                pageURL: typeof window !== "undefined" ? window.location.href : "",
+                formType: "banner flight form",
+            },
         };
 
-        localStorage.setItem("flightFormData", JSON.stringify(formState));
-        localStorage.setItem("TripType", tripType === 'Round-Trip' ? 'RT' : 'OW');
-
-        const queryString = new URLSearchParams({
-            TripType: tripType,
-            Origin: origin,
-            Originlabel: originLabel,
-            Destination: destination,
-            Destinationlabel: destinationLabel,
-            DepartDate: departureDate ? formatLocalDate(departureDate) : "",
-            ArrivalDate: returnDate ? formatLocalDate(returnDate) : "",
-            Class: selectedClass,
-            NoOfAdultPax: adults,
-            NoOfChildPax: children,
-            NoOfInfantPax: infants,
-        }).toString();
-
-        // Show loading while navigating / while FlightCardList refetches
-        if (typeof setBookNowLoading === 'function') setBookNowLoading(true);
-        if (typeof setFlightLoading === 'function') setFlightLoading(true);
-
-        if (isOnFlightDetails) {
-            // Cache-bust so identical criteria still trigger a single refetch
-            const params = new URLSearchParams(queryString);
-            params.set("_ts", String(Date.now()));
-            router.replace(`/flightDetails?${params.toString()}`);
-        } else {
-            router.push(`/flightDetails?${queryString}`);
+        setBannerSubmitting(true);
+        try {
+            const res = await api.post(`${BASE_URL}/send-email`, payload);
+            const data = res.data;
+            if (data?.status === 1 || data?.success === 1) {
+                showToast("Form submitted successfully!", "success");
+                router.push("/thankyou.html");
+            } else {
+                showToast(data?.message || "Something went wrong. Please try again.", "error");
+            }
+        } catch (err) {
+            console.error("Banner form submit error:", err);
+            showToast("Server error occurred. Please try again later.", "error");
+        } finally {
+            setBannerSubmitting(false);
         }
     };
 
@@ -994,26 +994,28 @@ const FlightTabNew = ({
                             <div className="md:hidden mt-2">
                                 <button
                                     type="button"
-                                    onClick={searchFlights}
-                                    className="flex items-center justify-center gap-2 rounded-[14px] bg-[#A57233] hover:bg-[#8e622b] text-white font-semibold shadow-md w-full h-[47px] transition-colors"
-                                    aria-label="Search flights"
+                                    onClick={submitBannerForm}
+                                    disabled={bannerSubmitting}
+                                    className="flex items-center justify-center gap-2 rounded-[14px] bg-[#A57233] hover:bg-[#8e622b] text-white font-semibold shadow-md w-full h-[47px] transition-colors disabled:opacity-70"
+                                    aria-label="Submit"
                                 >
-                                    <img src="/media/fr-svgs/searchicon.png" alt="search" className="w-5 h-5 object-contain brightness-0 invert" />
-                                    <span className="text-[15px] font-bold">Search Flights</span>
+                                    <img src="/media/fr-svgs/searchicon.png" alt="submit" className="w-5 h-5 object-contain brightness-0 invert" />
+                                    <span className="text-[15px] font-bold">{bannerSubmitting ? "Submitting..." : "Submit"}</span>
                                 </button>
                             </div>
                         </div>
 
-                        {/* Desktop Search Button — positioned on right edge */}
+                        {/* Desktop Submit Button — positioned on right edge */}
                         <div className="hidden md:flex absolute min-[1450px]:right-[-34px] lg:right-[-23px] md:right-[-15px] top-[50%] translate-y-[-50%] items-center justify-center m-0 shrink-0 z-20">
                             <button
                                 type="button"
-                                onClick={searchFlights}
-                                className="flex flex-col items-center justify-center gap-0 rounded-full bg-[#A57233] hover:bg-[#8e622b] text-white font-semibold shadow-md w-16 h-16 transition-colors shrink-0"
-                                aria-label="Search flights"
+                                onClick={submitBannerForm}
+                                disabled={bannerSubmitting}
+                                className="flex flex-col items-center justify-center gap-0 rounded-full bg-[#A57233] hover:bg-[#8e622b] text-white font-semibold shadow-md w-16 h-16 transition-colors shrink-0 disabled:opacity-70"
+                                aria-label="Submit"
                             >
-                                <img src="/media/fr-svgs/searchicon.png" alt="search" className="w-5 h-5 object-contain brightness-0 invert" />
-                                <span className="text-[11px] mt-0.5 leading-none">Search</span>
+                                <img src="/media/fr-svgs/searchicon.png" alt="submit" className="w-5 h-5 object-contain brightness-0 invert" />
+                                <span className="text-[11px] mt-0.5 leading-none">{bannerSubmitting ? "..." : "Submit"}</span>
                             </button>
                         </div>
                     </div>

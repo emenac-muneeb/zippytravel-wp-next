@@ -102,6 +102,8 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
       if (selectedClass === 'Premium Economy') {
         paramsObj.class = 1;
       } else if (selectedClass === 'First Class') {
+        paramsObj.class = 2;
+      } else if (selectedClass === 'Economy Class') {
         paramsObj.class = 3;
       }
 
@@ -267,7 +269,7 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
 
       <div className="container">
         {/* Top padding accommodates the 3 buttons overlapping the bottom of the hero */}
-        <div className="w-full mx-auto pt-[60px] sm:pt-[75px] lg:pt-[90px]">
+        <div className="w-full mx-auto pt-[40px] sm:pt-[45px] lg:pt-[30px]">
           {/* Heading without decorative before/after lines */}
           <div className="text-center max-w-[900px] mx-auto mb-8 sm:mb-10">
             <h2 className="pre_heading">
@@ -293,7 +295,7 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
                   {[
                     { id: 'Business', label: 'Business Class' },
                     { id: 'Premium Economy', label: 'Premium Economy' },
-                    { id: 'First Class', label: 'First Class' },
+                    { id: 'Economy Class', label: 'Economy Class' },
                   ].map((item) => {
                     const isActive = selectedClass === item.id;
                     return (

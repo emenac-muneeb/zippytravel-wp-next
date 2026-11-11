@@ -85,7 +85,7 @@ export default function FlightCard({ cities, fares, cols = 2 }) {
               className="bg-white rounded-[16px] sm:rounded-[20px] p-4 sm:p-5 border border-[#EDEDED] shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all flex flex-col justify-between"
             >
               {/* Top Row: Origin, Destination, Price + Send Enquiry */}
-              <div className="flex items-start justify-between gap-2 sm:gap-4">
+              <div className="flex items-start justify-between gap-2 sm:gap-4 flex-col sm:flex-row">
                 {/* 1. Origin */}
                 <div className="flex flex-col text-left min-w-0 flex-1">
                   <span className="text-[20px] sm:text-[22px] font-bold text-black leading-tight">
@@ -113,7 +113,7 @@ export default function FlightCard({ cities, fares, cols = 2 }) {
                 </div>
 
                 {/* 3. Price & Action */}
-                <div className="flex flex-col items-end shrink-0 pl-1">
+                <div className="flex flex-row-reverse sm:flex-col items-end shrink-0 pl-0 sm:pl-1 justify-between sm:justify-end w-full sm:w-auto">
                   <span className="text-[20px] sm:text-[22px] font-bold text-black leading-tight">
                     £{priceDisplay}
                   </span>
@@ -131,9 +131,9 @@ export default function FlightCard({ cities, fares, cols = 2 }) {
               <div className="w-full h-[1px] bg-gray-100 my-3.5" />
 
               {/* Bottom Row: Airline Logo, Flight Type & Class, Call Us */}
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
                 {/* Airline Logo */}
-                <div className="flex items-center min-w-[80px] sm:min-w-[110px] h-7">
+                <div className="flex items-center min-w-[80px] sm:min-w-[110px] h-7 w-full sm:w-auto">
                   {airlineImage ? (
                     <img
                       src={airlineImage}
@@ -156,7 +156,7 @@ export default function FlightCard({ cities, fares, cols = 2 }) {
                 </div>
 
                 {/* Flight Type & Class */}
-                <div className="flex flex-col items-center text-center">
+                <div className="flex flex-col items-start sm:items-center text-center">
                   <span className="text-[12px] font-semibold text-black leading-tight">
                     {flightType}
                   </span>

@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import CityFlightFaresClient from './CityFlightFaresClient';
+import BannerFaresClient from './BannerFaresClient';
 import SpecificContinentClient from './SpecificContinentClient';
 import CountryPackagesClient from './CountryPackagesClient';
 import HolidayPackageDetailsClient from './HolidayPackageDetailsClient';
@@ -50,6 +51,9 @@ const DynamicClientWrapper = ({ result, params }) => {
 
   switch (type) {
     case 'cmsStatic':
+      if (variant === 'bannerFares') {
+        return <BannerFaresClient initialData={data} />;
+      }
       return renderCmsStaticPage(variant, data, pageUrl);
     case 'city':
       return <CityFlightFaresClient initialData={data} params={params} />;

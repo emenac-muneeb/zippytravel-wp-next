@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useMemo, useState } from 'react';
-import BannerInner from './BannerInner';
+import HeroSectionNew from './HeroSectionNew';
 import Flightlist from './Flightlist';
 import { useSearchParams } from 'next/navigation';
 import LoadingScreen from './LoadingScreen';
@@ -11,8 +11,8 @@ import NProgress from 'nprogress';
 const FilterAccent = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="40.5" height="3.469" viewBox="0 0 40.5 3.469" aria-hidden>
         <g transform="translate(-60 -27.531)">
-            <line x2="29" transform="translate(60.5 28.031)" fill="none" stroke="#a57233" strokeLinecap="round" strokeWidth="1" />
-            <line x2="29" transform="translate(71 30.5)" fill="none" stroke="#a57233" strokeLinecap="round" strokeWidth="1" />
+            <line x2="29" transform="translate(60.5 28.031)" fill="none" stroke="#5CACC4" strokeLinecap="round" strokeWidth="1" />
+            <line x2="29" transform="translate(71 30.5)" fill="none" stroke="#5CACC4" strokeLinecap="round" strokeWidth="1" />
         </g>
     </svg>
 );
@@ -54,6 +54,19 @@ const FlightCardList = () => {
     const [isAirlinesOpen, setIsAirlinesOpen] = useState(true);
 
     const searchKey = searchParams.toString();
+
+    const initialSearch = useMemo(() => ({
+        tripType: searchParams.get("TripType") || "One-Way",
+        origin: searchParams.get("Origin") || "",
+        originLabel: searchParams.get("Originlabel") || "",
+        destination: searchParams.get("Destination") || "",
+        destinationLabel: searchParams.get("Destinationlabel") || "",
+        departureDate: searchParams.get("DepartDate") || "",
+        returnDate: searchParams.get("ArrivalDate") || "",
+        adults: searchParams.get("NoOfAdultPax") || 1,
+        children: searchParams.get("NoOfChildPax") || 0,
+        infants: searchParams.get("NoOfInfantPax") || 0,
+    }), [searchKey]);
 
     useEffect(() => {
         const origin = searchParams.get("Origin") || "";
@@ -211,11 +224,12 @@ const FlightCardList = () => {
         setSearchAirline('');
     };
 
-    if (loadingRes || BookNowLoading) return <LoadingScreen />;
-
     const flightCount = filteredResults.length;
     const originShort = originLabel?.split(' - ')?.[0] || originLabel || searchParams.get("Origin") || 'Origin';
     const destinationShort = destinationLabel?.split(' - ')?.[0] || destinationLabel || searchParams.get("Destination") || 'Destination';
+    const showFullLoader = BookNowLoading;
+
+    if (showFullLoader) return <LoadingScreen />;
 
     return (
         <>
@@ -226,7 +240,7 @@ const FlightCardList = () => {
                     height: 16px;
                     border-radius: 4px;
                     background: #ffffff;
-                    border: 2px solid #a57233;
+                    border: 2px solid #5CACC4;
                     cursor: pointer;
                     -webkit-appearance: none;
                 }
@@ -236,29 +250,26 @@ const FlightCardList = () => {
                     height: 16px;
                     border-radius: 4px;
                     background: #ffffff;
-                    border: 2px solid #a57233;
+                    border: 2px solid #5CACC4;
                     cursor: pointer;
                 }
                 .custom-scrollbar::-webkit-scrollbar {
                     width: 6px;
                 }
                 .custom-scrollbar::-webkit-scrollbar-track {
-                    background: #A57233;
-                    opacity:0.3;
+                    background: #E8F4F8;
                     border-radius: 10px;
                 }
                 .custom-scrollbar::-webkit-scrollbar-thumb {
-                    background: #A57233;
-                    opacity:0.3;
+                    background: #5CACC4;
                     border-radius: 10px;
                 }
                 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                    background: #A57233;
-                    opacity:0.5;
+                    background: #4ea0b8;
                 }
                 .custom-scrollbar {
                     scrollbar-width: thin;
-                    scrollbar-color: #E3DAC9 #FAF5ED;
+                    scrollbar-color: #5CACC4 #E8F4F8;
                 }
             `}</style>
 
@@ -270,20 +281,24 @@ const FlightCardList = () => {
                 />
             )}
 
-            <BannerInner
+            <HeroSectionNew
                 bgImageOverride="/flightdetail.png"
-                pageBannerOnly
+                title="Find Your Perfect Flight"
+                subTitle="— Zippy Travel"
+                description="Compare live fares and refine your search below."
                 setFlightLoading={setBookNowLoading}
                 setPopupMessage={setPopupMessage}
+                initialSearch={initialSearch}
             />
 
+            <div className="bg-[#F3F6F8]">
             <div className="container">
                 <div className="w-full mx-auto pt-[40px] sm:pt-[55px] pb-10">
                     <div className="heading_section">
-                        <h2 className="pre_heading font-quicksand">
+                        <h2 className="pre_heading font-poppins">
                             {flightCount} {flightCount === 1 ? 'Flight' : 'Flights'} Found
                         </h2>
-                        <p className="sub_text font-quicksand">
+                        <p className="sub_text font-poppins">
                             {originShort} to {destinationShort}
                             <span className="block text-[14px] sm:text-[16px] text-black/50 mt-1">
                                 Fares change frequently — book soon to lock in the best price. All times shown are airport local time.
@@ -329,13 +344,13 @@ const FlightCardList = () => {
                             </div> */}
 
                             {/* Price Filter */}
-                            <div className="bg-[#FFFAF5] rounded-[24px] p-4 sm:p-4 border border-[#E3DAC9]">
+                            <div className="bg-white rounded-[20px] p-4 sm:p-4 border border-[#E3E8EC] shadow-[0_8px_24px_rgba(31,0,96,0.06)]">
                                 <div
                                     className="flex justify-between items-center cursor-pointer select-none"
                                     onClick={() => setIsPriceOpen(!isPriceOpen)}
                                 >
                                     <div className="flex items-center gap-2">
-                                        <h3 className="text-secondary text-[18px] font-bold font-quicksand">Price</h3>
+                                        <h3 className="text-[#1F0060] text-[18px] font-bold font-poppins">Price</h3>
                                         <FilterAccent />
                                     </div>
                                     <ChevronIcon open={isPriceOpen} />
@@ -343,16 +358,16 @@ const FlightCardList = () => {
                                 <div className={`transition-all duration-300 overflow-hidden ${isPriceOpen ? 'max-h-[120px] mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
                                     <div className="space-y-4 px-1 pb-4">
                                         <div className="relative h-12 flex items-end pb-1 mt-6">
-                                            <div className="absolute h-0.5 bg-[#E6DEC9] w-full rounded-full" />
+                                            <div className="absolute h-0.5 bg-[#D7E6EC] w-full rounded-full" />
                                             <div
-                                                className="absolute h-0.5 bg-secondary rounded-full"
+                                                className="absolute h-0.5 bg-[#5CACC4] rounded-full"
                                                 style={{
                                                     left: `${minPercent}%`,
                                                     width: `${Math.max(maxPercent - minPercent, 0)}%`
                                                 }}
                                             />
                                             <span
-                                                className="absolute text-[12px] font-light font-quicksand text-secondary px-2 py-0.5 rounded shadow-sm select-none z-10 pointer-events-none"
+                                                className="absolute text-[12px] font-medium font-poppins text-[#1F0060] px-2 py-0.5 rounded shadow-sm select-none z-10 pointer-events-none bg-white"
                                                 style={{
                                                     left: `${5}%`,
                                                     transform: 'translate(-50%, -26px)',
@@ -362,7 +377,7 @@ const FlightCardList = () => {
                                                 £{minPrice.toLocaleString()}
                                             </span>
                                             <span
-                                                className="absolute text-[12px] font-light font-quicksand text-secondary px-2 py-0.5 rounded shadow-sm select-none z-10 pointer-events-none"
+                                                className="absolute text-[12px] font-medium font-poppins text-[#1F0060] px-2 py-0.5 rounded shadow-sm select-none z-10 pointer-events-none bg-white"
                                                 style={{
                                                     left: `${100 - 6}%`,
                                                     transform: 'translate(-50%, -26px)',
@@ -399,13 +414,13 @@ const FlightCardList = () => {
                             </div>
 
                             {/* Airlines Filter */}
-                            <div className="bg-[#FFFAF5] rounded-[24px] p-4 sm:p-4 border border-[#E3DAC9]">
+                            <div className="bg-white rounded-[20px] p-4 sm:p-4 border border-[#E3E8EC] shadow-[0_8px_24px_rgba(31,0,96,0.06)]">
                                 <div
                                     className="flex justify-between items-center cursor-pointer select-none"
                                     onClick={() => setIsAirlinesOpen(!isAirlinesOpen)}
                                 >
                                     <div className="flex items-center gap-2">
-                                        <h3 className="text-secondary text-[18px] font-bold font-quicksand">Airlines</h3>
+                                        <h3 className="text-[#1F0060] text-[18px] font-bold font-poppins">Airlines</h3>
                                         <FilterAccent />
                                     </div>
                                     <ChevronIcon open={isAirlinesOpen} />
@@ -417,13 +432,13 @@ const FlightCardList = () => {
                                             placeholder="Search Airline"
                                             value={searchAirline}
                                             onChange={(e) => setSearchAirline(e.target.value)}
-                                            className="w-full bg-transparent border-b border-[#E3DAC9] py-1 pr-6 text-[13px] font-quicksand text-black placeholder-black/30 focus:outline-none focus:border-secondary"
+                                            className="w-full bg-transparent border-b border-[#D7E6EC] py-1 pr-6 text-[13px] font-poppins text-black placeholder-black/30 focus:outline-none focus:border-[#5CACC4]"
                                         />
                                         <svg className="w-3.5 h-3.5 text-black/40 absolute right-1 top-2" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden>
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                                         </svg>
                                     </div>
-                                    <div className="border border-[#F3EDE2] rounded-2xl bg-[#FFF3E8] p-4 max-h-[180px] overflow-y-auto space-y-3 custom-scrollbar">
+                                    <div className="border border-[#E3E8EC] rounded-2xl bg-[#F3F6F8] p-4 max-h-[180px] overflow-y-auto space-y-3 custom-scrollbar">
                                         {filteredAirlinesList.length > 0 ? (
                                             filteredAirlinesList.map((airline, idx) => {
                                                 const isChecked = selectedAirlines.includes(airline.airlineName);
@@ -436,18 +451,18 @@ const FlightCardList = () => {
                                                                 onChange={() => toggleAirline(airline.airlineName)}
                                                                 className="sr-only"
                                                             />
-                                                            <div className={`w-[18px] h-[18px] rounded-full border border-secondary/60 flex items-center justify-center transition-all ${isChecked ? 'bg-secondary border-secondary' : 'bg-white'}`}>
+                                                            <div className={`w-[18px] h-[18px] rounded-full border border-[#5CACC4]/60 flex items-center justify-center transition-all ${isChecked ? 'bg-[#5CACC4] border-[#5CACC4]' : 'bg-white'}`}>
                                                                 <svg className={`w-2.5 h-2.5 text-white transition-opacity ${isChecked ? 'opacity-100' : 'opacity-0'}`} fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" aria-hidden>
                                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                                                 </svg>
                                                             </div>
                                                         </div>
-                                                        <span className="text-[14px] text-black font-quicksand font-medium leading-none select-none">{airline?.airlineName}</span>
+                                                        <span className="text-[14px] text-[#1F0060] font-poppins font-medium leading-none select-none">{airline?.airlineName}</span>
                                                     </label>
                                                 );
                                             })
                                         ) : (
-                                            <p className="text-[12px] text-gray-500 text-center py-2 font-quicksand">No airlines found</p>
+                                            <p className="text-[12px] text-gray-500 text-center py-2 font-poppins">No airlines found</p>
                                         )}
                                     </div>
                                 </div>
@@ -456,8 +471,18 @@ const FlightCardList = () => {
 
                         {/* Flight List */}
                         <div className="flex-grow min-w-0">
-                            {filteredResults.length > 0 ? (
-                                <div className="border border-[#F2E9DE] py-4 px-3 sm:py-6 sm:px-5 min-[1360px]:py-[34px] min-[1360px]:px-[30px] rounded-3xl overflow-hidden bg-white">
+                            {loadingRes ? (
+                                <div className="border border-[#E3E8EC] py-[80px] px-[30px] rounded-3xl text-center bg-white shadow-[0_8px_24px_rgba(31,0,96,0.05)]">
+                                    <div className="mx-auto mb-4 h-10 w-10 rounded-full border-4 border-[#5CACC4] border-t-transparent animate-spin" />
+                                    <p className="text-[#1F0060] font-poppins font-semibold text-[16px]">
+                                        Searching flights…
+                                    </p>
+                                    <p className="text-gray-500 font-poppins text-[14px] mt-2">
+                                        Comparing live fares for your route.
+                                    </p>
+                                </div>
+                            ) : filteredResults.length > 0 ? (
+                                <div className="border border-[#E3E8EC] py-4 px-3 sm:py-6 sm:px-5 min-[1360px]:py-[34px] min-[1360px]:px-[30px] rounded-3xl overflow-hidden bg-white shadow-[0_8px_24px_rgba(31,0,96,0.05)]">
                                     <Flightlist
                                         results={{ ...finalResults, result: { ...(finalResults?.result || {}), airSolutions: filteredResults } }}
                                         setBookNowLoading={setBookNowLoading}
@@ -468,8 +493,8 @@ const FlightCardList = () => {
                                     />
                                 </div>
                             ) : (
-                                <div className="border border-[#F2E9DE] py-[60px] px-[30px] rounded-3xl text-center bg-white">
-                                    <p className="text-gray-500 font-quicksand font-medium text-[16px]">
+                                <div className="border border-[#E3E8EC] py-[60px] px-[30px] rounded-3xl text-center bg-white shadow-[0_8px_24px_rgba(31,0,96,0.05)]">
+                                    <p className="text-gray-500 font-poppins font-medium text-[16px]">
                                         {finalResults?.result?.airSolutions?.length
                                             ? 'No fares match your selected filters.'
                                             : 'Sorry, there are no flights available for your selected route or date at the moment.'}
@@ -478,7 +503,7 @@ const FlightCardList = () => {
                                         <button
                                             type="button"
                                             onClick={resetFilters}
-                                            className="mt-4 px-5 py-2 bg-secondary text-white font-quicksand text-sm font-semibold rounded-xl hover:bg-secondary/90 transition-colors"
+                                            className="mt-4 px-5 py-2 bg-[#5CACC4] text-white font-poppins text-sm font-semibold rounded-xl hover:bg-[#4ea0b8] transition-colors"
                                         >
                                             Reset Filters
                                         </button>
@@ -488,6 +513,7 @@ const FlightCardList = () => {
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </>
     );

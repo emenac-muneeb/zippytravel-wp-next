@@ -6,11 +6,27 @@ import ScriptInjector from '../../Components/common/ScriptInjector';
 
 const HOLIDAYS_PAGE_URL = 'holidays.html';
 
+async function getHolidayCountries() {
+  try {
+    const countriesRes = await fetch(endpoints.holidaysCountries, {
+      next: { revalidate: 3600 },
+    });
+    if (!countriesRes.ok) return [];
+
+    const contentType = countriesRes.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) return [];
+
+    const countriesData = await countriesRes.json();
+    return Array.isArray(countriesData?.data) ? countriesData.data : [];
+  } catch (err) {
+    console.error('Error fetching holiday countries:', err);
+    return [];
+  }
+}
+
 async function getHolidaysPageData() {
   const pageData = await fetchCmsPageByUrl(HOLIDAYS_PAGE_URL);
-  const countriesRes = await fetch(endpoints.holidaysCountries, { next: { revalidate: 3600 } });
-  const countriesData = await countriesRes.json();
-  const countries = countriesData.data || [];
+  const countries = await getHolidayCountries();
 
   if (!countries.length && !pageData) return null;
 
