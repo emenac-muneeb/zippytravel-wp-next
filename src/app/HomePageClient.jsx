@@ -145,8 +145,13 @@ const HomePageClient = ({
         id: city.id,
         title: city.title,
         city: city.title,
-        country: city.country?.title || cheapestFare.origin?.country || "Unknown",
-        continent: city.country?.continent?.title || "Unknown",
+        // country field kept for card subtitle display; prefer city title in 2-step flow
+        country: city.title || city.country?.title || cheapestFare.origin?.country || "Unknown",
+        continent:
+          city.continent?.title ||
+          city.country?.continent?.title ||
+          city.country?.title ||
+          "Unknown",
         code: cheapestFare.origin?.code || "LHR",
         price: cheapestFare.price,
         image: cleanImage,
@@ -230,7 +235,7 @@ const HomePageClient = ({
               />
             </div>
             )} */}
-          <BlogSection />
+          {/* <BlogSection /> */}
         </>
       )}
     </>

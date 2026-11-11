@@ -5,24 +5,71 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
-import WhatsAppCallbackDropdown from "./WhatsAppCallbackDropdown";
 import { useGeneralSettings } from "../Context/GeneralSettingsContext";
 
+const normalizeNavSlug = (pageUrl = "") =>
+  String(pageUrl)
+    .trim()
+    .replace(/^\/+/, "")
+    .replace(/\.(htm|html)$/i, "")
+    .toLowerCase();
+
 const NavBar = () => {
-  const { globalVarsMap } = useGeneralSettings();
+  const { globalVarsMap, navTree } = useGeneralSettings();
   const globalVariable = globalVarsMap || {};
+  const navData = Array.isArray(navTree) ? navTree : [];
+  const sortedNav = [...navData].sort(
+    (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0)
+  );
+
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [loginStep, setloginStep] = useState(1);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const isAboutUs = pathname?.toLowerCase().includes("about-us");
+  const normalizedPath = (pathname || "").toLowerCase().replace(/\/+$/, "") || "/";
+  const isAboutUs = normalizedPath.includes("about-us");
+
+  const isActive = (pageUrl) => {
+    const slug = normalizeNavSlug(pageUrl);
+    if (!slug) return false;
+    const href = `/${slug}`;
+    return normalizedPath === href || normalizedPath.startsWith(`${href}/`);
+  };
+
+  const getHref = (pageUrl) => {
+    const slug = normalizeNavSlug(pageUrl);
+    return slug ? `/${slug}` : "/";
+  };
+
+  const getNavLinkClass = (pageUrl, { size = "desktop" } = {}) => {
+    const active = isActive(pageUrl);
+
+    if (active) {
+      if (size === "mobile") {
+        return "inline-flex px-4 h-[32px] bg-[#1F0060] hover:bg-[#340b8a] text-white rounded-[6px] items-center justify-center font-poppins font-normal text-[15px] shadow-sm transition-colors";
+      }
+      if (size === "tablet") {
+        return "px-3.5 py-1 bg-[#1F0060] hover:bg-[#340b8a] text-white rounded text-[14px] font-poppins transition-colors";
+      }
+      return "h-[32px] px-3.5 bg-[#1F0060] hover:bg-[#340b8a] text-white rounded-[6px] inline-flex items-center justify-center font-poppins font-normal text-[16px] shadow-sm transition-colors whitespace-nowrap";
+    }
+
+    if (size === "mobile") {
+      return "block font-poppins font-normal text-[17px] text-[#000000] hover:text-[#5CACC4] py-1 border-b border-gray-50 transition-colors";
+    }
+    if (size === "tablet") {
+      return `font-poppins transition-colors ${
+        isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"
+      }`;
+    }
+    return `font-poppins font-normal text-[18px] transition-colors whitespace-nowrap ${
+      isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"
+    }`;
+  };
 
   const phoneNumber = globalVariable?.PHONENUMBER || "0203 - 923 - 2255";
   const telHref = `tel:${phoneNumber.replace(/[^0-9+]/g, "")}`;
-  const whatsappUrl = globalVariable?.WHATSAPP
-    ? `https://wa.me/${globalVariable.WHATSAPP.replace(/\D/g, "")}`
-    : null;
 
   return (
     <>
@@ -30,14 +77,13 @@ const NavBar = () => {
         className={`w-full z-50 font-poppins transition-colors ${
           isAboutUs
             ? "absolute top-0 left-0 bg-transparent border-none"
-            : "w-full bg-white border-b border-gray-100 relative"
+            : "w-full bg-white relative"
         }`}
       >
         {/* Main 1360px container */}
-        <div className="w-full max-w-[1360px] mx-auto px-4 xl:px-0">
+        <div className="w-full max-w-[1236px] mx-auto px-4 xl:px-[20px]">
           {/* Desktop Navigation (>= 1200px) */}
-          <div className="hidden xl:flex items-center h-[147px] pt-[43px] pb-[68px] px-[80px]">
-            {/* Logo: 166px x 36px (80px from left edge) */}
+          <div className="hidden xl:grid grid-cols-[166px_1fr_223px] gap-x-[28px] items-center h-[147px] pt-[43px] pb-[52px]">
             <Link href="/" className="shrink-0 flex items-center" aria-label="Zippy Travel Home">
               <Image
                 src={isAboutUs ? "/ZTlogo-white.png" : "/ZTlogo dark 1.png"}
@@ -49,71 +95,24 @@ const NavBar = () => {
               />
             </Link>
 
-            {/* Menu Links: 37px gap from logo, 28px gap between each button */}
-            <nav className="flex items-center ml-[37px] gap-[28px]" aria-label="Main Navigation">
-              {/* Business Class Flights (37px from logo) */}
-              <Link
-                href="/airlines"
-                className={`transition-colors whitespace-nowrap ${
-                  isAboutUs
-                    ? "font-poppins font-normal text-[16px] text-white bg-[#1F0060] px-3.5 py-1.5 rounded-[6px] shadow-sm hover:bg-[#340b8a]"
-                    : "font-poppins font-normal text-[18px] text-[#000000] hover:text-[#5CACC4]"
-                }`}
-              >
-                Business Class Flights
-              </Link>
-
-              {/* Destination */}
-              <Link
-                href="/continents"
-                className={`font-poppins font-normal text-[18px] transition-colors whitespace-nowrap ${
-                  isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"
-                }`}
-              >
-                Destination
-              </Link>
-
-              {/* Airline Badge / Link */}
-              <Link
-                href="/airline"
-                className={`transition-colors whitespace-nowrap ${
-                  isAboutUs
-                    ? "font-poppins font-normal text-[18px] text-white hover:text-[#5CACC4]"
-                    : "w-[85px] h-[30px] bg-[#1F0060] hover:bg-[#340b8a] text-white rounded-[6px] flex items-center justify-center font-poppins font-normal text-[16px] shadow-sm"
-                }`}
-              >
-                Airline
-              </Link>
-
-              {/* Contact Us */}
-              <Link
-                href="/contact-us"
-                className={`font-poppins font-normal text-[18px] transition-colors whitespace-nowrap ${
-                  isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"
-                }`}
-              >
-                Contact Us
-              </Link>
-
-              {/* Beat My Quote */}
-              <Link
-                href="/contact-us"
-                className={`font-poppins font-normal text-[18px] transition-colors whitespace-nowrap ${
-                  isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"
-                }`}
-              >
-                Beat My Quote
-              </Link>
+            <nav className="flex items-center justify-center gap-[28px]" aria-label="Main Navigation">
+              {sortedNav.map((item) => (
+                <Link
+                  key={item.id}
+                  href={getHref(item.page_url)}
+                  className={getNavLinkClass(item.page_url)}
+                >
+                  {item.title}
+                </Link>
+              ))}
             </nav>
 
-            {/* Contact Section: Exactly 48px to the right of Beat My Quote (or 48px to its left) */}
-            <div className="ml-[48px] shrink-0">
+            <div className="">
               <a
                 href={telHref}
                 className="w-[223px] h-[44px] flex items-center rounded-[8px] overflow-hidden shadow-sm hover:opacity-90 transition-opacity"
                 aria-label={`Call us at ${phoneNumber}`}
               >
-                {/* Left Icon: 47px x 44px, bg #1F0060 */}
                 <div className="w-[47px] h-[44px] bg-[#1F0060] flex items-center justify-center shrink-0">
                   <Image
                     src="/Vector.png"
@@ -123,7 +122,6 @@ const NavBar = () => {
                     className="w-[18px] h-[26px] object-contain"
                   />
                 </div>
-                {/* Right Phone Text: bg #5CACC4 */}
                 <div className="flex-1 h-[44px] bg-[#5CACC4] flex items-center justify-center font-poppins font-bold text-[18px] text-white tracking-wide">
                   {phoneNumber}
                 </div>
@@ -145,36 +143,15 @@ const NavBar = () => {
             </Link>
 
             <nav className="flex items-center gap-4 text-[15px]">
-              <Link
-                href="/airlines"
-                className={`font-poppins ${isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"}`}
-              >
-                Flights
-              </Link>
-              <Link
-                href="/continents"
-                className={`font-poppins ${isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"}`}
-              >
-                Destination
-              </Link>
-              <Link
-                href="/airline"
-                className="px-3 py-1 bg-[#1F0060] text-white rounded text-[14px]"
-              >
-                Airline
-              </Link>
-              <Link
-                href="/contact-us"
-                className={`font-poppins ${isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"}`}
-              >
-                Contact
-              </Link>
-              <Link
-                href="/contact-us"
-                className={`font-poppins ${isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"}`}
-              >
-                Beat Quote
-              </Link>
+              {sortedNav.map((item) => (
+                <Link
+                  key={item.id}
+                  href={getHref(item.page_url)}
+                  className={getNavLinkClass(item.page_url, { size: "tablet" })}
+                >
+                  {item.title}
+                </Link>
+              ))}
             </nav>
 
             <a
@@ -217,7 +194,6 @@ const NavBar = () => {
                 </div>
               </a>
 
-              {/* Hamburger Button */}
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -240,45 +216,19 @@ const NavBar = () => {
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu Drawer */}
         {isMobileMenuOpen && (
           <div className="lg:hidden border-t border-gray-100 bg-white shadow-xl animate-in fade-in duration-200">
             <div className="px-6 py-6 space-y-4">
-              <Link
-                href="/airlines"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block font-poppins font-normal text-[17px] text-[#000000] hover:text-[#5CACC4] py-1 border-b border-gray-50"
-              >
-                Business Class Flights
-              </Link>
-              <Link
-                href="/continents"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block font-poppins font-normal text-[17px] text-[#000000] hover:text-[#5CACC4] py-1 border-b border-gray-50"
-              >
-                Destination
-              </Link>
-              <Link
-                href="/airline"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="inline-flex w-[90px] h-[32px] bg-[#1F0060] text-white rounded-[6px] items-center justify-center font-poppins font-normal text-[15px]"
-              >
-                Airline
-              </Link>
-              <Link
-                href="/contact-us"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block font-poppins font-normal text-[17px] text-[#000000] hover:text-[#5CACC4] py-1 border-b border-gray-50"
-              >
-                Contact Us
-              </Link>
-              <Link
-                href="/contact-us"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block font-poppins font-normal text-[17px] text-[#000000] hover:text-[#5CACC4] py-1 border-b border-gray-50"
-              >
-                Beat My Quote
-              </Link>
+              {sortedNav.map((item) => (
+                <Link
+                  key={item.id}
+                  href={getHref(item.page_url)}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={getNavLinkClass(item.page_url, { size: "mobile" })}
+                >
+                  {item.title}
+                </Link>
+              ))}
 
               <div className="pt-2">
                 <a
@@ -298,7 +248,6 @@ const NavBar = () => {
         )}
       </header>
 
-      {/* Login & Sign Up Modals */}
       {isLoginOpen && (
         <LoginModal
           isOpen={isLoginOpen}

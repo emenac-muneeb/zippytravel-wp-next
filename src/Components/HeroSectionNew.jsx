@@ -1,11 +1,20 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { showToast } from "../Helpers/Helper";
 import PassengerDropdown from "./PassengerDropdown";
 import CalendarDropdown from "./CalendarDropdown";
 import { BASE_URL_IMG } from "../Helpers/imageurl";
+import { endpoints } from "../Helpers/endpoints";
+import api from "../Helpers/apiHelper";
+
+const resolveMediaSrc = (url) => {
+  if (!url || typeof url !== "string") return "";
+  if (url.startsWith("http") || url.startsWith("/")) return url;
+  return `${BASE_URL_IMG}/media/${url.replace(/^\/?media\//, "")}`;
+};
 
 const HeroSectionNew = ({
   setFlightLoading,
@@ -15,17 +24,28 @@ const HeroSectionNew = ({
   description,
   bgImageOverride,
   initialBanners = [],
+  bannerSlug = "flights",
 }) => {
   const router = useRouter();
 
   // Tab state: "One-Way" or "Round Trip"
   const [tripType, setTripType] = useState("One-Way");
+  const [banners, setBanners] = useState(
+    Array.isArray(initialBanners) ? initialBanners : []
+  );
 
-  // Form states
+  // Form states — codes are the selected airport IATA values; labels are what the inputs show
   const [origin, setOrigin] = useState("");
+  const [originLabel, setOriginLabel] = useState("");
   const [destination, setDestination] = useState("");
+  const [destinationLabel, setDestinationLabel] = useState("");
+  const [originSuggestions, setOriginSuggestions] = useState([]);
+  const [destinationSuggestions, setDestinationSuggestions] = useState([]);
+  const [loadingOrigin, setLoadingOrigin] = useState(false);
+  const [loadingDestination, setLoadingDestination] = useState(false);
   const [departureDate, setDepartureDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
+  const suggestionReq = useRef({ origin: 0, destination: 0 });
 
   // Dropdown states
   const [showPassengerModal, setShowPassengerModal] = useState(false);
@@ -38,6 +58,8 @@ const HeroSectionNew = ({
   // Input and container refs
   const originInputRef = useRef(null);
   const destinationInputRef = useRef(null);
+  const originMobileInputRef = useRef(null);
+  const destinationMobileInputRef = useRef(null);
   const passengerContainerRef = useRef(null);
   const depCalendarContainerRef = useRef(null);
   const retCalendarContainerRef = useRef(null);
@@ -45,24 +67,54 @@ const HeroSectionNew = ({
   const mobileDepCalendarContainerRef = useRef(null);
   const mobileRetCalendarContainerRef = useRef(null);
 
-  // Resolve background image
+  useEffect(() => {
+    if (Array.isArray(initialBanners) && initialBanners.length > 0) {
+      setBanners(initialBanners);
+    }
+  }, [initialBanners]);
+
+  // Home banner fallback: fetch /banner when no SSR banners and no page overrides
+  useEffect(() => {
+    if (banners.length > 0 || title || description || bgImageOverride) return;
+
+    axios
+      .get(endpoints.banner)
+      .then((res) => {
+        if (res.data?.status === 1 && Array.isArray(res.data.result)) {
+          setBanners(res.data.result);
+        }
+      })
+      .catch((err) => console.error("Failed to fetch banners:", err));
+  }, [banners.length, title, description, bgImageOverride]);
+
+  const currentBanner =
+    banners.find(
+      (item) => item?.slug?.toLowerCase() === String(bannerSlug).toLowerCase()
+    ) ||
+    banners.find((item) => item?.title || item?.image_url || item?.url) ||
+    null;
+
+  const displaySubTitle = subTitle || "— Zippy Travel";
+  const displayTitle = title || currentBanner?.title || "London-Based UK Agency";
+  const displayDescription =
+    description ||
+    currentBanner?.description ||
+    currentBanner?.banner_description ||
+    "";
+  const displayImageAlt =
+    currentBanner?.image_alt || displayTitle || "Zippy Travel Hero Banner";
+
+  // Resolve background image: page override → banner API image_url → fallback
   const bannerImgSrc = React.useMemo(() => {
-    if (bgImageOverride) {
-      if (bgImageOverride.startsWith("http") || bgImageOverride.startsWith("/")) {
-        return bgImageOverride;
-      }
-      return `${BASE_URL_IMG}/media/${bgImageOverride.replace(/^\/?media\//, "")}`;
-    }
-    if (initialBanners && initialBanners.length > 0) {
-      const first = initialBanners[0];
-      const url = typeof first === "string" ? first : (first?.url || first?.image_url);
-      if (url) {
-        if (url.startsWith("http") || url.startsWith("/")) return url;
-        return `${BASE_URL_IMG}/media/${url.replace(/^\/?media\//, "")}`;
-      }
-    }
-    return "/BG%20Banner.png";
-  }, [bgImageOverride, initialBanners]);
+    if (bgImageOverride) return resolveMediaSrc(bgImageOverride) || "/BG%20Banner.png";
+
+    const apiImage =
+      currentBanner?.image_url ||
+      currentBanner?.url ||
+      (typeof banners[0] === "string" ? banners[0] : banners[0]?.url || banners[0]?.image_url);
+
+    return resolveMediaSrc(apiImage) || "/BG%20Banner.png";
+  }, [bgImageOverride, currentBanner, banners]);
 
   // Close dropdowns on click outside
   useEffect(() => {
@@ -91,10 +143,82 @@ const HeroSectionNew = ({
       ) {
         setShowRetCalendar(false);
       }
+      if (!e.target.closest(".airport-origin")) setOriginSuggestions([]);
+      if (!e.target.closest(".airport-destination")) setDestinationSuggestions([]);
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const focusVisibleInput = (desktopRef, mobileRef) => {
+    const desktop = desktopRef.current;
+    if (desktop && desktop.offsetParent !== null) desktop.focus();
+    else mobileRef.current?.focus();
+  };
+
+  const fetchCitySuggestions = async (text, type) => {
+    const query = text.trim().toLowerCase();
+    const isOrigin = type === "origin";
+
+    if (query.length < 3) {
+      if (isOrigin) setOriginSuggestions([]);
+      else setDestinationSuggestions([]);
+      return;
+    }
+
+    const reqId = ++suggestionReq.current[type];
+    if (isOrigin) setLoadingOrigin(true);
+    else setLoadingDestination(true);
+
+    try {
+      const response = await api.get(`/autocomplete/${encodeURIComponent(query)}`);
+      if (suggestionReq.current[type] !== reqId) return;
+      const data = Array.isArray(response.data)
+        ? response.data.filter((item) => typeof item === "string" && item.trim())
+        : [];
+      if (isOrigin) setOriginSuggestions(data);
+      else setDestinationSuggestions(data);
+    } catch (error) {
+      if (suggestionReq.current[type] !== reqId) return;
+      console.error("Error fetching city suggestions:", error);
+      if (isOrigin) setOriginSuggestions([]);
+      else setDestinationSuggestions([]);
+    } finally {
+      if (suggestionReq.current[type] === reqId) {
+        if (isOrigin) setLoadingOrigin(false);
+        else setLoadingDestination(false);
+      }
+    }
+  };
+
+  const selectAirport = (item, type) => {
+    const match = String(item).match(/\(([^)]+)\)/);
+    const code = match ? match[1] : item;
+    if (type === "origin") {
+      setOrigin(code);
+      setOriginLabel(item);
+      setOriginSuggestions([]);
+    } else {
+      setDestination(code);
+      setDestinationLabel(item);
+      setDestinationSuggestions([]);
+    }
+  };
+
+  const handleAirportChange = (value, type) => {
+    if (!/^[a-zA-Z0-9\s()/,.'&\-]*$/.test(value)) return;
+    setShowPassengerModal(false);
+    setShowDepCalendar(false);
+    setShowRetCalendar(false);
+    if (type === "origin") {
+      setOriginLabel(value);
+      setOrigin("");
+    } else {
+      setDestinationLabel(value);
+      setDestination("");
+    }
+    fetchCitySuggestions(value, type);
+  };
 
   // Format date helper: YYYY-MM-DD -> DD/MM/YYYY
   const formatDisplayDate = (val) => {
@@ -111,7 +235,10 @@ const HeroSectionNew = ({
     if (e) e.preventDefault();
 
     if (!origin.trim() || !destination.trim() || !departureDate) {
-      const msg = "Please enter origin, destination, and departure date.";
+      const msg =
+        !origin.trim() || !destination.trim()
+          ? "Please choose origin and destination from the suggestions."
+          : "Please select a departure date.";
       if (typeof setPopupMessage === "function") setPopupMessage(msg);
       else showToast(msg, "error");
       return;
@@ -127,9 +254,9 @@ const HeroSectionNew = ({
     const queryParams = new URLSearchParams({
       TripType: tripType === "Round Trip" ? "Round-Trip" : "One-Way",
       Origin: origin.trim(),
-      Originlabel: origin.trim(),
+      Originlabel: originLabel.trim(),
       Destination: destination.trim(),
-      Destinationlabel: destination.trim(),
+      Destinationlabel: destinationLabel.trim(),
       DepartDate: departureDate,
       ArrivalDate: tripType === "Round Trip" ? returnDate : "",
       Class: "Business",
@@ -140,6 +267,29 @@ const HeroSectionNew = ({
 
     if (typeof setFlightLoading === "function") setFlightLoading(true);
     router.push(`/flightDetails?${queryParams.toString()}`);
+  };
+
+  const renderAirportSuggestions = (items, type) => {
+    if (!items.length) return null;
+    return (
+      <ul className="suggestion-list absolute left-0 right-0 top-[calc(100%+6px)] z-[80] bg-white border border-[#E3E8EC] max-h-52 overflow-y-auto rounded-[12px] shadow-[0_12px_40px_rgba(31,0,96,0.16)] py-1">
+        {items.map((item) => (
+          <li key={item}>
+            <button
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                selectAirport(item, type);
+              }}
+              className="w-full text-left px-4 py-2.5 cursor-pointer text-[14px] sm:text-[15px] text-[#1F0060] font-poppins hover:bg-[#F3F6F8] hover:text-[#5CACC4]"
+            >
+              {item}
+            </button>
+          </li>
+        ))}
+      </ul>
+    );
   };
 
   const passengerDisplayText = `${String(adults).padStart(2, "0")} adt - ${String(
@@ -166,7 +316,8 @@ const HeroSectionNew = ({
             onError={(e) => {
               e.currentTarget.src = "/BG%20Banner.png";
             }}
-            alt={title || "Zippy Travel Hero Banner"}
+            alt={displayImageAlt}
+            title={currentBanner?.image_title || displayTitle}
             className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none z-0"
           />
 
@@ -175,34 +326,36 @@ const HeroSectionNew = ({
 
           {/* Centered Text Content (Max 1360px container) */}
           <div className="w-full max-w-[1360px] mx-auto text-center pt-[70px] sm:pt-[90px] lg:pt-[107px] px-4 relative z-10">
-            {/* Text 1: — Zippy Travel */}
+            {/* Subtitle stays static */}
             <p className="font-poppins font-normal text-[18px] sm:text-[22px] lg:text-[24px] text-white tracking-wide">
-              {subTitle || "— Zippy Travel"}
+              {displaySubTitle}
             </p>
 
-            {/* Text 2: London-Based UK Agency / Destinations */}
+            {/* H1 from /banner title (or page override) */}
             <h1 className="mt-[8px] font-poppins font-bold text-[36px] sm:text-[54px] md:text-[68px] lg:text-[83px] text-white tracking-tight leading-[1.08] drop-shadow-sm">
-              {title || "London-Based UK Agency"}
+              {displayTitle}
             </h1>
 
-            {/* Text 3: Description */}
-            {description ? (
-              typeof description === "string" && description.includes("<") ? (
+            {/* Description from /banner description (or page override) */}
+            {displayDescription ? (
+              typeof displayDescription === "string" && displayDescription.includes("<") ? (
                 <div
-                  className="mt-[24px] sm:mt-[32px] lg:mt-[40px] font-poppins font-medium text-[16px] sm:text-[20px] lg:text-[24px] text-white/95 max-w-[850px] mx-auto leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: description }}
+                  className="banner-description"
+                  dangerouslySetInnerHTML={{ __html: displayDescription }}
                 />
               ) : (
-                <p className="mt-[24px] sm:mt-[32px] lg:mt-[40px] font-poppins font-medium text-[16px] sm:text-[20px] lg:text-[24px] text-white/95 max-w-[850px] mx-auto leading-relaxed">
-                  {description}
-                </p>
+                <div className="banner-description">
+                  <p>{displayDescription}</p>
+                </div>
               )
             ) : (
-              <p className="mt-[24px] sm:mt-[32px] lg:mt-[40px] font-poppins font-medium text-[16px] sm:text-[20px] lg:text-[24px] text-white/95 max-w-[850px] mx-auto leading-relaxed">
-                Zippytravel.co.uk is an e-commerce UK based company
-                <br className="hidden sm:inline" />
-                {" "}offering online travel products and services.
-              </p>
+              <div className="banner-description">
+                <p>
+                  Zippytravel.co.uk is an e-commerce UK based company
+                  <br className="hidden sm:inline" />
+                  {" "}offering online travel products and services.
+                </p>
+              </div>
             )}
           </div>
 
@@ -253,8 +406,10 @@ const HeroSectionNew = ({
               <div className="flex items-center gap-[10px]">
                 {/* 1. Origin Div */}
                 <div
-                  onClick={() => originInputRef.current?.focus()}
-                  className="flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center cursor-text"
+                  onClick={() => focusVisibleInput(originInputRef, originMobileInputRef)}
+                  className={`airport-origin flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center cursor-text ${
+                    originSuggestions.length ? "z-40" : "z-10"
+                  }`}
                 >
                   <div className="flex flex-col items-start">
                     <span
@@ -272,12 +427,25 @@ const HeroSectionNew = ({
                     <input
                       ref={originInputRef}
                       type="text"
-                      value={origin}
-                      onChange={(e) => setOrigin(e.target.value)}
+                      aria-label="Origin"
+                      autoComplete="off"
+                      value={originLabel}
+                      onChange={(e) => handleAirportChange(e.target.value, "origin")}
+                      onKeyDown={(e) => {
+                        if (e.key === "Escape") setOriginSuggestions([]);
+                        if (e.key === "Enter" && originSuggestions[0]) {
+                          e.preventDefault();
+                          selectAirport(originSuggestions[0], "origin");
+                        }
+                      }}
                       placeholder="Enter your origin"
                       className="w-[85%] bg-transparent font-poppins font-normal text-[18px] text-[#222222] placeholder-[#8FA0AD] mt-[7px] outline-none border-none focus:ring-0 p-0 underline decoration-[#9BB0BF] underline-offset-2"
                     />
                   </div>
+                  {loadingOrigin && (
+                    <span className="absolute right-[52px] top-[52px] h-4 w-4 rounded-full border-2 border-[#5CACC4] border-t-transparent animate-spin" />
+                  )}
+                  {renderAirportSuggestions(originSuggestions, "origin")}
                   {/* Right Icon: right 20px, top 48px */}
                   <div className="absolute right-[20px] top-[48px] pointer-events-none">
                     <Image
@@ -292,8 +460,10 @@ const HeroSectionNew = ({
 
                 {/* 2. Destination Div */}
                 <div
-                  onClick={() => destinationInputRef.current?.focus()}
-                  className="flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center cursor-text"
+                  onClick={() => focusVisibleInput(destinationInputRef, destinationMobileInputRef)}
+                  className={`airport-destination flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center cursor-text ${
+                    destinationSuggestions.length ? "z-40" : "z-10"
+                  }`}
                 >
                   <div className="flex flex-col items-start">
                     <span
@@ -311,12 +481,25 @@ const HeroSectionNew = ({
                     <input
                       ref={destinationInputRef}
                       type="text"
-                      value={destination}
-                      onChange={(e) => setDestination(e.target.value)}
+                      aria-label="Destination"
+                      autoComplete="off"
+                      value={destinationLabel}
+                      onChange={(e) => handleAirportChange(e.target.value, "destination")}
+                      onKeyDown={(e) => {
+                        if (e.key === "Escape") setDestinationSuggestions([]);
+                        if (e.key === "Enter" && destinationSuggestions[0]) {
+                          e.preventDefault();
+                          selectAirport(destinationSuggestions[0], "destination");
+                        }
+                      }}
                       placeholder="Enter your destination"
                       className="w-[85%] bg-transparent font-poppins font-normal text-[18px] text-[#222222] placeholder-[#8FA0AD] mt-[7px] outline-none border-none focus:ring-0 p-0 underline decoration-[#9BB0BF] underline-offset-2"
                     />
                   </div>
+                  {loadingDestination && (
+                    <span className="absolute right-[52px] top-[52px] h-4 w-4 rounded-full border-2 border-[#5CACC4] border-t-transparent animate-spin" />
+                  )}
+                  {renderAirportSuggestions(destinationSuggestions, "destination")}
                   {/* Right Icon: right 20px, top 48px */}
                   <div className="absolute right-[20px] top-[48px] pointer-events-none">
                     <Image
@@ -513,7 +696,7 @@ const HeroSectionNew = ({
               aria-label="Search Flights"
             >
               <Image
-                src="/Icon.png"
+                src="/send.svg"
                 alt="Search"
                 width={32}
                 height={32}
@@ -527,8 +710,10 @@ const HeroSectionNew = ({
             <div className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               {/* Origin */}
               <div
-                onClick={() => originInputRef.current?.focus()}
-                className="bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] cursor-text"
+                onClick={() => focusVisibleInput(originInputRef, originMobileInputRef)}
+                className={`airport-origin bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] cursor-text ${
+                  originSuggestions.length ? "z-40" : "z-10"
+                }`}
               >
                 <span
                   className="font-poppins font-semibold text-[18px] text-[#1F0060] inline-block w-fit"
@@ -543,12 +728,26 @@ const HeroSectionNew = ({
                   Origin
                 </span>
                 <input
+                  ref={originMobileInputRef}
                   type="text"
-                  value={origin}
-                  onChange={(e) => setOrigin(e.target.value)}
+                  aria-label="Origin"
+                  autoComplete="off"
+                  value={originLabel}
+                  onChange={(e) => handleAirportChange(e.target.value, "origin")}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") setOriginSuggestions([]);
+                    if (e.key === "Enter" && originSuggestions[0]) {
+                      e.preventDefault();
+                      selectAirport(originSuggestions[0], "origin");
+                    }
+                  }}
                   placeholder="Enter your origin"
-                  className="bg-transparent font-poppins text-[16px] text-[#222222] placeholder-[#8FA0AD] mt-2 outline-none border-none p-0 underline decoration-[#9BB0BF] underline-offset-2"
+                  className="w-[85%] bg-transparent font-poppins text-[16px] text-[#222222] placeholder-[#8FA0AD] mt-2 outline-none border-none p-0 underline decoration-[#9BB0BF] underline-offset-2"
                 />
+                {loadingOrigin && (
+                  <span className="absolute right-12 top-1/2 -translate-y-1/2 h-4 w-4 rounded-full border-2 border-[#5CACC4] border-t-transparent animate-spin" />
+                )}
+                {renderAirportSuggestions(originSuggestions, "origin")}
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
                   <Image src="/Icon1.png" alt="Origin" width={22} height={22} />
                 </div>
@@ -556,8 +755,10 @@ const HeroSectionNew = ({
 
               {/* Destination */}
               <div
-                onClick={() => destinationInputRef.current?.focus()}
-                className="bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] cursor-text"
+                onClick={() => focusVisibleInput(destinationInputRef, destinationMobileInputRef)}
+                className={`airport-destination bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] cursor-text ${
+                  destinationSuggestions.length ? "z-40" : "z-10"
+                }`}
               >
                 <span
                   className="font-poppins font-semibold text-[18px] text-[#1F0060] inline-block w-fit"
@@ -572,12 +773,26 @@ const HeroSectionNew = ({
                   Destination
                 </span>
                 <input
+                  ref={destinationMobileInputRef}
                   type="text"
-                  value={destination}
-                  onChange={(e) => setDestination(e.target.value)}
+                  aria-label="Destination"
+                  autoComplete="off"
+                  value={destinationLabel}
+                  onChange={(e) => handleAirportChange(e.target.value, "destination")}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") setDestinationSuggestions([]);
+                    if (e.key === "Enter" && destinationSuggestions[0]) {
+                      e.preventDefault();
+                      selectAirport(destinationSuggestions[0], "destination");
+                    }
+                  }}
                   placeholder="Enter your destination"
-                  className="bg-transparent font-poppins text-[16px] text-[#222222] placeholder-[#8FA0AD] mt-2 outline-none border-none p-0 underline decoration-[#9BB0BF] underline-offset-2"
+                  className="w-[85%] bg-transparent font-poppins text-[16px] text-[#222222] placeholder-[#8FA0AD] mt-2 outline-none border-none p-0 underline decoration-[#9BB0BF] underline-offset-2"
                 />
+                {loadingDestination && (
+                  <span className="absolute right-12 top-1/2 -translate-y-1/2 h-4 w-4 rounded-full border-2 border-[#5CACC4] border-t-transparent animate-spin" />
+                )}
+                {renderAirportSuggestions(destinationSuggestions, "destination")}
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
                   <Image src="/Group 8.png" alt="Destination" width={22} height={22} />
                 </div>
@@ -731,7 +946,7 @@ const HeroSectionNew = ({
               onClick={handleSearch}
               className="mt-4 w-full h-[52px] bg-[#5CACC4] hover:bg-[#4ea0b8] text-white font-poppins font-bold rounded-[12px] flex items-center justify-center gap-2 shadow-md cursor-pointer"
             >
-              <Image src="/Icon.png" alt="Search" width={22} height={22} />
+              <Image src="/send.svg" alt="Search" width={22} height={22} className="w-[22px] h-[22px] object-contain" />
               <span>Search Flights</span>
             </button>
           </div>

@@ -29,7 +29,8 @@ export default function DestinationPageClient({ initialData = {} }) {
 
     // Select first continent immediately (no null gap on first paint)
     const [selectedContinent, setSelectedContinent] = useState(() => continents[0] || null);
-    const [countries, setCountries] = useState([]);
+    // continent_id now returns cities (API type still ContinentsCountries)
+    const [destinations, setDestinations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [hasFetched, setHasFetched] = useState(false);
     const [visibleCount, setVisibleCount] = useState(16);
@@ -49,7 +50,7 @@ export default function DestinationPageClient({ initialData = {} }) {
             setSelectedContinent(null);
             setLoading(false);
             setHasFetched(true);
-            setCountries([]);
+            setDestinations([]);
             return;
         }
         if (!selectedContinent || !continents.some((c) => c.id === selectedContinent.id)) {
@@ -57,14 +58,14 @@ export default function DestinationPageClient({ initialData = {} }) {
         }
     }, [continents, selectedContinent]);
 
-    // Fetch countries when selected continent changes
+    // Fetch cities for selected continent (same continent_id endpoint; items are cities now)
     useEffect(() => {
         if (!selectedContinent?.slug) return;
 
         let cancelled = false;
         setLoading(true);
         setHasFetched(false);
-        setCountries([]);
+        setDestinations([]);
         setVisibleCount(16);
 
         axios
@@ -72,15 +73,15 @@ export default function DestinationPageClient({ initialData = {} }) {
             .then((response) => {
                 if (cancelled) return;
                 if (response.data.status === 1) {
-                    setCountries(response.data.result.data || []);
+                    setDestinations(response.data.result.data || []);
                 } else {
-                    setCountries([]);
+                    setDestinations([]);
                 }
             })
             .catch((err) => {
                 if (cancelled) return;
-                console.error('Error fetching countries:', err);
-                setCountries([]);
+                console.error('Error fetching continent destinations:', err);
+                setDestinations([]);
             })
             .finally(() => {
                 if (cancelled) return;
@@ -96,14 +97,14 @@ export default function DestinationPageClient({ initialData = {} }) {
     const loadMore = () => setVisibleCount((prev) => prev + 16);
 
     const showSkeleton = loading || !hasFetched;
-    const showEmpty = hasFetched && !loading && countries.length === 0;
+    const showEmpty = hasFetched && !loading && destinations.length === 0;
 
     const handleSelectContinent = (continent) => {
         if (selectedContinent?.id === continent.id) return;
         setSelectedContinent(continent);
         setLoading(true);
         setHasFetched(false);
-        setCountries([]);
+        setDestinations([]);
     };
 
     return (
@@ -170,7 +171,7 @@ export default function DestinationPageClient({ initialData = {} }) {
                             </div>
                         )}
 
-                        {/* Countries list / Skeleton Loader */}
+                        {/* Destination (city) cards / Skeleton Loader */}
                         {showSkeleton ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 max-w-[1236px] mx-auto px-4 sm:px-6 xl:px-0 mt-6">
                                 {Array.from({ length: 8 }).map((_, i) => (
@@ -184,27 +185,33 @@ export default function DestinationPageClient({ initialData = {} }) {
                         ) : (
                             <>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 max-w-[1236px] mx-auto px-4 sm:px-6 xl:px-0 mt-6">
-                                    {countries.slice(0, visibleCount).map((country, index) => {
-                                        const continentName = selectedContinent?.title || "";
+                                    {destinations.slice(0, visibleCount).map((destination, index) => {
+                                        const continentName =
+                                            selectedContinent?.title ||
+                                            destination.continent?.title ||
+                                            "";
                                         return (
                                             <ContinentCountryCard
-                                                key={country.id || country.slug || index}
-                                                id={country.id}
-                                                metaData={country}
+                                                key={destination.id || destination.slug || index}
+                                                id={destination.id}
+                                                metaData={destination}
                                                 continent={continentName}
-                                                slug={country.slug}
-                                                country={country.title}
-                                                price={parseFloat(country.fare?.price) || 0}
-                                                imageUrl={country.image_url}
-                                                imageAlt={country.image_alt}
-                                                browserTitle={country.browser_title}
-                                                description={country.short_description}
+                                                slug={destination.slug}
+                                                country={destination.title}
+                                                price={parseFloat(destination.fare?.price) || 0}
+                                                imageUrl={
+                                                    destination.image_url ||
+                                                    destination.banner_img?.[0]?.url
+                                                }
+                                                imageAlt={destination.image_alt}
+                                                browserTitle={destination.browser_title}
+                                                description={destination.short_description}
                                                 ContinentCountries={null}
                                             />
                                         );
                                     })}
                                 </div>
-                                {countries.length > visibleCount && (
+                                {destinations.length > visibleCount && (
                                     <div className="flex justify-center mt-10 mb-10">
                                         <button
                                             type="button"

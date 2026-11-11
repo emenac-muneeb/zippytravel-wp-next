@@ -1,17 +1,19 @@
 "use client";
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import axios from 'axios';
-import BrandingSection from '../../../Components/BrandingSection';
+import AirlineHeroWithForm from '../../../Components/AirlineHeroWithForm';
+import LoadingScreen from '../../../Components/LoadingScreen';
+import PopUp from '../../../Components/PopUp';
 import FlightCard from '../../../Components/FlightCard';
-import { BASE_URL_IMG } from '../../../Helpers/imageurl';
 import ScrollDetail from '../../../Components/ScrollDetail';
 import FaqSection from '../../../Components/FaqSection';
 import NotFound from "../../../Not-found";
-import BannerInner from '../../../Components/BannerInner';
 import { endpoints } from '../../../Helpers/endpoints';
 
 export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug }) {
   const [airlineData] = useState(initialAirlineData);
+  const [flightLoading, setFlightLoading] = useState(false);
+  const [popupMessage, setPopupMessage] = useState(null);
 
   // Initial fares extraction
   const initialFaresList = useMemo(() => {
@@ -49,7 +51,6 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
   const [maxPrice, setMaxPrice] = useState(10000);
 
   // Collapsible states
-  const [isStopoversOpen, setIsStopoversOpen] = useState(true);
   const [isPriceOpen, setIsPriceOpen] = useState(true);
   const [isDestinationsOpen, setIsDestinationsOpen] = useState(true);
 
@@ -195,7 +196,6 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
     return <NotFound />;
   }
 
-  const bannerContent = airlineData.banner_section_content || '';
   const minPercent = ((minPrice - absoluteMinPrice) / (absoluteMaxPrice - absoluteMinPrice || 1)) * 100;
   const maxPercent = ((maxPrice - absoluteMinPrice) / (absoluteMaxPrice - absoluteMinPrice || 1)) * 100;
 
@@ -208,7 +208,7 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
           height: 16px;
           border-radius: 4px;
           background: #ffffff;
-          border: 2px solid #a57233;
+          border: 2px solid #5CACC4;
           cursor: pointer;
           -webkit-appearance: none;
         }
@@ -218,117 +218,120 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
           height: 16px;
           border-radius: 4px;
           background: #ffffff;
-          border: 2px solid #a57233;
+          border: 2px solid #5CACC4;
           cursor: pointer;
         }
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-          background: #A57233;
-          opacity:0.3;
+          background: #EEF3F7;
           border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #A57233;
-          opacity:0.3;
+          background: #5CACC4;
           border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #A57233;
-          opacity:0.5;
+          background: #1F0060;
         }
         .custom-scrollbar {
           scrollbar-width: thin;
-          scrollbar-color: #E3DAC9 #FAF5ED;
+          scrollbar-color: #5CACC4 #EEF3F7;
         }
       `}</style>
-      <BannerInner
+
+      {flightLoading && <LoadingScreen />}
+
+      {popupMessage && (
+        <PopUp
+          title="Notice"
+          message={popupMessage}
+          onClose={() => setPopupMessage(null)}
+        />
+      )}
+
+      {/* 
+        Hero Banner:
+        - Flight search form (Home Page form) in the center of the hero image
+        - The 3 class buttons (Premium Class, Business Class, First Class) at the bottom edge
+      */}
+      <AirlineHeroWithForm
         bgImageOverride={airlineData?.banner_img?.[0]?.url}
-        descriptionOverride={bannerContent}
-        showClassSelector={true}
-        onClassChange={(newClass) => setSelectedClass(newClass)}
+        initialBanners={airlineData?.banner_img || []}
+        selectedClass={selectedClass}
+        setSelectedClass={setSelectedClass}
+        setFlightLoading={setFlightLoading}
+        setPopupMessage={setPopupMessage}
       />
+
       <div className="container">
-        <div className="w-full mx-auto pt-[55px]">
-          <div className='heading_section'>
-            <h2 className='pre_heading'>
+        {/* Top padding accommodates the 3 buttons overlapping the bottom of the hero */}
+        <div className="w-full mx-auto pt-[60px] sm:pt-[75px] lg:pt-[90px]">
+          {/* Heading without decorative before/after lines */}
+          <div className="text-center max-w-[900px] mx-auto mb-8 sm:mb-10">
+            <h2 className="pre_heading">
               {airlineData.page_title}
             </h2>
-            <p className='sub_text'>
+            <p className="sub_text mt-2 sm:mt-3">
               {airlineData.page_sub_title || `Your trusted partner for the best ${airlineData.title} flight deals, with unbeatable fares and exceptional service.`}
             </p>
           </div>
 
-          <div className="flex flex-col min-[1285px]:flex-row gap-8 mt-6 mb-9">
+          <div className="flex flex-col min-[1285px]:flex-row gap-8 mt-6 mb-12">
             {/* Sidebar Filters */}
-            <div className="w-full min-[1285px]:w-[330px] shrink-0 space-y-5">
-              {/* Stopovers Filter */}
-              {/* <div className="bg-[#FFFAF5] rounded-[24px] p-5 border border-[#E3DAC9]">
-                <div
-                  className="flex justify-between items-center cursor-pointer select-none"
-                  onClick={() => setIsStopoversOpen(!isStopoversOpen)}
-                >
+            <div className="w-full min-[1285px]:w-[320px] shrink-0 space-y-5">
+              {/* Cabin Class Filter */}
+              <div className="bg-white rounded-[20px] p-5 border border-[#E2E8F0] shadow-sm">
+                <div className="flex justify-between items-center select-none mb-3">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-secondary text-[18px] font-bold font-quicksand">Stopovers</h3>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40.5" height="3.469" viewBox="0 0 40.5 3.469">
-                      <g transform="translate(-60 -27.531)">
-                        <line x2="29" transform="translate(60.5 28.031)" fill="none" stroke="#a57233" strokeLinecap="round" strokeWidth="1" />
-                        <line x2="29" transform="translate(71 30.5)" fill="none" stroke="#a57233" strokeLinecap="round" strokeWidth="1" />
-                      </g>
-                    </svg>
-                  </div>
-                  <svg
-                    className={`w-4 h-4 text-secondary transition-transform duration-300 ${isStopoversOpen ? '' : '-rotate-180'}`}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                  </svg>
-                </div>
-                <div className={`transition-all duration-300 overflow-hidden ${isStopoversOpen ? 'max-h-[100px] mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
-                  <div className="grid grid-cols-4 gap-2">
-                    {['Direct', '01 Stop', '02 Stops+', 'Any'].map((type) => {
-                      const isActive = stopoverFilter === type;
-                      return (
-                        <button
-                          key={type}
-                          onClick={() => setStopoverFilter(type)}
-                          className={`text-[13px] font-semibold font-quicksand py-2 px-1 rounded-xl shadow-sm text-center transition-all ${isActive
-                            ? 'bg-[#F1A868] text-white'
-                            : 'bg-white hover:bg-white/80 text-[#363636] border border-[#EBE3D5]'
-                            }`}
-                        >
-                          {type}
-                        </button>
-                      );
-                    })}
+                    <h3 className="text-[#1F0060] text-[18px] font-bold font-poppins">Cabin Class</h3>
+                    <div className="w-[30px] h-[3px] bg-[#5CACC4] rounded-full" />
                   </div>
                 </div>
-              </div> */}
+                <div className="flex flex-col gap-2">
+                  {[
+                    { id: 'Business', label: 'Business Class' },
+                    { id: 'Premium Economy', label: 'Premium Economy' },
+                    { id: 'First Class', label: 'First Class' },
+                  ].map((item) => {
+                    const isActive = selectedClass === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => setSelectedClass(item.id)}
+                        className={`w-full py-2.5 px-3.5 rounded-[12px] font-poppins font-medium text-[14px] text-left transition-all flex items-center justify-between ${
+                          isActive
+                            ? 'bg-[#1F0060] text-white shadow-sm font-semibold'
+                            : 'bg-[#F8FAFC] text-[#333333] hover:bg-[#EEF3F7] border border-[#E2E8F0]'
+                        }`}
+                      >
+                        <span>{item.label}</span>
+                        {isActive && (
+                          <span className="w-2.5 h-2.5 rounded-full bg-[#5CACC4]" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
 
               {/* Price Filter */}
-              <div className="bg-[#FFFAF5] rounded-[24px] p-5 border border-[#E3DAC9]">
+              <div className="bg-white rounded-[20px] p-5 border border-[#E2E8F0] shadow-sm">
                 <div
                   className="flex justify-between items-center cursor-pointer select-none"
                   onClick={() => setIsPriceOpen(!isPriceOpen)}
                 >
                   <div className="flex items-center gap-2">
-                    <h3 className="text-secondary text-[18px] font-bold font-quicksand">Price</h3>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40.5" height="3.469" viewBox="0 0 40.5 3.469">
-                      <g transform="translate(-60 -27.531)">
-                        <line x2="29" transform="translate(60.5 28.031)" fill="none" stroke="#a57233" strokeLinecap="round" strokeWidth="1" />
-                        <line x2="29" transform="translate(71 30.5)" fill="none" stroke="#a57233" strokeLinecap="round" strokeWidth="1" />
-                      </g>
-                    </svg>
+                    <h3 className="text-[#1F0060] text-[18px] font-bold font-poppins">Price</h3>
+                    <div className="w-[30px] h-[3px] bg-[#5CACC4] rounded-full" />
                   </div>
                   <svg
-                    className={`w-4 h-4 text-secondary transition-transform duration-300 ${isPriceOpen ? '' : '-rotate-180'}`}
+                    className={`w-4 h-4 text-[#1F0060] transition-transform duration-300 ${isPriceOpen ? '' : '-rotate-180'}`}
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="2.5"
                     viewBox="0 0 24 24"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -337,29 +340,29 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
                 <div className={`transition-all duration-300 overflow-hidden ${isPriceOpen ? 'max-h-[140px] mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
                   <div className="space-y-4 px-2 pb-4">
                     <div className="relative h-12 flex items-end pb-1 mt-6">
-                      <div className="absolute h-0.5 bg-[#E6DEC9] w-full rounded-full" />
+                      <div className="absolute h-1 bg-[#EEF3F7] w-full rounded-full" />
                       <div
-                        className="absolute h-0.5 bg-secondary rounded-full"
+                        className="absolute h-1 bg-[#5CACC4] rounded-full"
                         style={{
                           left: `${minPercent}%`,
                           width: `${maxPercent - minPercent}%`,
                         }}
                       />
                       <span
-                        className="absolute text-[12px] font-light font-quicksand text-secondary px-1.5 py-0.5 rounded shadow-sm select-none z-50 pointer-events-none transition-all duration-75"
+                        className="absolute text-[12px] font-semibold font-poppins text-[#1F0060] bg-white border border-[#E2E8F0] px-2 py-0.5 rounded shadow-sm select-none z-50 pointer-events-none transition-all duration-75"
                         style={{
                           left: `${minPercent}%`,
-                          transform: minPercent < 15 ? 'translate(0%, -26px)' : minPercent > 85 ? 'translate(-100%, -26px)' : 'translate(-50%, -26px)',
+                          transform: minPercent < 15 ? 'translate(0%, -28px)' : minPercent > 85 ? 'translate(-100%, -28px)' : 'translate(-50%, -28px)',
                           whiteSpace: 'nowrap',
                         }}
                       >
                         £{minPrice.toLocaleString()}
                       </span>
                       <span
-                        className="absolute text-[12px] font-light font-quicksand text-secondary px-1.5 py-0.5 rounded shadow-sm select-none z-50 pointer-events-none transition-all duration-75"
+                        className="absolute text-[12px] font-semibold font-poppins text-[#1F0060] bg-white border border-[#E2E8F0] px-2 py-0.5 rounded shadow-sm select-none z-50 pointer-events-none transition-all duration-75"
                         style={{
                           left: `${maxPercent}%`,
-                          transform: maxPercent > 85 ? 'translate(-100%, -26px)' : maxPercent < 15 ? 'translate(0%, -26px)' : 'translate(-50%, -26px)',
+                          transform: maxPercent > 85 ? 'translate(-100%, -28px)' : maxPercent < 15 ? 'translate(0%, -28px)' : 'translate(-50%, -28px)',
                           whiteSpace: 'nowrap',
                         }}
                       >
@@ -393,49 +396,44 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
               </div>
 
               {/* Destinations Filter */}
-              <div className="bg-[#FFFAF5] rounded-[24px] p-5 border border-[#E3DAC9]">
+              <div className="bg-white rounded-[20px] p-5 border border-[#E2E8F0] shadow-sm">
                 <div
                   className="flex justify-between items-center cursor-pointer select-none"
                   onClick={() => setIsDestinationsOpen(!isDestinationsOpen)}
                 >
                   <div className="flex items-center gap-2">
-                    <h3 className="text-secondary text-[18px] font-bold font-quicksand">Destinations</h3>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40.5" height="3.469" viewBox="0 0 40.5 3.469">
-                      <g transform="translate(-60 -27.531)">
-                        <line x2="29" transform="translate(60.5 28.031)" fill="none" stroke="#a57233" strokeLinecap="round" strokeWidth="1" />
-                        <line x2="29" transform="translate(71 30.5)" fill="none" stroke="#a57233" strokeLinecap="round" strokeWidth="1" />
-                      </g>
-                    </svg>
+                    <h3 className="text-[#1F0060] text-[18px] font-bold font-poppins">Destinations</h3>
+                    <div className="w-[30px] h-[3px] bg-[#5CACC4] rounded-full" />
                   </div>
                   <svg
-                    className={`w-4 h-4 text-secondary transition-transform duration-300 ${isDestinationsOpen ? '' : '-rotate-180'}`}
+                    className={`w-4 h-4 text-[#1F0060] transition-transform duration-300 ${isDestinationsOpen ? '' : '-rotate-180'}`}
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="2.5"
                     viewBox="0 0 24 24"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                   </svg>
                 </div>
                 <div className={`transition-all duration-300 overflow-hidden ${isDestinationsOpen ? 'max-h-[300px] mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
-                  <div className="relative mb-4 px-[19px]">
+                  <div className="relative mb-3">
                     <input
                       type="text"
-                      placeholder="Search Destination"
+                      placeholder="Search destination..."
                       value={searchDestination}
                       onChange={(e) => setSearchDestination(e.target.value)}
-                      className="w-full bg-transparent border-b border-[#E3DAC9] py-1 pr-6 text-[13px] font-quicksand text-black placeholder-black/30 focus:outline-none focus:border-secondary"
+                      className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[10px] py-2 px-3 pr-8 text-[13px] font-poppins text-[#222222] placeholder-[#8FA0AD] focus:outline-none focus:border-[#5CACC4] transition-colors"
                     />
-                    <svg className="w-3.5 h-3.5 text-black/40 absolute right-1 top-2" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-[#8FA0AD] absolute right-2.5 top-2.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
                   </div>
-                  <div className="border border-[#F3EDE2] rounded-2xl bg-[#FFF3E8] p-4 max-h-[180px] overflow-y-auto space-y-3 custom-scrollbar">
+                  <div className="border border-[#E2E8F0] rounded-[14px] bg-[#F8FAFC] p-3 max-h-[190px] overflow-y-auto space-y-2.5 custom-scrollbar">
                     {filteredDestinationsList.length > 0 ? (
                       filteredDestinationsList.map((destination, idx) => {
                         const isChecked = checkedDestinations.has(destination);
                         return (
-                          <label key={idx} className="flex items-center gap-3 cursor-pointer group">
+                          <label key={idx} className="flex items-center gap-2.5 cursor-pointer group select-none">
                             <div className="relative flex-shrink-0">
                               <input
                                 type="checkbox"
@@ -443,19 +441,24 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
                                 onChange={() => toggleDestination(destination)}
                                 className="sr-only"
                               />
-                              <div className={`w-[18px] h-[18px] rounded-full border border-secondary/60 flex items-center justify-center transition-all ${isChecked ? 'bg-secondary border-secondary' : 'bg-white'
-                                }`}>
+                              <div className={`w-[18px] h-[18px] rounded-full border flex items-center justify-center transition-all ${
+                                isChecked
+                                  ? 'bg-[#5CACC4] border-[#5CACC4]'
+                                  : 'bg-white border-[#CBD5E1] group-hover:border-[#5CACC4]'
+                              }`}>
                                 <svg className={`w-2.5 h-2.5 text-white transition-opacity ${isChecked ? 'opacity-100' : 'opacity-0'}`} fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                 </svg>
                               </div>
                             </div>
-                            <span className="text-[14px] text-black font-quicksand font-medium leading-none select-none">{destination}</span>
+                            <span className={`text-[13px] font-poppins font-medium transition-colors ${isChecked ? 'text-[#1F0060] font-semibold' : 'text-[#333333]'}`}>
+                              {destination}
+                            </span>
                           </label>
                         );
                       })
                     ) : (
-                      <p className="text-[12px] text-gray-500 text-center py-2 font-quicksand">No destinations found</p>
+                      <p className="text-[12px] text-gray-500 text-center py-2 font-poppins">No destinations found</p>
                     )}
                   </div>
                 </div>
@@ -465,30 +468,30 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
             {/* Flights List */}
             <div className="flex-grow min-w-0">
               {isLoading ? (
-                <div className="border border-[#F2E9DE] py-[60px] px-[30px] rounded-3xl text-center bg-white flex flex-col items-center justify-center gap-3">
-                  <div className="w-8 h-8 border-4 border-secondary border-t-transparent rounded-full animate-spin" />
-                  <p className="text-gray-500 font-quicksand text-sm">Fetching flight fares...</p>
+                <div className="border border-[#E2E8F0] py-[60px] px-[30px] rounded-[24px] text-center bg-white flex flex-col items-center justify-center gap-3 shadow-sm">
+                  <div className="w-8 h-8 border-4 border-[#5CACC4] border-t-transparent rounded-full animate-spin" />
+                  <p className="text-gray-500 font-poppins text-sm">Fetching flight fares...</p>
                 </div>
               ) : filteredFares.length > 0 ? (
-                <div className="border border-[#F2E9DE] py-4 px-3 sm:py-6 sm:px-5 min-[1360px]:py-[34px] min-[1360px]:px-[30px] rounded-3xl overflow-hidden bg-white">
+                <div className="border border-[#E2E8F0] py-4 px-3 sm:py-6 sm:px-5 min-[1360px]:py-[30px] min-[1360px]:px-[28px] rounded-[24px] overflow-hidden bg-white shadow-sm">
                   <FlightCard
-                      cities={[{ ...airlineData, fares: filteredFares }]}
+                    cities={[{ ...airlineData, fares: filteredFares }]}
                     cols={1}
                   />
                 </div>
               ) : (
-                <div className="border border-[#F2E9DE] py-[60px] px-[30px] rounded-3xl text-center bg-white">
-                  <p className="text-gray-500 font-quicksand font-medium text-[16px]">No fares match your selected filters.</p>
+                <div className="border border-[#E2E8F0] py-[60px] px-[30px] rounded-[24px] text-center bg-white shadow-sm">
+                  <p className="text-gray-600 font-poppins font-medium text-[16px]">No fares match your selected filters.</p>
                   <button
                     onClick={() => {
                       setStopoverFilter('Any');
-                          setSelectedClass('Business');
+                      setSelectedClass('Business');
                       setMinPrice(absoluteMinPrice);
                       setMaxPrice(absoluteMaxPrice);
                       setCheckedDestinations(new Set());
                       setSearchDestination('');
                     }}
-                    className="mt-4 px-5 py-2 bg-secondary text-white font-quicksand text-sm font-semibold rounded-xl hover:bg-secondary/90 transition-colors"
+                    className="mt-4 px-6 py-2.5 bg-[#1F0060] hover:bg-[#2b0380] text-white font-poppins text-sm font-semibold rounded-[10px] transition-colors shadow-sm"
                   >
                     Reset Filters
                   </button>
@@ -503,24 +506,24 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
               <button
                 onClick={handleLoadMore}
                 disabled={loadingMore}
-                className="flex items-center justify-center gap-2 w-[fit-content] px-4 py-2.5 rounded-10 font-quicksand font-bold transition-all duration-300 text-center bg-tertiary text-white shadow-[-11px_-2px_41px_10px_#EEDFD1]"
+                className="flex items-center justify-center gap-2 px-7 py-3 rounded-[12px] font-poppins font-semibold text-[15px] transition-all duration-300 text-center bg-[#5CACC4] hover:bg-[#4ea0b8] text-white shadow-[0_4px_16px_rgba(92,172,196,0.25)]"
               >
                 {loadingMore ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-secondary border-t-transparent rounded-full animate-spin" />
-                    Loading...
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Loading...</span>
                   </>
                 ) : (
                   <>
-                      Load More
-                      <svg
-                        className="w-3.5 h-3.5 text-white group-hover:translate-x-1.5 transition-transform duration-300"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        strokeWidth="3"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    <span>Load More</span>
+                    <svg
+                      className="w-4 h-4 text-white group-hover:translate-x-1.5 transition-transform duration-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2.5"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                     </svg>
                   </>
                 )}
@@ -531,22 +534,21 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
           {airlineData?.scroll_description?.trim() && (
             <ScrollDetail description={airlineData.scroll_description} />
           )}
-
-          
         </div>
       </div>
+
       {typeof airlineData?.faq_widget?.[0]?.faq_ids === 'string' && (
-          <div className="mx-auto sm:pt-16 pt-8 pb-4">
-            <FaqSection
-              faq_ids={airlineData.faq_widget[0].faq_ids
-                .split(',')
-                .map((id) => parseInt(id.trim()))
-                .filter((id) => !isNaN(id))}
-              heading={airlineData.faq_widget[0].heading}
-              subheading={airlineData.faq_widget[0].sub_heading}
-            />
-          </div>
-        )}
+        <div className="mx-auto sm:pt-16 pt-8 pb-4">
+          <FaqSection
+            faq_ids={airlineData.faq_widget[0].faq_ids
+              .split(',')
+              .map((id) => parseInt(id.trim()))
+              .filter((id) => !isNaN(id))}
+            heading={airlineData.faq_widget[0].heading}
+            subheading={airlineData.faq_widget[0].sub_heading}
+          />
+        </div>
+      )}
     </>
   );
 }
