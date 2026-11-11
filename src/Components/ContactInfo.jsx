@@ -153,7 +153,13 @@ export default function ContactInfo({ heading = "", subHeading = "" }) {
                   );
                 })}
             </div>
-          ) : null}
+          ) : (
+            <div className="flex items-center justify-center gap-3 flex-wrap">
+              <p className="text-xs sm:text-sm text-[#777777] font-medium mb-2.5 min-h-[20px] flex items-center justify-center">
+                No social media icons found
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
