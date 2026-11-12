@@ -262,7 +262,7 @@ export async function getPageMetaData(pageUrl) {
 }
 
 export function GetCanonicalUrl(path = "") {
-  const baseUrl = "https://new.premierflights.co.uk";
+  const baseUrl = "https://zippytravel.co.uk/";
   const cleanPath = path.startsWith("/") ? path : `/${path}`;
   // Ensure the homepage has a proper trailing slash or none consistently
   if (cleanPath === "/") return baseUrl + "/";

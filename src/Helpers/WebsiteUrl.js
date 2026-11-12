@@ -1,1 +1,1 @@
-export const WEB_URL = `https://new.premierflights.co.uk`;
+export const WEB_URL = `https://zippytravel.co.uk/`;
