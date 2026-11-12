@@ -108,6 +108,7 @@ const HomePageClient = ({
   initialContinents = [],
   initialReviews = [],
   initialScrollParsed = null,
+  cheapestFlightDestinations = [],
 }) => {
   const [cityFares, setCityFares] = useState(() => {
     if (Array.isArray(initialCityFares)) return initialCityFares;
@@ -206,7 +207,11 @@ const HomePageClient = ({
 
           <AirlineSlider />
 
-          <CheapestFlightFares />
+          <CheapestFlightFares
+            heading={homePage?.cityfares_widget?.[0]?.heading}
+            subheading={homePage?.cityfares_widget?.[0]?.sub_heading}
+            destinations={cheapestFlightDestinations}
+          />
 
           {(homePage?.scroll_description || initialScrollParsed?.hasContent) && (
             <div className="w-full font-quicksand bg-white">

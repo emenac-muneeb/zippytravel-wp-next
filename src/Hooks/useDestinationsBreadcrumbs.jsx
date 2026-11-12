@@ -1,37 +1,48 @@
 "use client";
 import { usePathname, useParams } from 'next/navigation';
+import { CITY_FARES_PREFIX, cityFaresPath, isCityFaresPrefix } from '../Helpers/destinationUrls';
 
 export default function useDestinationBreadcrumbs() {
   const pathname = usePathname();
   const { slug } = useParams();
-  // 2-step destinations: [continentSlug, citySlug]
-  // Legacy 3-segment URLs: [continentSlug, oldCountrySlug, citySlug] → use first + last
+  // City fares: [country, citySlug]
+  // Continent pages: [flights-to-africa] etc.
   const segments = Array.isArray(slug) ? slug : [slug].filter(Boolean);
-  const continentSlug = segments[0];
+  const firstSlug = segments[0];
   const citySlug =
-    segments.length >= 3 ? segments[segments.length - 1] : segments[1];
+    segments.length >= 2 ? segments[segments.length - 1] : null;
 
   const breadcrumbs = [{ name: "Home", path: "/" }];
-  breadcrumbs.push({ name: "Destinations", path: "/continents.htm" });
+  breadcrumbs.push({ name: "Destinations", path: "/continents" });
 
-  // If we're on the destinations page itself, don't add further breadcrumbs
-  const isDestinationsPage = pathname === '/continents.htm' || pathname === '/continents';
+  const isDestinationsPage = pathname === '/continents.htm' || pathname === '/continents' || pathname === '/continents/';
 
-  if (continentSlug && !isDestinationsPage) {
-    // Continent pages use admin slug (flights-to-africa); nested paths use title slug (africa)
-    const continentPath = continentSlug.startsWith('flights-to-')
-      ? `/${continentSlug}`
-      : `/flights-to-${continentSlug}`;
-    breadcrumbs.push({
-      name: formatSlug(continentSlug),
-      path: continentPath,
-    });
+  if (firstSlug && !isDestinationsPage) {
+    if (isCityFaresPrefix(firstSlug)) {
+      breadcrumbs.push({
+        name: "Country",
+        path: `/${CITY_FARES_PREFIX}`,
+      });
+    } else {
+      const continentPath = firstSlug.startsWith('flights-to-')
+        ? `/${firstSlug}`
+        : `/flights-to-${firstSlug}`;
+      breadcrumbs.push({
+        name: formatSlug(firstSlug),
+        path: continentPath,
+      });
+    }
   }
 
-  if (citySlug && continentSlug) {
+  if (citySlug && firstSlug && isCityFaresPrefix(firstSlug)) {
     breadcrumbs.push({
       name: formatSlug(citySlug),
-      path: `/${continentSlug}/${citySlug}`,
+      path: cityFaresPath(citySlug),
+    });
+  } else if (citySlug && firstSlug && !isCityFaresPrefix(firstSlug) && segments.length >= 2) {
+    breadcrumbs.push({
+      name: formatSlug(citySlug),
+      path: `/${firstSlug}/${citySlug}`,
     });
   }
 

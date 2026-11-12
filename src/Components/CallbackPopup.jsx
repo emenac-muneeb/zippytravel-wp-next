@@ -135,7 +135,7 @@ const CallbackPopup = ({ onClose, phone, whatsapp }) => {
                             {/* Submit Button */}
                             <button
                                 onClick={handleSubmit}
-                                className="w-full bg-[#de002c] hover:bg-[#b60024] transition-colors text-white font-medium rounded-md flex items-center justify-center gap-2 py-3"
+                                className="w-full bg-[#5CACC4] hover:bg-[#5CACC4] transition-colors text-white font-medium rounded-md flex items-center justify-center gap-2 py-3"
                             >
                                 <span>Submit</span>
                                 <img src={`${BASE_URL_IMG}/assets/svgs/Arrow-white-up.svg`} alt='arrow' />
@@ -150,21 +150,23 @@ const CallbackPopup = ({ onClose, phone, whatsapp }) => {
                                 href={`https://wa.me/${formatWhatsApp(whatsapp)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-[#25D366] hover:text-[#25D366] text-base font-semibold flex items-center gap-1"
+                                className="text-[#25D366] hover:text-[#25D366] text-base font-semibold "
                             >
-                                WhatsApp <img src={`${BASE_URL_IMG}/assets/svgs/green-arrow.svg`} alt='arrow' />
+                                WhatsApp 
+                                <span className='text-base block text-[#000]'>{whatsapp}</span>
 
                             </a>
-                            <span className='text-base'>{whatsapp}</span>
+                            
                         </div>
                         <div>
                             <a
                                 href={`tel:${phone.replace(/\s|-/g, '')}`}
-                                className="text-red-600 text-base font-semibold flex items-center gap-1"
+                                className="text-[#5CACC4] text-base font-semibold"
                             >
-                                Call Us Now <img src={`${BASE_URL_IMG}/assets/svgs/Arrow1.svg`} alt='arrow' />
+                                Call Us Now
+                                <span className='text-base block text-[#000]'>{phone}</span>
                             </a>
-                            <span className='text-base'>{phone}</span>
+                            
                         </div>
                     </div>
                 </div>

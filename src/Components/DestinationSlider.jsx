@@ -228,18 +228,17 @@ export default function DestinationSlider({
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
-  // 2-step destinations: /{continent}/{citySlug} e.g. /africa/flights-to-ghana
+  // City fares pages: /country/{citySlug} e.g. /country/ghana
   const getHref = (dest) => {
-    const continent = slugifyDestination(dest.continent);
     const rawSlug = String(dest.slug || "").trim();
-    if (!rawSlug) return continent ? `/${continent}` : "/continents";
+    if (!rawSlug) return "/continents";
     const citySlug = rawSlug.startsWith("flights-to-")
       ? rawSlug
       : slugifyDestination(rawSlug);
-    if (citySlug.startsWith("flights-to-") && !continent) {
+    if (citySlug.startsWith("flights-to-")) {
       return `/${citySlug}`;
     }
-    return continent ? `/${continent}/${citySlug}` : `/${citySlug}`;
+    return `/country/${citySlug}`;
   };
 
   const getKey = (dest, index) =>

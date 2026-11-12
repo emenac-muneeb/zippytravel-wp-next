@@ -119,7 +119,7 @@ export default function CityFlightFaresClient({ initialData, params }) {
                         bgImageOverride={cityData?.banner_img?.[0]?.url || cityData?.image_url}
                     />
 
-                    <div className="w-full font-poppins pb-16">
+                    <div className="w-full font-poppins">
                         {/* Section Header */}
                         <div className="text-center mt-12 sm:mt-16 mb-8 sm:mb-10 max-w-3xl mx-auto px-4">
                             <h2 className="font-poppins font-bold text-[30px] sm:text-[38px] md:text-[42px] text-[#1F0060] tracking-tight">
@@ -184,7 +184,7 @@ export default function CityFlightFaresClient({ initialData, params }) {
                         </div>
                     )}
                     {typeof cityData?.faq_widget?.[0]?.faq_ids === 'string' && (
-                        <div className='mx-auto sm:pt-16 pt-8 pb-4'>
+                        <div className='mx-auto '>
                             <FaqSection
                                 faq_ids={cityData.faq_widget[0].faq_ids
                                     .split(',')

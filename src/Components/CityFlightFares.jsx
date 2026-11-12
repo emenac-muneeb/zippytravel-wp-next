@@ -51,21 +51,6 @@ export default function CityFlightFares() {
                     return;
                 }
 
-                const UrlData = response.data.result.country;
-                const apiCountrySlug = UrlData?.title
-                    ?.toLowerCase()
-                    .replace(/\s+/g, "-")
-                    .replace(/\//g, "");
-                const apiContinentSlug = UrlData?.continent?.title
-                    ?.toLowerCase()
-                    .replace(/\s+/g, "-")
-                    .replace(/\//g, "");
-
-                if (apiContinentSlug !== continentSlug || apiCountrySlug !== countrySlug) {
-                    router.push(`/${continentSlug}/${countrySlug}/${citySlug}`);
-                    return;
-                }
-
                 const data = response.data.result;
                 setCityData(data);
 

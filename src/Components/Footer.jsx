@@ -28,9 +28,6 @@ const Footer = () => {
   const pathname = usePathname();
   const [footerData, setFooterData] = useState(() => footerSetting ?? {});
 
-  // Hide footer on 404 and thank-you pages
-  if (pathname?.includes("thank-you") || pathname?.includes("not-found") || pathname === "/_not-found") return null;
-
   useEffect(() => {
     if (footerSetting) {
       setFooterData(footerSetting);
@@ -52,6 +49,15 @@ const Footer = () => {
     };
     fetchSettings();
   }, [footerSetting]);
+
+  // Hide footer on 404 and thank-you pages (after hooks — Rules of Hooks)
+  if (
+    pathname?.includes("thank-you") ||
+    pathname?.includes("not-found") ||
+    pathname === "/_not-found"
+  ) {
+    return null;
+  }
 
   const extractLinksFromHTML = (htmlString) => {
     if (!htmlString) return [];

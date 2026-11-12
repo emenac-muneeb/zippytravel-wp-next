@@ -227,7 +227,7 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className={`h-[48px] px-8 rounded-[10px] bg-[#A57233] text-white text-[15px] sm:text-[16px] font-semibold font-quicksand flex items-center justify-center gap-2.5 hover:bg-[#8f622c] transition-colors w-full ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                            className={`h-[48px] px-8 rounded-[10px] bg-[#5CACC4] text-white text-[15px] sm:text-[16px] font-semibold font-quicksand flex items-center justify-center gap-2.5 hover:bg-[#5CACC4] transition-colors w-full ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""
                                 }`}
                         >
                             <span>{isSubmitting ? "Submitting..." : "Send Message"}</span>
@@ -241,8 +241,8 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
                             type="button"
                             onClick={() => setAgreed((prev) => !prev)}
                             className={`mt-0.5 w-[18px] h-[18px] rounded-[4px] border flex items-center justify-center shrink-0 transition-colors ${agreed
-                                ? "bg-[#F1A868] border-[#F1A868]"
-                                : "bg-white border-[#D9CFC0]"
+                                ? "bg-[#5CACC4] border-[#5CACC4]"
+                                : "bg-white border-[#5CACC4 ]"
                                 }`}
                             aria-pressed={agreed}
                             aria-label="Agree to terms"

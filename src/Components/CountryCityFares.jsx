@@ -85,14 +85,8 @@ export default function CountryCityFares({
   ContinentCities,
   classLabel = "Business Class",
 }) {
-  const sanitize = (str) =>
-    str?.toLowerCase().replace(/\s+/g, "-").replace(/\//g, "") ?? "";
-
-  const sanitizedContinent = sanitize(ContinentCities?.continent?.title);
-  const sanitizedCountry = sanitize(ContinentCities?.title);
-
   const getHref = (item) =>
-    `/${sanitizedContinent}/${sanitizedCountry}/${item.slug}`;
+    item?.slug ? `/country/${item.slug}` : '#';
 
   if (!cities.length) return null;
 

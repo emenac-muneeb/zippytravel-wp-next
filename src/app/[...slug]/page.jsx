@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import DynamicClientWrapper from './DynamicClientWrapper';
 import { endpoints } from '../../Helpers/endpoints';
 import { BASE_URL_IMG } from '../../Helpers/imageurl';
@@ -11,6 +12,7 @@ import {
   resolveCmsStaticPageType,
 } from '../../Helpers/metadata';
 import ScriptInjector from '../../Components/common/ScriptInjector';
+import { GenericInnerPageSkeleton } from '../../Components/common/Skeleton';
 
 /** Fixed public URL — static UI, not in admin CMS. */
 const STATIC_THANKYOU_PAGE_URL = 'thankyou.html';
@@ -89,6 +91,11 @@ function getCityContinentEntity(cityData) {
 
 function cityContinentSlugMatches(urlSlug, cityData, sanitize = sanitizeTitle) {
   return urlSegmentMatchesEntity(urlSlug, getCityContinentEntity(cityData), sanitize);
+}
+
+/** City fare pages use a fixed prefix: /country/{citySlug} */
+function isCityFaresUrlPrefix(segment) {
+  return String(segment || '').replace(/\.html?$/i, '').toLowerCase() === 'country';
 }
 
 /** Continent, country, city destination slugs — exact admin/API match only. */
@@ -218,24 +225,24 @@ async function getPageData(slugArr) {
       return null;
     }
 
-    // 2-step flow: /{continent}/{city} → city fares (e.g. /africa/flights-to-ghana)
+    // City fares: /country/{citySlug} (e.g. /country/ghana)
     if (len === 2) {
       const [s1, s2] = slugArr;
       // Holiday package URLs under /holidays-to-*/... disabled — re-enable later
       if (s1.startsWith('holidays-to-')) {
         return null;
       }
+      if (!isCityFaresUrlPrefix(s1)) {
+        return null;
+      }
       const cityResult = await resolveCityBySlug(s2);
       if (cityResult) {
         const cityData = cityResult.data;
-        if (
-          urlSegmentMatchesEntity(s2, cityData, sanitize) &&
-          cityContinentSlugMatches(s1, cityData, sanitize)
-        ) {
+        if (urlSegmentMatchesEntity(s2, cityData, sanitize)) {
           return {
             type: 'city',
             data: cityData,
-            continentSlug: s1,
+            continentSlug: 'country',
             citySlug: s2,
           };
         }
@@ -243,20 +250,20 @@ async function getPageData(slugArr) {
       return null;
     }
 
-    // Legacy 3-segment URLs: resolve last segment as city (skip old country middle page)
+    // Legacy 3-segment URLs: /country/{ignored}/{citySlug}
     if (len === 3) {
       const [s1, , s3] = slugArr;
+      if (!isCityFaresUrlPrefix(s1)) {
+        return null;
+      }
       const cityResult = await resolveCityBySlug(s3);
       if (cityResult) {
         const cityData = cityResult.data;
-        if (
-          urlSegmentMatchesEntity(s3, cityData, sanitize) &&
-          cityContinentSlugMatches(s1, cityData, sanitize)
-        ) {
+        if (urlSegmentMatchesEntity(s3, cityData, sanitize)) {
           return {
             type: 'city',
             data: cityData,
-            continentSlug: s1,
+            continentSlug: 'country',
             citySlug: s3,
           };
         }
@@ -516,6 +523,7 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
   const { slug } = await params;
+  // Resolve before any Suspense/streaming so notFound() can return HTTP 404
   const result = await enrichPageResult(await getPageData(slug));
 
   if (!result) {
@@ -530,7 +538,9 @@ export default async function Page({ params }) {
   return (
     <>
       <ScriptInjector scriptContent={scriptContent} />
-      <DynamicClientWrapper result={result} params={params} />
+      <Suspense fallback={<GenericInnerPageSkeleton />}>
+        <DynamicClientWrapper result={result} params={params} />
+      </Suspense>
     </>
   );
 }
