@@ -110,7 +110,7 @@ export default function AirlineSlider({
   const primaryAirlines = displayAirlines.slice(0, 8);
   const extraAirlines = displayAirlines.slice(8, 11);
 
-  if (!sectionHeading || !sectionSubheading || displayAirlines.length === 0) {
+  if (displayAirlines.length === 0) {
     return null;
   }
 
