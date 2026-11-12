@@ -37,8 +37,8 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
 
-  // Filter states
-  const [selectedClass, setSelectedClass] = useState('Business');
+  // Filter states — Economy Class is default (active + first in list)
+  const [selectedClass, setSelectedClass] = useState('Economy Class');
   const [stopoverFilter, setStopoverFilter] = useState('Any');
   const [searchDestination, setSearchDestination] = useState('');
   const [checkedDestinations, setCheckedDestinations] = useState(new Set());
@@ -97,8 +97,7 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
         per_page: 12,
       };
 
-      // Class filter: By default class is 0 (Business), so we don't send class filter for Business.
-      // 1 for Premium Economy, 3 for First Class
+      // class omitted = Business; 1 = Premium Economy; 3 = Economy Class
       if (selectedClass === 'Premium Economy') {
         paramsObj.class = 1;
       } else if (selectedClass === 'First Class') {
@@ -148,6 +147,10 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
+      // SSR may be Business; load Economy when that's the selected default
+      if (selectedClass === 'Economy Class') {
+        fetchFares(1, false);
+      }
       return;
     }
 
@@ -293,9 +296,9 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
                 </div>
                 <div className="flex flex-col gap-2">
                   {[
-                    { id: 'Business', label: 'Business Class' },
-                    { id: 'Premium Economy', label: 'Premium Economy' },
                     { id: 'Economy Class', label: 'Economy Class' },
+                    { id: 'Premium Economy', label: 'Premium Economy' },
+                    { id: 'Business', label: 'Business Class' },
                   ].map((item) => {
                     const isActive = selectedClass === item.id;
                     return (
@@ -487,7 +490,7 @@ export default function AirlinesDetailsClient({ initialAirlineData, airlineSlug 
                   <button
                     onClick={() => {
                       setStopoverFilter('Any');
-                      setSelectedClass('Business');
+                      setSelectedClass('Economy Class');
                       setMinPrice(absoluteMinPrice);
                       setMaxPrice(absoluteMaxPrice);
                       setCheckedDestinations(new Set());

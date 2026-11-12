@@ -321,8 +321,8 @@ function getScrollDescriptionForResult(result) {
 }
 
 /**
- * City `match-location` returns Economy fares.
- * `city-fares` default (no class / class=0) is Business; class=1 Premium; class=3 First.
+ * `city-fares` class map: omit/0 = Business; 1 = Premium Economy; 3 = Economy Class.
+ * Default UI/SSR load uses Economy Class (class=3).
  */
 function collectCityFareIds(widgets) {
   if (!Array.isArray(widgets)) return '';
@@ -339,7 +339,7 @@ function collectCityFareIds(widgets) {
   return ids.join(',');
 }
 
-/** CMS "page with banner" fares: /city-fares?city_ids=255,219 (default class). */
+/** CMS "page with banner" fares: Economy Class by default (class=3). */
 async function fetchBannerCityFares(cityIds) {
   if (!cityIds) return null;
   try {
@@ -347,6 +347,7 @@ async function fetchBannerCityFares(cityIds) {
       city_ids: cityIds,
       page: '1',
       per_page: '12',
+      class: '3',
     });
     const res = await fetch(`${endpoints.cityFares}?${params.toString()}`, {
       next: { revalidate: 3600 },
@@ -399,8 +400,8 @@ async function enrichPageResult(result) {
       enrichedData.parsedScrollContent2 = parseScrollDescription(scrollDescription2);
     }
 
-    // By default for city fares, fetch Economy / Premium class (class=1) instead of Business
-    const defaultFares = await fetchCityFaresByClass(enrichedData.slug, 1);
+    // Default city fares: Economy Class (class=3)
+    const defaultFares = await fetchCityFaresByClass(enrichedData.slug, 3);
     if (defaultFares && (defaultFares.data?.length > 0 || defaultFares.length > 0)) {
       enrichedData.fares = defaultFares;
     }

@@ -62,8 +62,8 @@ export default function BannerFaresClient({ initialData }) {
   const [flightLoading, setFlightLoading] = useState(false);
   const [popupMessage, setPopupMessage] = useState(null);
 
-  // Filter states — same behaviour as /airline/[slug]
-  const [selectedClass, setSelectedClass] = useState('Business');
+  // Filter states — Economy Class is default (active + first in list)
+  const [selectedClass, setSelectedClass] = useState('Economy Class');
   const [stopoverFilter, setStopoverFilter] = useState('Any');
   const [searchDestination, setSearchDestination] = useState('');
   const [checkedDestinations, setCheckedDestinations] = useState(new Set());
@@ -118,7 +118,7 @@ export default function BannerFaresClient({ initialData }) {
         per_page: 12,
       };
 
-      // Default city-fares (no class) = Business. class=1 Premium, class=3 Economy.
+      // class omitted = Business; class=1 Premium Economy; class=3 Economy Class
       if (selectedClass === 'Premium Economy') {
         paramsObj.class = 1;
       } else if (selectedClass === 'First Class') {
@@ -193,7 +193,7 @@ export default function BannerFaresClient({ initialData }) {
 
   const resetFilters = () => {
     setStopoverFilter('Any');
-    setSelectedClass('Business');
+    setSelectedClass('Economy Class');
     setMinPrice(absoluteMinPrice);
     setMaxPrice(absoluteMaxPrice);
     setCheckedDestinations(new Set());
@@ -324,9 +324,9 @@ export default function BannerFaresClient({ initialData }) {
                     </div>
                     <div className="flex flex-col gap-2">
                       {[
-                        { id: 'Business', label: 'Business Class' },
-                        { id: 'Premium Economy', label: 'Premium Economy' },
                         { id: 'Economy Class', label: 'Economy Class' },
+                        { id: 'Premium Economy', label: 'Premium Economy' },
+                        { id: 'Business', label: 'Business Class' },
                       ].map((item) => {
                         const isActive = selectedClass === item.id;
                         return (

@@ -6,13 +6,11 @@ import ScriptInjector from '../../../Components/common/ScriptInjector';
 
 async function getAirlineDetails(slug) {
   try {
-    const url = endpoints.airlineDetails(slug);
-    console.log("[DEBUG getAirlineDetails] Fetching URL:", url);
+    // Default Cabin Class = Economy (class=3), matching AirlinesDetailsClient
+    const url = `${endpoints.airlineDetails(slug)}&class=3&page=1&per_page=12`;
     const res = await fetch(url, { next: { revalidate: 3600 } });
-    console.log("[DEBUG getAirlineDetails] Response status:", res.status);
     if (!res.ok) return null;
     const data = await res.json();
-    console.log("[DEBUG getAirlineDetails] Data status:", data?.status, "result:", !!data?.result);
     return data?.status === 1 ? data.result : null;
   } catch (err) {
     console.error("Error fetching airline details:", err);

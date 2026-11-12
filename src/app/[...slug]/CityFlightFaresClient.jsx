@@ -52,7 +52,7 @@ export default function CityFlightFaresClient({ initialData, params }) {
                 slug: citySlug,
                 page: pageToFetch,
                 per_page: 12,
-                class: 1, // Economy / Premium class
+                class: 3, // Economy Class
             };
 
             const res = await axios.get(endpoints.cityFares, { params: paramsObj });
