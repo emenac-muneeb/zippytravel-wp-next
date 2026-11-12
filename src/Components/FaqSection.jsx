@@ -3,46 +3,9 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { endpoints } from "../Helpers/endpoints";
 
-const DEFAULT_FAQS = [
-  {
-    id: "faq-1",
-    question: "How can flight costs be compared?",
-    answer:
-      "You can easily compare flight costs on our platform by entering your departure, destination, and travel dates to see real-time fares from top international airlines side by side.",
-  },
-  {
-    id: "faq-2",
-    question: "How far in advance should I book my airline tickets for a successful trip?",
-    answer:
-      "We recommend booking international flights 2 to 4 months in advance, and during off-peak periods, to secure the best rates and seat availability.",
-  },
-  {
-    id: "faq-3",
-    question: "How can flight costs be compared?",
-    answer:
-      "Use our flexible date search and filter options by airline, stops, and price to find the most economical flight option for your itinerary.",
-  },
-  {
-    id: "faq-4",
-    question: "From the UK, I'm looking for inexpensive flights. When should I make a reservation?",
-    answer:
-      "For UK departures, booking 6 to 12 weeks ahead and considering midweek departures (Tuesdays and Wednesdays) typically yields the lowest airfares.",
-  },
-  {
-    id: "faq-5",
-    question: "How can flight costs be compared?",
-    answer:
-      "Our portal automatically negotiates exclusive consolidator fares with premier airlines, ensuring you get lower rates than standard booking channels.",
-  },
-  {
-    id: "faq-6",
-    question: "How can flight costs be compared?",
-    answer:
-      "You can sign up for price alerts or contact our travel experts 24/7 to receive personalized flight options and secret negotiated deals.",
-  },
-];
-
 const FaqItem = ({ faq, isOpen, onToggle }) => {
+  if (!faq?.question || !faq?.answer) return null;
+
   return (
     <div className="w-full max-w-[387px] mx-auto lg:mx-0">
       <div
@@ -104,7 +67,6 @@ const FaqItem = ({ faq, isOpen, onToggle }) => {
         </div>
       </div>
 
-      {/* Border line below question: gap 59px from text when closed, width 387px, height 0 */}
       <div
         className={`w-full max-w-[387px] border-b border-[#CBD5E1] transition-all duration-300 ${
           isOpen ? "mt-4" : "mt-[59px]"
@@ -121,68 +83,76 @@ const FaqSection = ({
   subheading = "",
   initialFaqs = null,
 }) => {
-  const [faqData, setFaqData] = useState(initialFaqs ?? []);
+  const [faqData, setFaqData] = useState(() =>
+    Array.isArray(initialFaqs) ? initialFaqs : []
+  );
   const [activeIndex, setActiveIndex] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
 
-  const fetchedKeyRef = useRef(initialFaqs?.length ? faq_ids.join(",") : "");
+  const idsKey = Array.isArray(faq_ids)
+    ? faq_ids.filter((id) => id != null && id !== "").join(",")
+    : "";
+  const fetchedKeyRef = useRef(
+    Array.isArray(initialFaqs) && initialFaqs.length > 0 ? idsKey : ""
+  );
 
   useEffect(() => {
-    const currentKey = faq_ids.join(",");
-    if (!currentKey || currentKey === fetchedKeyRef.current) return;
+    if (!idsKey || idsKey === fetchedKeyRef.current) return;
 
-    fetchedKeyRef.current = currentKey;
-    setIsLoading(true);
+    fetchedKeyRef.current = idsKey;
+    let cancelled = false;
 
     const fetchFaqs = async () => {
       try {
-        const response = await axios.get(endpoints.faqsId(currentKey));
+        const response = await axios.get(endpoints.faqsId(idsKey));
+        if (cancelled) return;
         if (response.data.status === 1 && response.data.result?.faqs?.length) {
           setFaqData(response.data.result.faqs);
+        } else {
+          setFaqData([]);
         }
       } catch (err) {
         console.error("FAQ fetch error:", err);
-      } finally {
-        setIsLoading(false);
+        if (!cancelled) setFaqData([]);
       }
     };
 
     fetchFaqs();
-  }, [faq_ids]);
+    return () => {
+      cancelled = true;
+    };
+  }, [idsKey]);
 
-  // Use fetched faqs or fallback to DEFAULT_FAQS (strictly 3 left, 3 right to match design)
-  const rawItems = faqData && faqData.length > 0 ? faqData : DEFAULT_FAQS;
-  const items = rawItems.slice(0, 6);
-  const firstColumn = items.slice(0, 3);
-  const secondColumn = items.slice(3, 6);
+  const items = (Array.isArray(faqData) ? faqData : []).filter(
+    (faq) => faq?.question && faq?.answer
+  );
+  const mid = Math.ceil(items.length / 2);
+  const firstColumn = items.slice(0, mid);
+  const secondColumn = items.slice(mid);
 
-  const displayHeading = "Frequently Asked Questions";
-  const displaySubheading =
-    "Our customers can access our web site for a \u2018one-stop shop\u2019 including access to specially negotiated airfares, hotels, car rental and insurance.";
+  if (!heading || !subheading || items.length === 0) {
+    return null;
+  }
 
   return (
     <section className="mt-[60px] sm:mt-[80px] lg:mt-[110px] w-full bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1320px]">
-        {/* Top Header & Subtitle */}
         <div className="text-center max-w-[820px] mx-auto">
           <h2
             className="text-[28px] sm:text-[32px] md:text-[36px] font-[700] text-[#1C2938] leading-[1.25]"
             style={{ fontFamily: "'Poppins', sans-serif" }}
           >
-            {displayHeading}
+            {heading}
           </h2>
           <p
             className="text-[16px] sm:text-[18px] md:text-[20px] font-[400] text-[#5A6B82] leading-[1.45] mt-3"
             style={{ fontFamily: "'Poppins', sans-serif" }}
           >
-            {displaySubheading}
+            {subheading}
           </p>
         </div>
 
-        {/* 1. Desktop Layout (1024px and above): 3 columns (Left questions, Center image, Right questions) */}
         <div className="mt-[46px] hidden lg:flex flex-row items-center justify-between gap-8 xl:gap-12">
-          {/* Left Column Questions */}
           <div className="w-[387px] flex flex-col justify-between gap-6 min-h-[344px]">
             {firstColumn.map((faq, index) => {
               const globalIndex = index;
@@ -199,11 +169,10 @@ const FaqSection = ({
             })}
           </div>
 
-          {/* Center Image: height 344px (shifted further upwards) */}
           <div className="flex-shrink-0 flex items-center justify-center my-0 -mt-10 lg:-mt-[70px]">
             <img
               src="/faq-center.png"
-              alt="Frequently Asked Questions Illustration"
+              alt={heading}
               className="h-[344px] w-auto object-contain"
               width={393}
               height={344}
@@ -211,10 +180,9 @@ const FaqSection = ({
             />
           </div>
 
-          {/* Right Column Questions */}
           <div className="w-[387px] flex flex-col justify-between gap-6 min-h-[344px]">
             {secondColumn.map((faq, index) => {
-              const globalIndex = 3 + index;
+              const globalIndex = mid + index;
               return (
                 <FaqItem
                   key={faq.id || `faq-right-${index}`}
@@ -229,13 +197,11 @@ const FaqSection = ({
           </div>
         </div>
 
-        {/* 2. Responsive Layout (1023px and below): Clean spacing, image sits properly below subtitle without overlapping */}
         <div className="block lg:hidden mt-6 sm:mt-8">
-          {/* Center Illustration: Clean positive margin, NO negative margin so it never overlaps the heading */}
           <div className="flex justify-center mb-6 sm:mb-8">
             <img
               src="/faq-center.png"
-              alt="Frequently Asked Questions Illustration"
+              alt={heading}
               className="h-[220px] sm:h-[270px] md:h-[310px] w-auto max-w-full object-contain mx-auto"
               width={393}
               height={344}
@@ -243,11 +209,6 @@ const FaqSection = ({
             />
           </div>
 
-          {/* Questions Grid:
-              - On Tablet (sm to 1023px): 2 questions per line (sm:grid-cols-2)
-              - On Mobile (< sm): 1 question per line (grid-cols-1)
-              - On Mobile: Only first 4 questions shown initially; rest hidden behind Load More
-          */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 max-w-[850px] w-full mx-auto">
             {items.map((faq, index) => (
               <div
@@ -267,7 +228,6 @@ const FaqSection = ({
             ))}
           </div>
 
-          {/* Load More Button: ONLY shown when in single-column mobile view (sm:hidden) and there are more than 4 questions */}
           {items.length > 4 && (
             <div className="mt-8 flex justify-center sm:hidden">
               <button

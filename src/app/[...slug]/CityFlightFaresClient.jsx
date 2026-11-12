@@ -92,7 +92,8 @@ export default function CityFlightFaresClient({ initialData, params }) {
     };
 
     const cityName = cityData?.title || 'City';
-    const heroTitle = `Flights to ${cityName}`;
+    // Hero H1 must use API page_title (e.g. "Book Flight Tickets to Ghana")
+    const heroTitle = cityData?.page_title || `Flights to ${cityName}`;
 
     return (
         <>
@@ -123,7 +124,7 @@ export default function CityFlightFaresClient({ initialData, params }) {
                         {/* Section Header */}
                         <div className="text-center mt-12 sm:mt-16 mb-8 sm:mb-10 max-w-3xl mx-auto px-4">
                             <h2 className="font-poppins font-bold text-[30px] sm:text-[38px] md:text-[42px] text-[#1F0060] tracking-tight">
-                                {cityData?.page_title || `Cheapest ${cityName} Flight Fares`}
+                                {`Cheapest ${cityName} Flight Fares`}
                             </h2>
                             <p className="mt-3 text-[#555555] text-[15px] sm:text-[16px] font-poppins leading-relaxed">
                                 Our customers can access our web site for a 'one-stop shop' including access to specially negotiated airfares, hotels, car rental and insurance.

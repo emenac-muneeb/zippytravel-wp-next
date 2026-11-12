@@ -437,15 +437,7 @@ const HeroSectionNew = ({
                   <p>{displayDescription}</p>
                 </div>
               )
-            ) : (
-              <div className="banner-description">
-                <p>
-                  Zippytravel.co.uk is an e-commerce UK based company
-                  <br className="hidden sm:inline" />
-                  {" "}offering online travel products and services.
-                </p>
-              </div>
-            )}
+            ) : null}
           </div>
 
           {/* Bottom spacer so banner maintains proper height */}

@@ -61,8 +61,8 @@ function AirlineLogoCard({ airline }) {
 }
 
 export default function AirlineSlider({
-  heading = "Association with Leading Airlines",
-  subheading = "Our customers can access our web site for a 'one-stop shop' including access to specially negotiated airfares, hotels, car rental and insurance.",
+  heading = "",
+  subheading = "",
 }) {
   const { topAirlines: topAirlinesData } = useGeneralSettings();
   const [airlines, setAirlines] = useState([]);
@@ -99,12 +99,20 @@ export default function AirlineSlider({
     return source.map(normalizeAirline).filter(Boolean).slice(0, 11);
   }, [topAirlinesData, airlines]);
 
+  // Prefer home widgets_content AIRLINES shortcode (props); else general-settings top_airlines
   const sectionHeading =
-    (topAirlinesData?.is_active && topAirlinesData?.heading) || heading;
+    heading ||
+    (topAirlinesData?.is_active && topAirlinesData?.heading) ||
+    "";
+  const sectionSubheading = subheading || "";
 
   // Keep visual grid fill: first 8 always, extras for responsive layouts, last slot = MORE
   const primaryAirlines = displayAirlines.slice(0, 8);
   const extraAirlines = displayAirlines.slice(8, 11);
+
+  if (!sectionHeading || !sectionSubheading || displayAirlines.length === 0) {
+    return null;
+  }
 
   return (
     <section className="w-full py-10 sm:py-14 lg:py-16 bg-white font-poppins">
@@ -114,7 +122,7 @@ export default function AirlineSlider({
             {sectionHeading}
           </h2>
           <p className="font-poppins font-normal text-[15px] sm:text-[17px] lg:text-[18px] text-[#555555] mt-3 sm:mt-4 leading-relaxed">
-            {subheading}
+            {sectionSubheading}
           </p>
         </div>
 

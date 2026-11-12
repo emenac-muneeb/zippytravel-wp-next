@@ -161,6 +161,27 @@ const HomePageClient = ({
     }).filter(Boolean);
   }, [cityFares]);
 
+  // Home widgets_content: {{AIRLINES heading="..." sub_heading="..."}}
+  const airlinesWidget = React.useMemo(() => {
+    const raw = String(homePage?.widgets_content || "");
+    const match = raw.match(
+      /\{\{AIRLINES\b[^}]*?\bheading="([^"]*)"[^}]*?\bsub_heading="([^"]*)"[^}]*\}\}/i
+    );
+    if (!match) {
+      // Allow either attribute order
+      const headingOnly = raw.match(/\{\{AIRLINES\b[^}]*?\bheading="([^"]*)"/i);
+      const subOnly = raw.match(/\{\{AIRLINES\b[^}]*?\bsub_heading="([^"]*)"/i);
+      return {
+        heading: headingOnly?.[1]?.trim() || "",
+        subheading: subOnly?.[1]?.trim() || "",
+      };
+    }
+    return {
+      heading: match[1].trim(),
+      subheading: match[2].trim(),
+    };
+  }, [homePage?.widgets_content]);
+
   return (
     <>
       {popupMessage && (
@@ -205,7 +226,10 @@ const HomePageClient = ({
             initialContinents={initialContinents}
           /> */}
 
-          <AirlineSlider />
+          <AirlineSlider
+            heading={airlinesWidget.heading}
+            subheading={airlinesWidget.subheading}
+          />
 
           <CheapestFlightFares
             heading={homePage?.cityfares_widget?.[0]?.heading}
@@ -223,12 +247,17 @@ const HomePageClient = ({
           )}
            
 
-          {homePage?.faq_widget?.[0]?.faq_ids && (
+          {homePage?.faq_widget?.[0]?.faq_ids &&
+            homePage.faq_widget[0]?.heading &&
+            homePage.faq_widget[0]?.sub_heading && (
             <div className="sm:pt-0 pt-0">
               <FaqSection
-                faq_ids={homePage.faq_widget[0].faq_ids.split(",").map(Number)}
-                heading={homePage.faq_widget[0]?.heading || ""}
-                subheading={homePage.faq_widget[0]?.sub_heading || ""}
+                faq_ids={String(homePage.faq_widget[0].faq_ids)
+                  .split(",")
+                  .map((id) => Number(id.trim()))
+                  .filter((id) => !Number.isNaN(id))}
+                heading={homePage.faq_widget[0].heading}
+                subheading={homePage.faq_widget[0].sub_heading}
               />
             </div>
           )}
