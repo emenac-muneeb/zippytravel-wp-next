@@ -119,9 +119,9 @@ const HeroSectionNew = ({
     setDestination(initialSearch.destination || saved.destination || "");
     setDestinationLabel(
       initialSearch.destinationLabel ||
-        saved.destinationLabel ||
-        initialSearch.destination ||
-        ""
+      saved.destinationLabel ||
+      initialSearch.destination ||
+      ""
     );
     setDepartureDate(
       toInputDate(initialSearch.departureDate || saved.departureDate || "")
@@ -464,11 +464,10 @@ const HeroSectionNew = ({
             <button
               type="button"
               onClick={() => setTripType("One-Way")}
-              className={`w-[140px] sm:w-[200px] lg:w-[242px] h-[46px] rounded-[10px] font-poppins font-bold text-[16px] sm:text-[18px] transition-all flex items-center justify-center select-none ${
-                tripType === "One-Way"
-                  ? "bg-[#5CACC4] text-white shadow-md border-0"
-                  : "bg-white text-[#1F0060] border-[1.5px] border-[#1F0060] hover:bg-[#F3F6F8]"
-              }`}
+              className={`w-[140px] sm:w-[200px] lg:w-[242px] h-[46px] rounded-[10px] font-poppins font-bold text-[16px] sm:text-[18px] transition-all flex items-center justify-center select-none ${tripType === "One-Way"
+                ? "bg-[#5CACC4] text-white shadow-md border-0"
+                : "bg-white text-[#1F0060] border-[1.5px] border-[#1F0060] hover:bg-[#F3F6F8]"
+                }`}
             >
               One-Way
             </button>
@@ -477,11 +476,10 @@ const HeroSectionNew = ({
             <button
               type="button"
               onClick={() => setTripType("Round Trip")}
-              className={`w-[140px] sm:w-[200px] lg:w-[242px] h-[46px] rounded-[10px] font-poppins font-bold text-[16px] sm:text-[18px] transition-all flex items-center justify-center select-none ${
-                tripType === "Round Trip"
-                  ? "bg-[#5CACC4] text-white shadow-md border-0"
-                  : "bg-white text-[#1F0060] border-[1.5px] border-[#1F0060] hover:bg-[#F3F6F8]"
-              }`}
+              className={`w-[140px] sm:w-[200px] lg:w-[242px] h-[46px] rounded-[10px] font-poppins font-bold text-[16px] sm:text-[18px] transition-all flex items-center justify-center select-none ${tripType === "Round Trip"
+                ? "bg-[#5CACC4] text-white shadow-md border-0"
+                : "bg-white text-[#1F0060] border-[1.5px] border-[#1F0060] hover:bg-[#F3F6F8]"
+                }`}
             >
               Round Trip
             </button>
@@ -496,9 +494,8 @@ const HeroSectionNew = ({
                 {/* 1. Origin Div */}
                 <div
                   onClick={() => focusVisibleInput(originInputRef, originMobileInputRef)}
-                  className={`airport-origin flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center cursor-text ${
-                    originSuggestions.length ? "z-40" : "z-10"
-                  }`}
+                  className={`airport-origin flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center cursor-text ${originSuggestions.length ? "z-40" : "z-10"
+                    }`}
                 >
                   <div className="flex flex-col items-start">
                     <span
@@ -538,7 +535,7 @@ const HeroSectionNew = ({
                   {/* Right Icon: right 20px, top 48px */}
                   <div className="absolute right-[20px] top-[48px] pointer-events-none">
                     <Image
-                      src="/Icon1.png"
+                      src="/media/fr-svgs/Icon1.png"
                       alt="Origin Icon"
                       width={24}
                       height={24}
@@ -550,9 +547,8 @@ const HeroSectionNew = ({
                 {/* 2. Destination Div */}
                 <div
                   onClick={() => focusVisibleInput(destinationInputRef, destinationMobileInputRef)}
-                  className={`airport-destination flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center cursor-text ${
-                    destinationSuggestions.length ? "z-40" : "z-10"
-                  }`}
+                  className={`airport-destination flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center cursor-text ${destinationSuggestions.length ? "z-40" : "z-10"
+                    }`}
                 >
                   <div className="flex flex-col items-start">
                     <span
@@ -592,7 +588,7 @@ const HeroSectionNew = ({
                   {/* Right Icon: right 20px, top 48px */}
                   <div className="absolute right-[20px] top-[48px] pointer-events-none">
                     <Image
-                      src="/Group 8.png"
+                      src="/media/fr-svgs/Group 8.png"
                       alt="Destination Dropdown"
                       width={24}
                       height={24}
@@ -631,13 +627,12 @@ const HeroSectionNew = ({
                   {/* Right Icon: right 20px, top 48px */}
                   <div className="absolute right-[20px] top-[48px] pointer-events-none">
                     <Image
-                      src="/Group 8.png"
+                      src="/media/fr-svgs/Group 8.png"
                       alt="Passengers Dropdown"
                       width={24}
                       height={24}
-                      className={`w-[24px] h-[24px] object-contain transition-transform ${
-                        showPassengerModal ? "rotate-180" : ""
-                      }`}
+                      className={`w-[24px] h-[24px] object-contain transition-transform ${showPassengerModal ? "rotate-180" : ""
+                        }`}
                     />
                   </div>
 
@@ -725,11 +720,10 @@ const HeroSectionNew = ({
                     setShowPassengerModal(false);
                     setShowDepCalendar(false);
                   }}
-                  className={`flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center select-none transition-all duration-200 ${
-                    tripType === "Round Trip"
-                      ? "opacity-100 cursor-pointer"
-                      : "opacity-35 cursor-not-allowed"
-                  }`}
+                  className={`flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center select-none transition-all duration-200 ${tripType === "Round Trip"
+                    ? "opacity-100 cursor-pointer"
+                    : "opacity-35 cursor-not-allowed"
+                    }`}
                 >
                   <div className="flex flex-col items-start pointer-events-none">
                     <span
@@ -786,8 +780,8 @@ const HeroSectionNew = ({
               aria-label="Submit"
             >
               <Image
-                src="/send.svg"
-                alt="Submit"
+                src="/media/fr-svgs/send.svg"
+                alt="Search"
                 width={32}
                 height={32}
                 className="w-[32px] h-[32px] object-contain"
@@ -804,9 +798,8 @@ const HeroSectionNew = ({
               {/* Origin */}
               <div
                 onClick={() => focusVisibleInput(originInputRef, originMobileInputRef)}
-                className={`airport-origin bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] cursor-text ${
-                  originSuggestions.length ? "z-40" : "z-10"
-                }`}
+                className={`airport-origin bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] cursor-text ${originSuggestions.length ? "z-40" : "z-10"
+                  }`}
               >
                 <span
                   className="font-poppins font-semibold text-[18px] text-[#1F0060] inline-block w-fit"
@@ -842,16 +835,15 @@ const HeroSectionNew = ({
                 )}
                 {renderAirportSuggestions(originSuggestions, "origin")}
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <Image src="/Icon1.png" alt="Origin" width={22} height={22} />
+                  <Image src="/media/fr-svgs/Icon1.png" alt="Origin" width={22} height={22} />
                 </div>
               </div>
 
               {/* Destination */}
               <div
                 onClick={() => focusVisibleInput(destinationInputRef, destinationMobileInputRef)}
-                className={`airport-destination bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] cursor-text ${
-                  destinationSuggestions.length ? "z-40" : "z-10"
-                }`}
+                className={`airport-destination bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] cursor-text ${destinationSuggestions.length ? "z-40" : "z-10"
+                  }`}
               >
                 <span
                   className="font-poppins font-semibold text-[18px] text-[#1F0060] inline-block w-fit"
@@ -887,7 +879,7 @@ const HeroSectionNew = ({
                 )}
                 {renderAirportSuggestions(destinationSuggestions, "destination")}
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <Image src="/Group 8.png" alt="Destination" width={22} height={22} />
+                  <Image src="/media/fr-svgs/Group 8.png" alt="Destination" width={22} height={22} />
                 </div>
               </div>
 
@@ -917,7 +909,7 @@ const HeroSectionNew = ({
                   {passengerDisplayText}
                 </span>
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <Image src="/Group 8.png" alt="Passengers" width={22} height={22} />
+                  <Image src="/media/fr-svgs/Group 8.png" alt="Passengers" width={22} height={22} />
                 </div>
 
                 {/* Mobile Custom Passengers Dropdown: 6px gap from input, 340px width, 176px height */}
@@ -991,9 +983,8 @@ const HeroSectionNew = ({
                   setShowPassengerModal(false);
                   setShowDepCalendar(false);
                 }}
-                className={`bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] md:col-span-2 select-none z-10 ${
-                  tripType === "Round Trip" ? "opacity-100 cursor-pointer" : "opacity-35 cursor-not-allowed"
-                }`}
+                className={`bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] md:col-span-2 select-none z-10 ${tripType === "Round Trip" ? "opacity-100 cursor-pointer" : "opacity-35 cursor-not-allowed"
+                  }`}
               >
                 <div className="pointer-events-none">
                   <span
@@ -1040,8 +1031,8 @@ const HeroSectionNew = ({
               disabled={submitting}
               className="mt-4 w-full h-[52px] bg-[#5CACC4] hover:bg-[#4ea0b8] text-white font-poppins font-bold rounded-[12px] flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              <Image src="/send.svg" alt="Submit" width={22} height={22} className="w-[22px] h-[22px] object-contain" />
-              <span>{submitting ? "Submitting..." : "Submit"}</span>
+              <Image src="/media/fr-svgs/send.svg" alt="Search" width={22} height={22} className="w-[22px] h-[22px] object-contain" />
+              <span>Search Flights</span>
             </button>
           </div>
         </div>

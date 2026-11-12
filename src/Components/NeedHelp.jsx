@@ -45,7 +45,7 @@ const NeedHelp = () => {
               <div className="flex items-center justify-center bg-[#1e1b6e] shrink-0" style={{ width: "88px" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/Vector1.png"
+                  src="/media/fr-svgs/Vector1.png"
                   alt="Call Icon"
                   style={{ width: "48px", height: "48px", objectFit: "contain" }}
                 />
@@ -120,7 +120,7 @@ const NeedHelp = () => {
               <div className="flex items-center justify-center bg-[#1e1b6e] shrink-0" style={{ width: "88px" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/Isolation_Mode.png"
+                  src="/media/fr-svgs/Isolation_Mode.png"
                   alt="Callback Icon"
                   style={{ width: "48px", height: "48px", objectFit: "contain" }}
                 />

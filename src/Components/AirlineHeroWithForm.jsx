@@ -247,11 +247,10 @@ const AirlineHeroWithForm = ({
               <button
                 type="button"
                 onClick={() => setTripType("One-Way")}
-                className={`w-[140px] sm:w-[200px] lg:w-[242px] h-[46px] rounded-[10px] font-poppins font-bold text-[16px] sm:text-[18px] transition-all flex items-center justify-center select-none ${
-                  tripType === "One-Way"
-                    ? "bg-[#5CACC4] text-white shadow-md border-0"
-                    : "bg-white text-[#1F0060] border-[1.5px] border-[#1F0060] hover:bg-[#F3F6F8]"
-                }`}
+                className={`w-[140px] sm:w-[200px] lg:w-[242px] h-[46px] rounded-[10px] font-poppins font-bold text-[16px] sm:text-[18px] transition-all flex items-center justify-center select-none ${tripType === "One-Way"
+                  ? "bg-[#5CACC4] text-white shadow-md border-0"
+                  : "bg-white text-[#1F0060] border-[1.5px] border-[#1F0060] hover:bg-[#F3F6F8]"
+                  }`}
               >
                 One-Way
               </button>
@@ -259,11 +258,10 @@ const AirlineHeroWithForm = ({
               <button
                 type="button"
                 onClick={() => setTripType("Round Trip")}
-                className={`w-[140px] sm:w-[200px] lg:w-[242px] h-[46px] rounded-[10px] font-poppins font-bold text-[16px] sm:text-[18px] transition-all flex items-center justify-center select-none ${
-                  tripType === "Round Trip"
-                    ? "bg-[#5CACC4] text-white shadow-md border-0"
-                    : "bg-white text-[#1F0060] border-[1.5px] border-[#1F0060] hover:bg-[#F3F6F8]"
-                }`}
+                className={`w-[140px] sm:w-[200px] lg:w-[242px] h-[46px] rounded-[10px] font-poppins font-bold text-[16px] sm:text-[18px] transition-all flex items-center justify-center select-none ${tripType === "Round Trip"
+                  ? "bg-[#5CACC4] text-white shadow-md border-0"
+                  : "bg-white text-[#1F0060] border-[1.5px] border-[#1F0060] hover:bg-[#F3F6F8]"
+                  }`}
               >
                 Round Trip
               </button>
@@ -304,7 +302,7 @@ const AirlineHeroWithForm = ({
                     </div>
                     <div className="absolute right-[20px] top-[48px] pointer-events-none">
                       <Image
-                        src="/Icon1.png"
+                        src="/media/fr-svgs/Icon1.png"
                         alt="Origin Icon"
                         width={24}
                         height={24}
@@ -342,7 +340,7 @@ const AirlineHeroWithForm = ({
                     </div>
                     <div className="absolute right-[20px] top-[48px] pointer-events-none">
                       <Image
-                        src="/Group 8.png"
+                        src="/media/fr-svgs/Group 8.png"
                         alt="Destination Dropdown"
                         width={24}
                         height={24}
@@ -380,13 +378,12 @@ const AirlineHeroWithForm = ({
                     </div>
                     <div className="absolute right-[20px] top-[48px] pointer-events-none">
                       <Image
-                        src="/Group 8.png"
+                        src="/media/fr-svgs/Group 8.png"
                         alt="Passengers Dropdown"
                         width={24}
                         height={24}
-                        className={`w-[24px] h-[24px] object-contain transition-transform ${
-                          showPassengerModal ? "rotate-180" : ""
-                        }`}
+                        className={`w-[24px] h-[24px] object-contain transition-transform ${showPassengerModal ? "rotate-180" : ""
+                          }`}
                       />
                     </div>
 
@@ -430,9 +427,8 @@ const AirlineHeroWithForm = ({
                         Departure Date
                       </span>
                       <span
-                        className={`font-poppins font-normal text-[18px] mt-[7px] truncate underline decoration-[#9BB0BF] underline-offset-2 inline-block ${
-                          departureDate ? "text-[#222222] font-medium" : "text-[#8FA0AD]"
-                        }`}
+                        className={`font-poppins font-normal text-[18px] mt-[7px] truncate underline decoration-[#9BB0BF] underline-offset-2 inline-block ${departureDate ? "text-[#222222] font-medium" : "text-[#8FA0AD]"
+                          }`}
                       >
                         {departureDate ? formatDisplayDate(departureDate) : "Enter your departure date"}
                       </span>
@@ -472,9 +468,8 @@ const AirlineHeroWithForm = ({
                       setShowPassengerModal(false);
                       setShowDepCalendar(false);
                     }}
-                    className={`flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center select-none ${
-                      tripType === "Round Trip" ? "cursor-pointer opacity-100" : "cursor-not-allowed opacity-40"
-                    }`}
+                    className={`flex-1 h-[88px] bg-[#F3F6F8] rounded-[10px] relative px-[24px] py-[12px] flex flex-col justify-center select-none ${tripType === "Round Trip" ? "cursor-pointer opacity-100" : "cursor-not-allowed opacity-40"
+                      }`}
                   >
                     <div className="flex flex-col items-start pointer-events-none">
                       <span
@@ -490,9 +485,8 @@ const AirlineHeroWithForm = ({
                         Return Date
                       </span>
                       <span
-                        className={`font-poppins font-normal text-[18px] mt-[7px] truncate underline decoration-[#9BB0BF] underline-offset-2 inline-block ${
-                          returnDate ? "text-[#222222] font-medium" : "text-[#8FA0AD]"
-                        }`}
+                        className={`font-poppins font-normal text-[18px] mt-[7px] truncate underline decoration-[#9BB0BF] underline-offset-2 inline-block ${returnDate ? "text-[#222222] font-medium" : "text-[#8FA0AD]"
+                          }`}
                       >
                         {tripType === "Round Trip" && returnDate
                           ? formatDisplayDate(returnDate)
@@ -534,8 +528,8 @@ const AirlineHeroWithForm = ({
               >
                 <div className="w-[38px] h-[38px] flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Image
-                    src="/send.svg"
-                    alt="Submit"
+                    src="/media/fr-svgs/send.svg"
+                    alt="Search Icon"
                     width={22}
                     height={22}
                     className="w-[22px] h-[22px] object-contain"
@@ -576,7 +570,7 @@ const AirlineHeroWithForm = ({
                     className="w-[85%] bg-transparent font-poppins text-[16px] text-[#222222] placeholder-[#8FA0AD] mt-2 outline-none border-none focus:ring-0 p-0 underline decoration-[#9BB0BF] underline-offset-2"
                   />
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <Image src="/Icon1.png" alt="Origin" width={22} height={22} />
+                    <Image src="/media/fr-svgs/Icon1.png" alt="Origin" width={22} height={22} />
                   </div>
                 </div>
 
@@ -606,7 +600,7 @@ const AirlineHeroWithForm = ({
                     className="w-[85%] bg-transparent font-poppins text-[16px] text-[#222222] placeholder-[#8FA0AD] mt-2 outline-none border-none focus:ring-0 p-0 underline decoration-[#9BB0BF] underline-offset-2"
                   />
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <Image src="/Group 8.png" alt="Destination" width={22} height={22} />
+                    <Image src="/media/fr-svgs/Group 8.png" alt="Destination" width={22} height={22} />
                   </div>
                 </div>
 
@@ -636,7 +630,7 @@ const AirlineHeroWithForm = ({
                     {passengerDisplayText}
                   </span>
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <Image src="/Group 8.png" alt="Passengers" width={22} height={22} />
+                    <Image src="/media/fr-svgs/Group 8.png" alt="Passengers" width={22} height={22} />
                   </div>
 
                   {showPassengerModal && (
@@ -708,9 +702,8 @@ const AirlineHeroWithForm = ({
                     setShowPassengerModal(false);
                     setShowDepCalendar(false);
                   }}
-                  className={`bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] select-none z-10 ${
-                    tripType === "Round Trip" ? "opacity-100 cursor-pointer" : "opacity-35 cursor-not-allowed"
-                  }`}
+                  className={`bg-[#F3F6F8] rounded-[10px] p-4 relative flex flex-col justify-center min-h-[84px] select-none z-10 ${tripType === "Round Trip" ? "opacity-100 cursor-pointer" : "opacity-35 cursor-not-allowed"
+                    }`}
                 >
                   <div className="pointer-events-none">
                     <span
@@ -756,8 +749,8 @@ const AirlineHeroWithForm = ({
                 disabled={submitting}
                 className="mt-4 w-full h-[52px] bg-[#5CACC4] hover:bg-[#4ea0b8] text-white font-poppins font-bold rounded-[12px] flex items-center justify-center gap-2 shadow-md cursor-pointer transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                <Image src="/send.svg" alt="Submit" width={20} height={20} className="w-[20px] h-[20px] object-contain" />
-                <span>{submitting ? "Submitting..." : "Submit"}</span>
+                <Image src="/media/fr-svgs/send.svg" alt="Search" width={20} height={20} className="w-[20px] h-[20px] object-contain" />
+                <span>Search Flights</span>
               </button>
             </div>
           </div>
@@ -781,23 +774,19 @@ const AirlineHeroWithForm = ({
                 key={option.id}
                 type="button"
                 onClick={() => setSelectedClass?.(option.id)}
-                className={`flex items-center justify-center gap-1.5 min-[400px]:gap-2 sm:gap-2.5 min-[1065px]:gap-3 transition-all duration-300 ease-in-out px-2.5 sm:px-4 min-[1065px]:px-6 w-[calc(50%-6px)] min-[576px]:w-full ${
-                  isActive
-                    ? "bg-white border-2 border-[#5CACC4] shadow-[0_12px_32px_rgba(92,172,196,0.35)] z-20 text-[#1F0060]"
-                    : "bg-[#F8FAFC] border border-[#E2E8F0] z-10 hover:bg-white text-[#1F0060]/70"
-                } ${
-                  isCenter
+                className={`flex items-center justify-center gap-1.5 min-[400px]:gap-2 sm:gap-2.5 min-[1065px]:gap-3 transition-all duration-300 ease-in-out px-2.5 sm:px-4 min-[1065px]:px-6 w-[calc(50%-6px)] min-[576px]:w-full ${isActive
+                  ? "bg-white border-2 border-[#5CACC4] shadow-[0_12px_32px_rgba(92,172,196,0.35)] z-20 text-[#1F0060]"
+                  : "bg-[#F8FAFC] border border-[#E2E8F0] z-10 hover:bg-white text-[#1F0060]/70"
+                  } ${isCenter
                     ? "py-3 sm:py-5 min-[1065px]:py-6 rounded-[18px] min-[576px]:rounded-[22px] min-[1065px]:rounded-[26px] min-[576px]:border min-[576px]:-my-2.5 min-[1065px]:-my-3.5 scale-[1.03] z-20"
                     : "py-2 sm:py-3.5 min-[1065px]:py-4 scale-100"
-                } ${
-                  index === 0 && !isCenter
+                  } ${index === 0 && !isCenter
                     ? "min-[576px]:rounded-l-[18px] min-[1065px]:rounded-l-[22px] min-[576px]:rounded-r-none min-[576px]:border-r-0 rounded-[14px]"
                     : ""
-                } ${
-                  index === 2 && !isCenter
+                  } ${index === 2 && !isCenter
                     ? "min-[576px]:rounded-r-[18px] min-[1065px]:rounded-r-[22px] min-[576px]:rounded-l-none min-[576px]:border-l-0 rounded-[14px]"
                     : ""
-                }`}
+                  }`}
                 style={{
                   minHeight: isCenter
                     ? "clamp(56px, 7.8vw, 86px)"
@@ -810,11 +799,10 @@ const AirlineHeroWithForm = ({
                   className="w-5 h-5 min-[400px]:w-6 min-[400px]:h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 min-[900px]:w-9 min-[900px]:h-9 min-[1065px]:w-auto min-[1065px]:h-auto object-contain flex-shrink-0"
                 />
                 <span
-                  className={`font-poppins tracking-normal sm:tracking-wide transition-colors duration-300 whitespace-nowrap ${
-                    isCenter
-                      ? "text-[14px] min-[380px]:text-[15px] min-[576px]:text-[18px] md:text-[22px] min-[900px]:text-[26px] min-[1065px]:text-[30px] font-bold"
-                      : "text-[13px] min-[380px]:text-[14px] min-[576px]:text-[16px] md:text-[19px] min-[900px]:text-[22px] min-[1065px]:text-[25px] font-semibold"
-                  } ${isActive ? "text-[#1F0060]" : "text-[#1F0060]/75"}`}
+                  className={`font-poppins tracking-normal sm:tracking-wide transition-colors duration-300 whitespace-nowrap ${isCenter
+                    ? "text-[14px] min-[380px]:text-[15px] min-[576px]:text-[18px] md:text-[22px] min-[900px]:text-[26px] min-[1065px]:text-[30px] font-bold"
+                    : "text-[13px] min-[380px]:text-[14px] min-[576px]:text-[16px] md:text-[19px] min-[900px]:text-[22px] min-[1065px]:text-[25px] font-semibold"
+                    } ${isActive ? "text-[#1F0060]" : "text-[#1F0060]/75"}`}
                 >
                   {option.label}
                 </span>

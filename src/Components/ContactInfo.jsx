@@ -125,9 +125,9 @@ export default function ContactInfo({ heading = "", subHeading = "" }) {
                   const hint = `${iconUrl || ""} ${link || ""} ${altText || ""}`.toLowerCase();
                   let localIcon = null;
                   if (hint.includes("facebook") || hint.includes("fb")) {
-                    localIcon = "/fb.png";
+                    localIcon = "/media/fr-svgs/fb.png";
                   } else if (hint.includes("instagram") || hint.includes("insta")) {
-                    localIcon = "/insta.png";
+                    localIcon = "/media/fr-svgs/insta.png";
                   } else if (hint.includes("twitter") || hint.includes("x.com")) {
                     localIcon = "/icons/twitter.png";
                   }
