@@ -1,6 +1,5 @@
 "use client";
-import React, { useState, useMemo, useCallback } from 'react';
-import axios from 'axios';
+import React, { useState, useMemo } from 'react';
 import HeroSectionNew from '../../Components/HeroSectionNew';
 import FlightCard from '../../Components/FlightCard';
 import LoadingScreen from '../../Components/LoadingScreen';
@@ -9,86 +8,33 @@ import useDestinationBreadcrumbs from '../../Hooks/useDestinationsBreadcrumbs';
 import ScrollDetail from '../../Components/ScrollDetail';
 import ScrollDetailRight from '../../Components/ScrollDetailRight';
 import FaqSection from '../../Components/FaqSection';
-import { endpoints } from '../../Helpers/endpoints';
+
+const PAGE_SIZE = 12;
 
 export default function CityFlightFaresClient({ initialData, params }) {
     useDestinationBreadcrumbs();
     const [cityData] = useState(initialData);
-
-    // Initial fares extraction
-    const initialFaresList = useMemo(() => {
-        if (!initialData?.fares) return [];
-        return Array.isArray(initialData.fares) ? initialData.fares : (initialData.fares.data || []);
-    }, [initialData]);
-
-    const initialLastPage = useMemo(() => {
-        if (initialData?.fares && !Array.isArray(initialData.fares)) {
-            return initialData.fares.last_page || 1;
-        }
-        return 1;
-    }, [initialData]);
-
-    // Active fares & pagination state
-    const [faresList, setFaresList] = useState(initialFaresList);
-    const [currentPage, setCurrentPage] = useState(initialData?.fares?.current_page || 1);
-    const [lastPage, setLastPage] = useState(initialLastPage);
-    const [isLoading, setIsLoading] = useState(false);
-    const [loadingMore, setLoadingMore] = useState(false);
     const [FlightLoading, setFlightLoading] = useState(false);
     const [popupMessage, setPopupMessage] = useState(null);
+    const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
-    // Fetch next page without any filters
-    const fetchFares = useCallback(async (pageToFetch = 1, isAppend = false) => {
-        try {
-            if (isAppend) {
-                setLoadingMore(true);
-            } else {
-                setIsLoading(true);
-            }
+    // match-location returns all cabin classes in one list (no class filter)
+    const allFares = useMemo(() => {
+        if (!initialData?.fares) return [];
+        return Array.isArray(initialData.fares)
+            ? initialData.fares
+            : (initialData.fares.data || []);
+    }, [initialData]);
 
-            const citySlug = cityData?.slug || (params?.slug ? params.slug[params.slug.length - 1] : '');
-
-            const paramsObj = {
-                slug: citySlug,
-                page: pageToFetch,
-                per_page: 12,
-                class: 3, // Economy Class
-            };
-
-            const res = await axios.get(endpoints.cityFares, { params: paramsObj });
-            if (res.data?.status === 1 && res.data?.result?.fares) {
-                const faresPayload = res.data.result.fares;
-                const newFaresData = Array.isArray(faresPayload) ? faresPayload : (faresPayload.data || []);
-                const fetchedLastPage = faresPayload.last_page || 1;
-
-                setLastPage(fetchedLastPage);
-                setCurrentPage(pageToFetch);
-
-                if (isAppend) {
-                    setFaresList(prev => [...prev, ...newFaresData]);
-                } else {
-                    setFaresList(newFaresData);
-                }
-            } else if (!isAppend) {
-                setFaresList([]);
-                setLastPage(1);
-                setCurrentPage(1);
-            }
-        } catch (err) {
-            console.error("Error fetching city fares:", err);
-            if (!isAppend) {
-                setFaresList([]);
-            }
-        } finally {
-            setIsLoading(false);
-            setLoadingMore(false);
-        }
-    }, [cityData, params]);
+    const faresList = useMemo(
+        () => allFares.slice(0, visibleCount),
+        [allFares, visibleCount]
+    );
+    const hasMore = visibleCount < allFares.length;
 
     const handleLoadMore = () => {
-        if (currentPage < lastPage && !loadingMore) {
-            fetchFares(currentPage + 1, true);
-        }
+        if (!hasMore) return;
+        setVisibleCount((prev) => Math.min(prev + PAGE_SIZE, allFares.length));
     };
 
     const cityName = cityData?.title || 'City';
@@ -105,7 +51,6 @@ export default function CityFlightFaresClient({ initialData, params }) {
                 <LoadingScreen />
             ) : (
                 <>
-                    {/* Hero Section matching Home Page */}
                     <HeroSectionNew
                         setFlightLoading={setFlightLoading}
                         setPopupMessage={setPopupMessage}
@@ -121,7 +66,6 @@ export default function CityFlightFaresClient({ initialData, params }) {
                     />
 
                     <div className="w-full font-poppins">
-                        {/* Section Header */}
                         <div className="text-center mt-12 sm:mt-16 mb-8 sm:mb-10 max-w-3xl mx-auto px-4">
                             <h2 className="font-poppins font-bold text-[30px] sm:text-[38px] md:text-[42px] text-[#1F0060] tracking-tight">
                                 {`Cheapest ${cityName} Flight Fares`}
@@ -131,15 +75,8 @@ export default function CityFlightFaresClient({ initialData, params }) {
                             </p>
                         </div>
 
-                        {/* Fares List: 2 fares in a row (two by two) */}
                         <div className="max-w-[1236px] mx-auto px-4 sm:px-6 xl:px-0">
-                            {isLoading ? (
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 w-full">
-                                    {[1, 2, 3, 4].map((i) => (
-                                        <div key={i} className="h-[140px] bg-gray-100 rounded-[20px] animate-pulse" />
-                                    ))}
-                                </div>
-                            ) : faresList.length > 0 ? (
+                            {faresList.length > 0 ? (
                                 <FlightCard fares={faresList} cols={2} />
                             ) : (
                                 <p className="text-center text-gray-500 py-12 text-base">
@@ -147,23 +84,20 @@ export default function CityFlightFaresClient({ initialData, params }) {
                                 </p>
                             )}
 
-                            {/* Show More Button matching reference image */}
-                            {currentPage < lastPage && (
+                            {hasMore && (
                                 <div className="flex justify-center mt-10 mb-8">
                                     <button
                                         type="button"
                                         onClick={handleLoadMore}
-                                        disabled={loadingMore}
-                                        className="px-8 py-2.5 bg-[#1F0060] hover:bg-[#2A0080] text-white font-poppins font-bold text-[16px] sm:text-[18px] rounded-[14px] shadow-md hover:shadow-lg transition-all flex items-center justify-center select-none disabled:opacity-50"
+                                        className="px-8 py-2.5 bg-[#1F0060] hover:bg-[#2A0080] text-white font-poppins font-bold text-[16px] sm:text-[18px] rounded-[14px] shadow-md hover:shadow-lg transition-all flex items-center justify-center select-none"
                                     >
-                                        {loadingMore ? "Loading..." : "Show More"}
+                                        Show More
                                     </button>
                                 </div>
                             )}
                         </div>
                     </div>
 
-                    {/* Preserved Scroll & FAQ sections */}
                     {(cityData?.parsedScrollContent?.hasContent ||
                         (!cityData?.parsedScrollContent && cityData?.description?.trim())) && (
                         <div className="w-full font-quicksand sm:pb-[55px] pb-[30px] relative after:content-[''] after:absolute after:bottom-0 
@@ -184,7 +118,9 @@ export default function CityFlightFaresClient({ initialData, params }) {
                             />
                         </div>
                     )}
-                    {typeof cityData?.faq_widget?.[0]?.faq_ids === 'string' && (
+                    {typeof cityData?.faq_widget?.[0]?.faq_ids === 'string' &&
+                        cityData.faq_widget[0]?.heading &&
+                        cityData.faq_widget[0]?.sub_heading && (
                         <div className='mx-auto '>
                             <FaqSection
                                 faq_ids={cityData.faq_widget[0].faq_ids

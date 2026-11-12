@@ -361,29 +361,6 @@ async function fetchBannerCityFares(cityIds) {
   return null;
 }
 
-async function fetchCityFaresByClass(citySlug, classParam) {
-  if (!citySlug) return null;
-  try {
-    const params = new URLSearchParams({
-      slug: citySlug,
-      page: '1',
-      per_page: '12',
-    });
-    if (classParam !== undefined && classParam !== null) {
-      params.set('class', String(classParam));
-    }
-    const res = await fetch(`${endpoints.cityFares}?${params.toString()}`, {
-      next: { revalidate: 3600 },
-    });
-    if (!res.ok) return null;
-    const data = await res.json();
-    if (data?.status === 1 && data?.result?.fares) return data.result.fares;
-  } catch (error) {
-    console.error('Error fetching city fares:', error);
-  }
-  return null;
-}
-
 async function enrichPageResult(result) {
   if (!result?.data) return result;
 
@@ -399,12 +376,7 @@ async function enrichPageResult(result) {
     if (typeof scrollDescription2 === 'string' && scrollDescription2.trim()) {
       enrichedData.parsedScrollContent2 = parseScrollDescription(scrollDescription2);
     }
-
-    // Default city fares: Economy Class (class=3)
-    const defaultFares = await fetchCityFaresByClass(enrichedData.slug, 3);
-    if (defaultFares && (defaultFares.data?.length > 0 || defaultFares.length > 0)) {
-      enrichedData.fares = defaultFares;
-    }
+    // Keep match-location fares (all cabin classes). Do not filter by class=3.
   }
 
   if (result.type === 'cmsStatic' && result.variant === 'bannerFares') {
