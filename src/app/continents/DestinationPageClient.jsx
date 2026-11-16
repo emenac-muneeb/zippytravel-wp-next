@@ -22,6 +22,28 @@ const SkeletonCard = () => (
     </div>
 );
 
+/** Ignore empty CMS HTML like <p>&nbsp;</p> when choosing banner copy. */
+function visibleHtmlText(html) {
+    if (typeof html !== 'string') return '';
+    return html
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/&nbsp;/gi, ' ')
+        .replace(/&amp;/gi, '&')
+        .replace(/&#39;/g, "'")
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function resolveBannerDescription(pageData) {
+    const candidates = [
+        pageData?.banner_description,
+        pageData?.banner_section_content,
+        pageData?.short_description,
+        pageData?.description,
+    ];
+    return candidates.find((html) => visibleHtmlText(html)) || '';
+}
+
 export default function DestinationPageClient({ initialData = {} }) {
     const { continents = [], pageData } = initialData;
     const [FlightLoading, setFlightLoading] = useState(false);
@@ -123,11 +145,7 @@ export default function DestinationPageClient({ initialData = {} }) {
                         setPopupMessage={setPopupMessage}
                         title={pageData?.title || "Destinations"}
                         subTitle="— Zippy Travel"
-                        description={
-                            pageData?.banner_description ||
-                            pageData?.description ||
-                            "Zippytravel.co.uk is an e-commerce UK based company offering online travel products and services."
-                        }
+                        description={resolveBannerDescription(pageData)}
                         bgImageOverride={pageData?.banner_img?.[0]?.url}
                     />
 
