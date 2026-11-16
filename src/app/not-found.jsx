@@ -194,7 +194,7 @@ export default function NotFound() {
             >
               <Image
                 src="/flight-1.png"
-                alt="Airplane"
+                alt="zippytravel"
                 fill
                 sizes="(max-width: 1200px) 100vw, 1123px"
                 className="object-contain"

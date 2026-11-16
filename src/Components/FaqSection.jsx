@@ -172,7 +172,7 @@ const FaqSection = ({
           <div className="flex-shrink-0 flex items-center justify-center my-0 -mt-10 lg:-mt-[70px]">
             <img
               src="/faq-center.png"
-              alt={heading}
+              alt="zippytravel"
               className="h-[344px] w-auto object-contain"
               width={393}
               height={344}
@@ -201,7 +201,7 @@ const FaqSection = ({
           <div className="flex justify-center mb-6 sm:mb-8">
             <img
               src="/faq-center.png"
-              alt={heading}
+              alt="zippytravel"
               className="h-[220px] sm:h-[270px] md:h-[310px] w-auto max-w-full object-contain mx-auto"
               width={393}
               height={344}

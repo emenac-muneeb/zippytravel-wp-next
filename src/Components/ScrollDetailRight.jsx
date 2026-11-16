@@ -7,7 +7,7 @@ function parseScrollDescriptionClient(description) {
   const empty = {
     filteredDescription: '',
     rightPanelImageUrl: null,
-    rightPanelImageAlt: 'Emenac Travel',
+    rightPanelImageAlt: 'zippytravel',
     isPngImage: false,
     hasContent: false,
   };
@@ -58,13 +58,13 @@ function parseScrollDescriptionClient(description) {
 
   const figureImg = doc.querySelector('figure img') || doc.querySelector('img');
   let rightPanelImageUrl = null;
-  let rightPanelImageAlt = 'Emenac Travel';
+  let rightPanelImageAlt = 'zippytravel';
   let isPngImage = false;
 
   if (figureImg?.getAttribute('src')) {
     const src = figureImg.getAttribute('src');
     isPngImage = src.toLowerCase().endsWith('.png');
-    rightPanelImageAlt = figureImg.getAttribute('alt')?.trim() || 'Emenac Travel';
+    rightPanelImageAlt = figureImg.getAttribute('alt')?.trim() || 'zippytravel';
     rightPanelImageUrl = normalizeFrontendImageSrc(src);
     figureImg.closest('figure')?.remove();
   }
@@ -124,7 +124,7 @@ function ScrollDetailView({
       >
         <img
           src={safeRightPanelImageUrl}
-          alt={rightPanelImageAlt}
+          alt={rightPanelImageAlt || 'zippytravel'}
           width={536}
           height={487}
           className={`absolute object-cover rounded-2xl max-h-[100%] max-w-[100%] 

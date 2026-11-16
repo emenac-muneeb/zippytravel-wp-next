@@ -87,7 +87,7 @@ const NavBar = () => {
             <Link href="/" className="shrink-0 flex items-center" aria-label="Zippy Travel Home">
               <Image
                 src={isAboutUs ? "/ZTlogo-white.png" : "/ZTlogo dark 1.png"}
-                alt="Zippy Travel"
+                alt="zippytravel"
                 width={166}
                 height={36}
                 className="h-[36px] w-[166px] object-contain"
@@ -134,7 +134,7 @@ const NavBar = () => {
             <Link href="/" className="shrink-0 flex items-center">
               <Image
                 src={isAboutUs ? "/ZTlogo-white.png" : "/ZTlogo dark 1.png"}
-                alt="Zippy Travel"
+                alt="zippytravel"
                 width={150}
                 height={32}
                 className="h-[32px] w-[150px] object-contain"
@@ -172,7 +172,7 @@ const NavBar = () => {
             <Link href="/" className="shrink-0 flex items-center">
               <Image
                 src={isAboutUs ? "/ZTlogo-white.png" : "/ZTlogo dark 1.png"}
-                alt="Zippy Travel"
+                alt="zippytravel"
                 width={140}
                 height={30}
                 className="h-[30px] w-auto object-contain"

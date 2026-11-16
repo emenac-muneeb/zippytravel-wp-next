@@ -161,7 +161,7 @@ const HeroSectionNew = ({
     currentBanner?.banner_description ||
     "";
   const displayImageAlt =
-    currentBanner?.image_alt || displayTitle || "Zippy Travel Hero Banner";
+    currentBanner?.image_alt || displayTitle || "zippytravel";
 
   // Resolve background image: page override → banner API image_url → fallback
   const bannerImgSrc = React.useMemo(() => {

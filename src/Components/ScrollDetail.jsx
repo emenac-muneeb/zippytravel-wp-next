@@ -6,9 +6,9 @@ function parseScrollDescriptionClient(description) {
   const empty = {
     filteredDescription: "",
     leftPanelImageUrl: "/scroll-left.png",
-    leftPanelImageAlt: "Emenac Travel",
+    leftPanelImageAlt: "zippytravel",
     rightPanelImageUrl: "/scroll-right.png",
-    rightPanelImageAlt: "Emenac Travel",
+    rightPanelImageAlt: "zippytravel",
     isPngImage: false,
     hasContent: false,
   };
@@ -74,9 +74,9 @@ function parseScrollDescriptionClient(description) {
   return {
     filteredDescription,
     leftPanelImageUrl: "/scroll-left.png",
-    leftPanelImageAlt: "Emenac Travel",
+    leftPanelImageAlt: "zippytravel",
     rightPanelImageUrl: "/scroll-right.png",
-    rightPanelImageAlt: "Emenac Travel",
+    rightPanelImageAlt: "zippytravel",
     isPngImage: false,
     hasContent,
   };
@@ -216,9 +216,9 @@ function useScrollIndicator(scrollRef, trackRef, thumbHeight = 28) {
 function ScrollDetailView({
   filteredDescription,
   leftPanelImageUrl = "/scroll-left.png",
-  leftPanelImageAlt = "Emenac Travel",
+  leftPanelImageAlt = "zippytravel",
   rightPanelImageUrl = "/scroll-right.png",
-  rightPanelImageAlt = "Emenac Travel",
+  rightPanelImageAlt = "zippytravel",
 }) {
   const desktopScrollRef = useRef(null);
   const desktopTrackRef = useRef(null);
@@ -252,7 +252,7 @@ function ScrollDetailView({
         <div className="w-[220px] xl:w-[263px] h-[600px] xl:h-[656px] flex-shrink-0 rounded-[28px] overflow-hidden shadow-sm">
           <img
             src={leftPanelImageUrl || "/scroll-left.png"}
-            alt={leftPanelImageAlt || "Emenac Travel"}
+            alt={leftPanelImageAlt || "zippytravel"}
             width={263}
             height={656}
             className="w-full h-full object-cover rounded-[28px]"
@@ -306,7 +306,7 @@ function ScrollDetailView({
           {/* Right Image */}
           <img
             src={rightPanelImageUrl || "/scroll-right.png"}
-            alt={rightPanelImageAlt || "Emenac Travel"}
+            alt={rightPanelImageAlt || "zippytravel"}
             width={361}
             height={656}
             className="w-full h-full object-cover rounded-[28px] shadow-sm"
@@ -326,7 +326,7 @@ function ScrollDetailView({
           <div className="w-[42%] max-w-[220px] h-[220px] sm:h-[300px] rounded-[20px] overflow-hidden shadow-sm flex-shrink-0">
             <img
               src={leftPanelImageUrl || "/scroll-left.png"}
-              alt={leftPanelImageAlt || "Emenac Travel"}
+              alt={leftPanelImageAlt || "zippytravel"}
               width={263}
               height={656}
               className="w-full h-full object-cover rounded-[20px]"
@@ -336,7 +336,7 @@ function ScrollDetailView({
           <div className="w-[54%] max-w-[280px] h-[220px] sm:h-[300px] rounded-[20px] overflow-hidden shadow-sm flex-shrink-0">
             <img
               src={rightPanelImageUrl || "/scroll-right.png"}
-              alt={rightPanelImageAlt || "Emenac Travel"}
+              alt={rightPanelImageAlt || "zippytravel"}
               width={361}
               height={656}
               className="w-full h-full object-cover rounded-[20px]"

@@ -106,7 +106,7 @@ export default function ThankYouPageClient() {
               <div className="relative w-full" style={{ aspectRatio: "441 / 404" }}>
                 <Image
                   src="/luggage.png"
-                  alt="Zippy Travel Suitcase"
+                  alt="zippytravel"
                   fill
                   sizes="(max-width: 767px) 220px, (max-width: 1023px) 300px, 441px"
                   className="object-contain"

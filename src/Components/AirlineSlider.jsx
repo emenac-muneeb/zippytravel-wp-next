@@ -133,7 +133,7 @@ export default function AirlineSlider({
               onError={(e) => {
                 e.currentTarget.src = "/airline%20section%20-%20image%202.png";
               }}
-              alt="Airhostess"
+              alt="zippytravel"
               className="w-[240px] sm:w-[270px] xl:w-[292px] h-[430px] sm:h-[480px] xl:h-[528px] object-contain object-bottom absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none select-none z-10 drop-shadow-md"
             />
           </div>

@@ -68,7 +68,7 @@ export default function LoadingScreen() {
                     <div className="relative w-full max-w-[100%]">
                         <img
                             src={randomPlaneImage}
-                            alt="Plane with travel documents"
+                            alt="zippytravel"
                             className="w-full h-auto max-h-[500px] lg:max-h-[100%] object-contain"
                             style={{
                                 filter: 'drop-shadow(0 15px 30px rgba(0,0,0,0.1))',

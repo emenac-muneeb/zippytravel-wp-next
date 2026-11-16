@@ -103,7 +103,7 @@ export default function AboutUSWhyChoose({ stats = defaultStats }) {
               <div className="flex-shrink-0">
                 <img
                   src={item.image}
-                  alt={item.subtitle || item.title}
+                  alt={item.subtitle || item.title || "zippytravel"}
                   className="h-auto w-[98px] object-contain"
                 />
               </div>

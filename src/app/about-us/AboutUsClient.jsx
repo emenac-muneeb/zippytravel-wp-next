@@ -29,7 +29,7 @@ export default function AboutUsClient({ initialData: aboutPage }) {
             {/* Background Image */}
             <img
               src="/about-us.png"
-              alt="Who We Are - Zippy Travel"
+              alt="zippytravel"
               className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none z-0"
             />
 

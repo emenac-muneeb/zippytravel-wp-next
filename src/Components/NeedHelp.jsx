@@ -86,7 +86,7 @@ const NeedHelp = () => {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/telephone%20png%202.png"
-                  alt="Telephone"
+                  alt="zippytravel"
                   style={{
                     width: "235px",
                     height: "157px",
