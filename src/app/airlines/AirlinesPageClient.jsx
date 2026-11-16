@@ -4,10 +4,33 @@ import AirlineGrid from "../../Components/AirlineGrid";
 import HeroSectionNew from "../../Components/HeroSectionNew";
 import FaqSection from "../../Components/FaqSection";
 
+/** Ignore empty CMS HTML like <p>&nbsp;</p> when choosing banner copy. */
+function visibleHtmlText(html) {
+  if (typeof html !== "string") return "";
+  return html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function resolveBannerDescription(pageData) {
+  const candidates = [
+    pageData?.banner_description,
+    pageData?.banner_section_content,
+    pageData?.short_description,
+    pageData?.description,
+  ];
+  return candidates.find((html) => visibleHtmlText(html)) || "";
+}
+
 export default function AirlinesPageClient({ initialPageData }) {
   const [pageData] = useState(initialPageData);
 
   const widgetContent = pageData?.widgets_content || "";
+  const bannerDescription = resolveBannerDescription(pageData);
 
   // Parse all AIRLINES widget instances if provided dynamically
   const airlinesWidgetRegex =
@@ -46,12 +69,9 @@ export default function AirlinesPageClient({ initialPageData }) {
     <div className="w-full bg-white">
       {/* Brand Hero Section with flight attendant background and search box */}
       <HeroSectionNew
-        title="Airlines"
+        title={pageData?.title || "Airlines"}
         subTitle="— Zippy Travel"
-        description={
-          pageData?.short_description ||
-          "Zippytravel.co.uk is an e-commerce UK based company offering online travel products and services."
-        }
+        description={bannerDescription}
         bgImageOverride={pageData?.banner_img?.[0]?.url}
         initialBanners={pageData?.banner_img || []}
       />

@@ -60,7 +60,7 @@ export default function CityFlightFaresClient({ initialData, params }) {
                             cityData?.banner_section_content ||
                             cityData?.banner_description ||
                             cityData?.description ||
-                            "Zippytravel.co.uk is an e-commerce UK based company offering online travel products and services."
+                            ""
                         }
                         bgImageOverride={cityData?.banner_img?.[0]?.url || cityData?.image_url}
                     />

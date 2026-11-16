@@ -79,7 +79,7 @@ export default function CountryFaresClient({ initialData }) {
                             countryData?.banner_section_content ||
                             countryData?.banner_description ||
                             countryData?.description ||
-                            "Zippytravel.co.uk is an e-commerce UK based company offering online travel products and services."
+                            ""
                         }
                         bgImageOverride={countryBannerImage}
                     />
