@@ -6,11 +6,11 @@ import { useGeneralSettings } from "../Context/GeneralSettingsContext";
 
 const NeedHelp = () => {
   const pathname = usePathname();
-  const { footerSetting } = useGeneralSettings();
+  const { footerSetting, globalVarsMap } = useGeneralSettings();
   const [showPopup, setShowPopup] = useState(false);
 
   const footerData = footerSetting;
-  const phone = footerData?.contents?.footer_phone || "";
+  const phone = footerData?.contents?.footer_phone || globalVarsMap?.PHONENUMBER || "";
 
   // Hide on static policy & about pages as per design, and on 404/thank-you pages
   const isHidden = ["about-us", "cookies", "terms", "privacy", "thank-you", "not-found", "_not-found"].some((key) =>
@@ -45,7 +45,7 @@ const NeedHelp = () => {
               <div className="flex items-center justify-center bg-[#1e1b6e] shrink-0" style={{ width: "88px" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/media/fr-svgs/Vector1.png"
+                  src="/Vector1.png"
                   alt="Call Icon"
                   style={{ width: "48px", height: "48px", objectFit: "contain" }}
                 />

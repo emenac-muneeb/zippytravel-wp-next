@@ -130,7 +130,16 @@ function resolvePlatform(iconPath, url, alt) {
 }
 
 export default function SocialMediaSection({ heading = "", subHeading = "" }) {
-  const { footerSetting, settings } = useGeneralSettings();
+  const { footerSetting, settings, globalVarsMap } = useGeneralSettings();
+
+  // Dynamic phone number strictly from API global variables or footer setting
+  const phoneNumber =
+    globalVarsMap?.PHONENUMBER ||
+    footerSetting?.contents?.footer_phone ||
+    "";
+  const telHref = phoneNumber
+    ? `tel:${String(phoneNumber).replace(/[^0-9+]/g, "")}`
+    : "#";
 
   // Find social media icons from footerSetting or settings
   const socialIcons =
@@ -214,16 +223,6 @@ export default function SocialMediaSection({ heading = "", subHeading = "" }) {
       iconWidth: 28,
       iconHeight: 28,
       iconClassName: "w-[28px] h-[28px] object-contain brightness-0 invert",
-    },
-    {
-      id: "fallback_pin",
-      title: "Pinterest",
-      url: "https://pinterest.com/zippytravel/",
-      slug: "/zippytravel/",
-      icon: "/social-2.png",
-      iconWidth: 28,
-      iconHeight: 30,
-      iconClassName: "w-[28px] h-[30px] object-contain",
     },
   ];
 
@@ -369,10 +368,40 @@ export default function SocialMediaSection({ heading = "", subHeading = "" }) {
                 </a>
               ))}
 
-              {/* Blank slot filler to preserve 2x2 grid slot when right has fewer cards */}
-              {rightCards.length < Math.max(2, leftCards.length) &&
+              {/* Dynamic Call Us Now Card to complete the 2x2 grid on right bottom */}
+              {rightCards.length < Math.max(2, leftCards.length) && (
+                <a
+                  key="call_us_now_card"
+                  href={telHref}
+                  aria-label={`Call Zippy Travel at ${phoneNumber}`}
+                  className="relative w-full max-w-[300px] sm:w-[300px] lg:w-[280px] xl:w-[310px] 2xl:w-[331px] h-[110px] bg-white rounded-[22px] border border-[#CBD5E1] shadow-[0_4px_20px_rgba(0,0,0,0.05)] pr-[52px] pl-4 py-3 flex flex-col justify-center text-right transition-all duration-300 hover:shadow-[0_8px_30px_rgba(92,172,196,0.22)] hover:-translate-y-1 group"
+                >
+                  {/* Overlapping Right Icon Badge: 70px x 77px */}
+                  <div className="absolute -right-[40px] top-1/2 -translate-y-1/2 w-[70px] h-[77px] bg-[#5CACC4] rounded-[18px] flex items-center justify-center shadow-[0_4px_14px_rgba(92,172,196,0.45)] group-hover:scale-105 transition-transform duration-300 z-10">
+                    <Image
+                      src="/Vector1.png"
+                      alt="Call Us Now"
+                      width={28}
+                      height={37}
+                      className="w-[28px] h-[37px] object-contain brightness-0 invert"
+                    />
+                  </div>
+                  <span className="text-[#5CACC4] text-[16px] lg:text-[17px] xl:text-[20px] font-bold leading-tight">
+                    Call Us Now!
+                  </span>
+                  <span
+                    title={phoneNumber}
+                    className="text-[#1F0060] text-[18px] lg:text-[20px] xl:text-[24px] 2xl:text-[26px] font-bold leading-tight mt-0.5 tracking-tight truncate"
+                  >
+                    {phoneNumber}
+                  </span>
+                </a>
+              )}
+
+              {/* Blank slot filler if right column still has fewer cards than left column */}
+              {rightCards.length + 1 < leftCards.length &&
                 Array.from({
-                  length: Math.max(2, leftCards.length) - rightCards.length,
+                  length: leftCards.length - (rightCards.length + 1),
                 }).map((_, i) => (
                   <div
                     key={`right_blank_${i}`}
