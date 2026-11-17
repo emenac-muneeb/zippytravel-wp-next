@@ -67,10 +67,10 @@ async function handleRevalidation(request) {
     }
 
     // 3. Retrieve the configured secret
-    const secret = process.env.NEXT_Premier_REVALIDATE_TOKEN;
+    const secret = process.env.REVALIDATE_TOKEN;
     if (!secret) {
       const errorMsg =
-        "NEXT_Premier_REVALIDATE_TOKEN environment variable is not defined on the server.";
+        "REVALIDATE_TOKEN environment variable is not defined on the server.";
       logRequest('CONFIG_ERROR', errorMsg, { method, ip });
       return NextResponse.json(
         { revalidated: false, message: `Server Configuration Error: ${errorMsg}` },
