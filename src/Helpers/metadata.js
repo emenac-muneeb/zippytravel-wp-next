@@ -262,13 +262,11 @@ export async function getPageMetaData(pageUrl) {
 }
 
 export function GetCanonicalUrl(path = "") {
-  const baseUrl = "https://zippytravel.co.uk";
-  let cleanPath = path.startsWith("/") ? path : `/${path}`;
-  // Homepage stays "/"; all other paths drop a trailing slash
-  if (cleanPath !== "/") {
-    cleanPath = cleanPath.replace(/\/+$/, "");
-  }
-  return `${baseUrl}${cleanPath === "/" ? "/" : cleanPath}`;
+  const baseUrl = "https://zippytravel.co.uk/";
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+  // Ensure the homepage has a proper trailing slash or none consistently
+  if (cleanPath === "/") return baseUrl + "/";
+  return `${baseUrl}${cleanPath}`;
 }
 
 export function getRobotsSetting(generalSettings) {

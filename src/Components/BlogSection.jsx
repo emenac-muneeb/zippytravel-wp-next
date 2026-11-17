@@ -98,7 +98,7 @@ export default function BlogSection() {
                   shop&rsquo; including access to specially.
                 </p>
                 <Link
-                  href="/blog"
+                  href="/blog/"
                   className="mt-4 sm:mt-[27px] lg:mt-4 xl:mt-[27px] 2xl:mt-[32px] w-[170px] sm:w-[220px] lg:w-[190px] xl:w-[220px] 2xl:w-[240px] 3xl:w-[260px] h-[48px] sm:h-[67px] lg:h-[52px] xl:h-[67px] 2xl:h-[72px] bg-[#1F0060] hover:bg-[#2b0380] rounded-[12px] sm:rounded-[14px] 2xl:rounded-[16px] text-white font-poppins text-[16px] sm:text-[22px] lg:text-[18px] xl:text-[22px] 2xl:text-[24px] font-bold inline-flex items-center justify-center transition-all duration-200 shadow-[0_4px_12px_rgba(31,0,96,0.2)] hover:-translate-y-0.5 flex-shrink-0"
                   id="blog-view-all-btn"
                 >
@@ -127,7 +127,7 @@ export default function BlogSection() {
                 >
                   {/* Card Image */}
                   <div className="blog-card-img-box w-full h-[330px] sm:h-[361px] lg:h-[340px] xl:h-[361px] 2xl:h-[390px] 3xl:h-[420px] rounded-[18px] sm:rounded-[20px] 2xl:rounded-[24px] overflow-hidden flex-shrink-0">
-                    <Link href={`/blog/${blog.page_url}`}>
+                    <Link href={`/blog/${blog.page_url}/`}>
                       <img
                         src={blog.image || (idx === 0 ? "/Mask group-1.png" : "/Mask group-2.png")}
                         alt={blog.title || "zippytravel"}
@@ -144,7 +144,7 @@ export default function BlogSection() {
 
                   {/* Card Title */}
                   <Link
-                    href={`/blog/${blog.page_url}`}
+                    href={`/blog/${blog.page_url}/`}
                     className="mt-[10px] mb-[8px] 2xl:mt-[12px] 2xl:mb-[10px] block no-underline group"
                   >
                     <h3 className="font-poppins text-[15px] sm:text-[16px] lg:text-[14.5px] xl:text-[16px] 2xl:text-[18px] 3xl:text-[19px] font-bold text-[#1C2938] group-hover:text-[#50A7C2] transition-colors leading-[1.35] m-0 line-clamp-2">
@@ -154,7 +154,7 @@ export default function BlogSection() {
 
                   {/* Read More Button: strictly single line below 1536px */}
                   <Link
-                    href={`/blog/${blog.page_url}`}
+                    href={`/blog/${blog.page_url}/`}
                     className="w-full h-[40px] sm:h-[42px] 2xl:h-[46px] 3xl:h-[48px] bg-[#5CACC4] hover:bg-[#479bb3] rounded-[8px] 2xl:rounded-[10px] px-3 sm:px-3.5 2xl:px-4 flex items-center justify-between gap-1.5 text-white no-underline mt-auto transition-all duration-200 hover:-translate-y-0.5"
                     id={`blog-read-more-btn-${idx}`}
                   >
