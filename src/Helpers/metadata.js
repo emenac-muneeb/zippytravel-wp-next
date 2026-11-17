@@ -6,9 +6,9 @@ import { normalizeFrontendImageSrc } from "./imageurl";
 const EMPTY_SCROLL_RESULT = {
   filteredDescription: "",
   leftPanelImageUrl: "/scroll-left.png",
-  leftPanelImageAlt: "Emenac Travel",
+  leftPanelImageAlt: "zippytravel",
   rightPanelImageUrl: "/scroll-right.png",
-  rightPanelImageAlt: "Emenac Travel",
+  rightPanelImageAlt: "zippytravel",
   isPngImage: false,
   hasContent: false,
 };
@@ -106,9 +106,9 @@ export function parseScrollDescription(description) {
   return {
     filteredDescription,
     leftPanelImageUrl: "/scroll-left.png",
-    leftPanelImageAlt: "Emenac Travel",
+    leftPanelImageAlt: "zippytravel",
     rightPanelImageUrl: "/scroll-right.png",
-    rightPanelImageAlt: "Emenac Travel",
+    rightPanelImageAlt: "zippytravel",
     isPngImage: false,
     hasContent: textContent.length > 0,
   };

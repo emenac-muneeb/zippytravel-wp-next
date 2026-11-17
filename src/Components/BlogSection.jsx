@@ -79,7 +79,7 @@ export default function BlogSection() {
               <div className="blog-bg-card absolute left-0 bottom-0 w-[240px] sm:w-[288px] lg:w-[245px] xl:w-[288px] 2xl:w-[320px] 3xl:w-[355px] h-[480px] sm:h-[513px] lg:h-[475px] xl:h-[513px] 2xl:h-[550px] 3xl:h-[580px] rounded-[24px] sm:rounded-[28px] 3xl:rounded-[32px] overflow-hidden z-[1]">
                 <img
                   src="/Mask group-3.png"
-                  alt="Travel Background"
+                  alt="zippytravel"
                   width={288}
                   height={513}
                   className="w-full h-full object-cover rounded-[24px] sm:rounded-[28px] 3xl:rounded-[32px] block"
@@ -110,7 +110,7 @@ export default function BlogSection() {
               <div className="blog-overlay-wrapper absolute left-[20px] sm:left-[45px] lg:left-[24px] xl:left-[45px] 2xl:left-[52px] 3xl:left-[60px] bottom-0 w-[300px] sm:w-[383px] lg:w-[320px] xl:w-[383px] 2xl:w-[420px] 3xl:w-[465px] h-[380px] sm:h-[455px] lg:h-[395px] xl:h-[455px] 2xl:h-[495px] 3xl:h-[530px] z-[5] pointer-events-none">
                 <img
                   src="/blog image png2 2.png"
-                  alt="Traveler with luggage"
+                  alt="zippytravel"
                   width={383}
                   height={455}
                   className="w-full h-full object-contain object-bottom block"
@@ -130,7 +130,7 @@ export default function BlogSection() {
                     <Link href={`/blog/${blog.page_url}/`}>
                       <img
                         src={blog.image || (idx === 0 ? "/Mask group-1.png" : "/Mask group-2.png")}
-                        alt={blog.title}
+                        alt={blog.title || "zippytravel"}
                         width={285}
                         height={361}
                         className="w-full h-full object-cover rounded-[18px] sm:rounded-[20px] 2xl:rounded-[24px] block transition-transform duration-300 hover:scale-105"

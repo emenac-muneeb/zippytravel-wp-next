@@ -222,7 +222,7 @@ const AirlineHeroWithForm = ({
           onError={(e) => {
             e.currentTarget.src = "/BG%20Banner.png";
           }}
-          alt="Hero Banner"
+          alt="zippytravel"
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none z-0"
         />
 

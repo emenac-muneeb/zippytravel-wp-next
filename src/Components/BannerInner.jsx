@@ -149,7 +149,7 @@ const BannerInner = ({
           {getBannerImage() ? (
             <Image
               src={getBannerImage()}
-              alt={currentBanner?.image_alt || "Banner"}
+              alt={currentBanner?.image_alt || "zippytravel"}
               title={currentBanner?.image_title || ""}
               fill
               priority

@@ -116,7 +116,7 @@ const Footer = () => {
           <Link href="/" aria-label="Zippy Travel Home">
             <img
               src="/ZTlogo-white.png"
-              alt="Zippy Travel"
+              alt="zippytravel"
               className="h-[38px] sm:h-[44px] w-auto object-contain mx-auto transition-transform hover:scale-105"
             />
           </Link>

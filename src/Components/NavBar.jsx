@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -26,9 +26,21 @@ const NavBar = () => {
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [loginStep, setloginStep] = useState(1);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const pathname = usePathname();
   const normalizedPath = (pathname || "").toLowerCase().replace(/\/+$/, "") || "/";
   const isAboutUs = normalizedPath.includes("about-us");
+  const isAboutTransparent = isAboutUs && !isScrolled;
 
   const isActive = (pageUrl) => {
     const slug = normalizeNavSlug(pageUrl);
@@ -60,11 +72,11 @@ const NavBar = () => {
     }
     if (size === "tablet") {
       return `font-poppins transition-colors ${
-        isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"
+        isAboutTransparent ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"
       }`;
     }
     return `font-poppins font-normal text-[18px] transition-colors whitespace-nowrap ${
-      isAboutUs ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"
+      isAboutTransparent ? "text-white hover:text-[#5CACC4]" : "text-[#000000] hover:text-[#5CACC4]"
     }`;
   };
 
@@ -74,20 +86,20 @@ const NavBar = () => {
   return (
     <>
       <header
-        className={`w-full z-50 font-poppins transition-colors ${
-          isAboutUs
+        className={`w-full z-50 font-poppins transition-all duration-200 ${
+          isAboutTransparent
             ? "absolute top-0 left-0 bg-transparent border-none"
-            : "w-full bg-white relative"
+            : `sticky top-0 bg-white ${isScrolled ? "shadow-md" : ""}`
         }`}
       >
         {/* Main 1360px container */}
         <div className="w-full max-w-[1236px] mx-auto px-4 xl:px-[20px]">
           {/* Desktop Navigation (>= 1200px) */}
-          <div className="hidden xl:grid grid-cols-[166px_1fr_223px] gap-x-[28px] items-center h-[147px] pt-[43px] pb-[52px]">
+          <div className="hidden xl:grid grid-cols-[166px_1fr_223px] gap-x-[28px] items-center h-[76px] xl:h-[84px]">
             <Link href="/" className="shrink-0 flex items-center" aria-label="Zippy Travel Home">
               <Image
-                src={isAboutUs ? "/ZTlogo-white.png" : "/ZTlogo dark 1.png"}
-                alt="Zippy Travel"
+                src={isAboutTransparent ? "/ZTlogo-white.png" : "/ZTlogo dark 1.png"}
+                alt="zippytravel"
                 width={166}
                 height={36}
                 className="h-[36px] w-[166px] object-contain"
@@ -130,11 +142,11 @@ const NavBar = () => {
           </div>
 
           {/* Medium Screen / Tablet Navigation (1024px - 1199px) */}
-          <div className="hidden lg:flex xl:hidden items-center justify-between h-[100px] px-6">
+          <div className="hidden lg:flex xl:hidden items-center justify-between h-[74px] px-6">
             <Link href="/" className="shrink-0 flex items-center">
               <Image
-                src={isAboutUs ? "/ZTlogo-white.png" : "/ZTlogo dark 1.png"}
-                alt="Zippy Travel"
+                src={isAboutTransparent ? "/ZTlogo-white.png" : "/ZTlogo dark 1.png"}
+                alt="zippytravel"
                 width={150}
                 height={32}
                 className="h-[32px] w-[150px] object-contain"
@@ -168,11 +180,11 @@ const NavBar = () => {
           </div>
 
           {/* Mobile Navigation (< 1024px) */}
-          <div className="flex lg:hidden items-center justify-between h-[75px] px-2 sm:px-4">
+          <div className="flex lg:hidden items-center justify-between h-[64px] sm:h-[68px] px-2 sm:px-4">
             <Link href="/" className="shrink-0 flex items-center">
               <Image
-                src={isAboutUs ? "/ZTlogo-white.png" : "/ZTlogo dark 1.png"}
-                alt="Zippy Travel"
+                src={isAboutTransparent ? "/ZTlogo-white.png" : "/ZTlogo dark 1.png"}
+                alt="zippytravel"
                 width={140}
                 height={30}
                 className="h-[30px] w-auto object-contain"
@@ -198,7 +210,7 @@ const NavBar = () => {
                 type="button"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className={`p-2 rounded-md transition-colors ${
-                  isAboutUs ? "text-white hover:bg-white/10" : "text-gray-700 hover:text-black hover:bg-gray-100"
+                  isAboutTransparent ? "text-white hover:bg-white/10" : "text-gray-700 hover:text-black hover:bg-gray-100"
                 }`}
                 aria-label="Toggle navigation menu"
               >

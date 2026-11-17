@@ -180,7 +180,7 @@ export default function CheapestFlightFares({
                 onError={(e) => {
                   e.currentTarget.src = "/flight%20image%202.png";
                 }}
-                alt="Airplane"
+                alt="zippytravel"
                 className="w-full h-full object-contain object-right"
               />
             </div>
