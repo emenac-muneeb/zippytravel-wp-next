@@ -6,7 +6,7 @@ export const BASE_URL_IMG = "";
 
 const NORMALIZABLE_HOSTS = new Set([
   "admin.zippytravel.co.uk",
-  "new.premierflights.co.uk",
+  "new.zippytravel.co.uk",
 ]);
 
 const NORMALIZABLE_PREFIXES = [
@@ -75,7 +75,7 @@ export function resolveCommonHeroBannerSrc(url) {
 export function rewriteBlogUploadUrlsInHtml(html) {
   if (!html || typeof html !== "string") return "";
   const absoluteCmsImageRe =
-    /https?:\/\/(?:admin\.premierflights\.co\.uk|new\.premierflights\.co\.uk|(?:www|staging|stagging)\.emenactravel\.co\.uk|emenactravel\.co\.uk)(\/(?:media|assets|frontend-icons|storage|editor-media|blog\/wp-content\/uploads)\/[^"'\s<>]*)/gi;
+    /https?:\/\/(?:admin\.zippytravel\.co\.uk|new\.zippytravel\.co\.uk|(?:www|staging|stagging)\.emenactravel\.co\.uk|emenactravel\.co\.uk)(\/(?:media|assets|frontend-icons|storage|editor-media|blog\/wp-content\/uploads)\/[^"'\s<>]*)/gi;
   let processed = html
     .replace(EMENAC_BLOG_UPLOADS_GLOBAL_RE, "$1")
     .replace(absoluteCmsImageRe, "$1");

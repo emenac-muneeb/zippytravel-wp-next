@@ -85,7 +85,7 @@ export default function BlogTabs({ blogs, pageNum, totalPages }) {
                         Latest Posts
                     </h2>
                     <p className="text-sm md:text-base max-w-3xl">
-                        Travellers always look for comfort on their air trips to the places. Emenac Travel comfort the customers over their budgets.
+                        Travellers always look for comfort on their air trips to the places. Zippy travel comfort the customers over their budgets.
                     </p>
                 </div>
 

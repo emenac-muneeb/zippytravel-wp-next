@@ -35,7 +35,7 @@ export default function SpecificContinentClient({ initialData }) {
                     </h2>
 
                     <p className="text-black text-sm sm:text-base font-quicksand max-w-2xl">
-                        {`Travellers always seek comfort on their air journeys to destinations across ${continentInfo?.title}, and Emenac Travel ensures that comfort comes without straining their budget.`}
+                        {`Travellers always seek comfort on their air journeys to destinations across ${continentInfo?.title}, and Zippy travel ensures that comfort comes without straining their budget.`}
                     </p>
                 </div>
 

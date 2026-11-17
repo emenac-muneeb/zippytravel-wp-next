@@ -67,7 +67,7 @@ export default function HolidayCustom({ rows = 8, columns = 3, widgetContent = '
                 <p className="text-gray-600 max-w-2xl text-start mb-6 sm:mb-8 text-xs sm:text-sm md:text-base">
                     {widgetContent.sub_heading || (
                         <>
-                            Travellers always look for comfort on their air trips to the places they most long to Emenac Travel
+                            Travellers always look for comfort on their air trips to the places they most long to Zippy travel
                             <strong> we comforts over their budgets</strong>.
                         </>
                     )}

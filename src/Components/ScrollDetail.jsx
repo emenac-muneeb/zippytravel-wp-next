@@ -447,9 +447,9 @@ export default function ScrollDetail({
       <ScrollDetailView
         filteredDescription={parsed.filteredDescription}
         leftPanelImageUrl={leftImage || parsed.leftPanelImageUrl || "/scroll-left.png"}
-        leftPanelImageAlt={parsed.leftPanelImageAlt || "Emenac Travel"}
+        leftPanelImageAlt={parsed.leftPanelImageAlt || "Zippy travel"}
         rightPanelImageUrl={rightImage || parsed.rightPanelImageUrl || "/scroll-right.png"}
-        rightPanelImageAlt={parsed.rightPanelImageAlt || "Emenac Travel"}
+        rightPanelImageAlt={parsed.rightPanelImageAlt || "Zippy travel"}
       />
     );
   }

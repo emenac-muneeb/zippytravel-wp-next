@@ -223,7 +223,7 @@ const PopularDestinations = ({
           <p className="text-sm text-white/90 mt-3 text-right w-full">
             Travellers always look for comfort on their
             <br />
-            air trips to the places.Emenac Travel comfort
+            air trips to the places.Zippy travel comfort
             <br />
             the customers over their budgets.
           </p>

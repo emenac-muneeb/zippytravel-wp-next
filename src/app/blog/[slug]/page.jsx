@@ -43,7 +43,7 @@ export async function generateMetadata({ params }) {
     if (!data) return { title: 'Blog Not Found' };
 
     const { blogPage } = data;
-    const metaTitle = blogPage.browser_title || blogPage.title || 'Blog | Emenac Travel';
+    const metaTitle = blogPage.browser_title || blogPage.title || 'Blog | Zippy travel';
     const metaDescription = (blogPage.meta_description || blogPage.description?.replace(/<[^>]*>/g, '').substring(0, 160)) || "";
     const ogImage = blogPage.image_url ? (blogPage.image_url.startsWith('http') ? blogPage.image_url : `${BASE_URL_IMG}/${blogPage.image_url}`) : '';
     const canonical = GetCanonicalUrl(`/blog/${slug}`);
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }) {
             url: canonical,
             images: ogImage ? [{ url: ogImage }] : [],
             type: 'article',
-            siteName: 'Emenac Travel'
+            siteName: 'Zippy travel'
         },
         twitter: {
             card: 'summary_large_image',

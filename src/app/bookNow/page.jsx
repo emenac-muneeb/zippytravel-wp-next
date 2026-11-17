@@ -3,7 +3,7 @@ import BookNow from "../../Components/BookNow";
 import LoadingScreen from "../../Components/LoadingScreen";
 
 export const metadata = {
-    title: "Book Now | Emenac Travel",
+    title: "Book Now | Zippy travel",
     robots: "noindex, nofollow",
 };
 

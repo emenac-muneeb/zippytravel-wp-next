@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 import { useGeneralSettings } from "../Context/GeneralSettingsContext";
 
-// Extract clean pathname slug e.g. "https://www.facebook.com/premierflightsuk" → "/premierflightsuk"
+// Extract clean pathname slug e.g. "https://www.facebook.com/zippytravel" → "/zippytravel"
 function extractSlug(url, fallbackSlug) {
   if (!url || typeof url !== "string") return fallbackSlug;
   const trimmed = url.trim();

@@ -319,7 +319,7 @@ const EnquiryModalCompact = ({ onClose }) => {
               </button>
               <p className="text-[11px] sm:text-[12px] leading-relaxed text-[#000] font-quicksand">
                 By checking this box you confirm that you have read and agreed to the terms and conditions
-                of Brightsun Travel (UK) Ltd. T/A Emenac Travel. It is the passengers responsibility to
+                of Brightsun Travel (UK) Ltd. T/A Zippy travel. It is the passengers responsibility to
                 ensure that all the details of the booking is correct prior to confirming.
               </p>
             </div>

@@ -5,10 +5,10 @@ const JsonLdScripts = () => {
     const organizationSchema = {
         "@context": "https://schema.org",
         "@type": ["Organization", "TravelAgency"],
-        "name": "Emenac Travel",
-        "url": "https://www.premierflights.co.uk",
+        "name": "Zippy travel",
+        "url": "https://www.zippytravel.co.uk",
         "logo": "https://admin.zippytravel.co.uk/storage/uploads/settings/1755082130_logo.svg",
-        "description": "Emenac Travel is a trusted UK-based travel agency offering cheap flights, holiday packages, and worldwide travel deals.",
+        "description": "Zippy travel is a trusted UK-based travel agency offering cheap flights, holiday packages, and worldwide travel deals.",
         "contactPoint": {
             "@type": "ContactPoint",
             "telephone": "‪+44 207 043 4343‬",
@@ -55,7 +55,7 @@ const JsonLdScripts = () => {
                 "name": "How far in advance should I book my airline tickets for a successful trip?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Make a flight reservation 3 to 4 weeks before your departure date with Emenac Travel in London to secure a reasonable ticket. During peak travel seasons, it is best to book 45 to 60 days ahead of time as prices constantly rise and are subject to change."
+                    "text": "Make a flight reservation 3 to 4 weeks before your departure date with Zippy travel in London to secure a reasonable ticket. During peak travel seasons, it is best to book 45 to 60 days ahead of time as prices constantly rise and are subject to change."
                 }
             },
             {
@@ -79,7 +79,7 @@ const JsonLdScripts = () => {
                 "name": "Where can I find affordable flight options?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "If you are a traveller on a tight budget looking for low-cost flights, Emenac Travel offers attractive deals and special discounts for international trips. With just a few clicks, you can book your dream destination at affordable rates."
+                    "text": "If you are a traveller on a tight budget looking for low-cost flights, Zippy travel offers attractive deals and special discounts for international trips. With just a few clicks, you can book your dream destination at affordable rates."
                 }
             }
         ]

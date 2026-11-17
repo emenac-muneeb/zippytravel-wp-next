@@ -62,7 +62,7 @@ export default function HolidayDeals({ deals = [], rows = 3, columns = 1, holida
             {heading || "Best Holiday Deals 2025"}
           </h2>
           <p className="mb-6 text-justify text-gray-700 text-sm md:text-base">
-            {subheading || "Travellers always look for comfort on their air trips to the most popular destinations. Emenac Travel offers exceptional value without compromising comfort."}
+            {subheading || "Travellers always look for comfort on their air trips to the most popular destinations. Zippy travel offers exceptional value without compromising comfort."}
           </p>
 
           <div className={`grid gap-5 ${columnClassMap[clampedColumns]}`}>

@@ -485,3 +485,11 @@ body[data-page-type="thank-you"] footer,
 body[data-page-type="thank-you"] [data-needhelp] {
   display: none !important;
 }
+
+.footercontentwhite{
+  color: #fff;
+  p{
+    color: #fff;
+    margin-top: 10px;
+  }
+}

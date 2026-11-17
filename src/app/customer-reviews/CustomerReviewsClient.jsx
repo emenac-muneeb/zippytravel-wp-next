@@ -23,7 +23,7 @@ export default function CustomerReviewsClient({ initialData }) {
                                 Client Says About Us
                             </h1>
                             <p className="text-sm sm:text-base md:text-lg mt-3 text-gray-700 leading-relaxed">
-                                Travellers always look for comfort on their air trips to the places. Emenac Travel comforts customers over their budgets.
+                                Travellers always look for comfort on their air trips to the places. Zippy travel comforts customers over their budgets.
                             </p>
                         </div>
 

@@ -45,7 +45,7 @@ export default function AboutUsClient({ initialData: aboutPage }) {
                 Who We Are?<br className="hidden sm:inline" /> Let&apos;s Just Know About Us
               </h1>
               <p className="mt-4 sm:mt-6 font-poppins font-medium text-[16px] sm:text-[20px] lg:text-[24px] text-white/95 max-w-[850px] mx-auto leading-relaxed">
-                Travellers always look for comfort on their air trips to the places.<br className="hidden sm:inline" /> Emenac Travel comforts customers over their budgets.
+                Travellers always look for comfort on their air trips to the places.<br className="hidden sm:inline" /> Zippy travel comforts customers over their budgets.
               </p>
             </div>
 
@@ -63,12 +63,12 @@ export default function AboutUsClient({ initialData: aboutPage }) {
         ) : (
           /* Fallback static content */
           <div className="parseData">
-            <h2>Travixum Ltd t/a Emenac Travel is the foremost pan-European flagship ATOL protected travel agency.</h2>
+            <h2>Travixum Ltd t/a Zippy travel is the foremost pan-European flagship ATOL protected travel agency.</h2>
             <p>To be the ultimate source of unsurpassed quality and unmatched value for global destinations and worldwide airlines for European consumers and vendors.</p>
             <h2>Mission Statement</h2>
             <p>We have expanded our global coverage to a maximum and multiplied your travel choices. Potential travelers can choose from a number of state-of-the-art airlines to fly with and stay at the best hotels out there from 5-star deluxe hotels to cheap bed &amp; breakfasts. Our online presence means that bookings, changes in schedule, cancellations, and payments of tickets can be made from the comfort of your bedroom. Our travel agency brings holiday offers from relevant sources. This cuts the risk of scams and third-party service providers who are not ATOL protected.</p>
             <h2>Company Background</h2>
-            <p>Travixum Ltd t/a Emenac Travel is an ATOL-protected travel agency that is governed by the Civil Aviation Authority. We are registered as Travixum Ltd t/a Emenac Travel in 14 Hanworth Road Hounslow Middlesex TW3 1UA. It is a renowned travel organization which is sited at walking distance from the Oxford Circus in the heart of London.</p>
+            <p>Travixum Ltd t/a Zippy travel is an ATOL-protected travel agency that is governed by the Civil Aviation Authority. We are registered as Travixum Ltd t/a Zippy travel in 14 Hanworth Road Hounslow Middlesex TW3 1UA. It is a renowned travel organization which is sited at walking distance from the Oxford Circus in the heart of London.</p>
             <h2>Our Objectives</h2>
             <ul>
               <li>To gauge client satisfaction and enhance our service quality.</li>

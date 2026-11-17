@@ -198,7 +198,7 @@ export default function CountryFares() {
                                 </h2>
                                 <p className="text-black text-xs min-[450px]:text-sm sm:text-base max-w-2xl">
 
-                                    {`Emenac Travel connects you from the UK to the top cities in ${countryState.title} with ease. 
+                                    {`Zippy travel connects you from the UK to the top cities in ${countryState.title} with ease. 
                               Book affordable flights and enjoy a smooth travel experience to your desired destination.`}
                                 </p>
                             </div>
@@ -238,7 +238,7 @@ export default function CountryFares() {
                                 </h2>
                                 <p className="text-black text-sm sm:text-base max-w-2xl">
 
-                                    {`Find the cheapest flights from the UK to ${countryState.title} with Emenac Travel. We offer budget 
+                                    {`Find the cheapest flights from the UK to ${countryState.title} with Zippy travel. We offer budget 
                                  friendly fares without compromising on comfort or service.`}
                                 </p>
                             </div>

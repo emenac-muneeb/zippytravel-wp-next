@@ -159,7 +159,7 @@ const Footer = () => {
 
             <div className="flex items-center pl-1 sm:pl-2">
               <img
-                src="/atol-logo.svg"
+                src="/ATOL-74904.png"
                 alt="ATOL Protected"
                 className="h-[36px] sm:h-[40px] w-auto object-contain"
               />
@@ -273,15 +273,12 @@ const Footer = () => {
           )}
 
         {/* Dynamic Copyright from API */}
-        {footerContents?.footer_copyright_content && (
-          <p className="text-center text-[12px] sm:text-[13px] text-white/40 pt-4 mt-2">
-            {decodeHtmlEntities(
-              footerContents.footer_copyright_content.replace(
-                "{YEAR}",
-                new Date().getFullYear()
-              )
-            )}
-          </p>
+        {footerContents?.footer_below_copyright_text && (
+           <div className="footercontentwhite text-center text-[12px] sm:text-[13px] text-white pt-4 mt-2"
+           dangerouslySetInnerHTML={{
+             __html: footerContents.footer_below_copyright_text,
+           }}
+           />
         )}
       </div>
     </footer>
