@@ -97,7 +97,7 @@ export default function BlogTabs({ blogs, pageNum, totalPages }) {
                             className="bg-white border border-[#E1E1E1] overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col sm:flex-row"
                         >
                             <Link
-                                href={`/blog/${post.page_url}/`}
+                                href={`/blog/${post.page_url}`}
                                 className="flex flex-col sm:flex-row w-full"
                             >
                                 <img

@@ -79,7 +79,7 @@ export default function LatestNews() {
               <p className="text-[22px] text-[#4C4C4C]">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
             </div>
             <Link
-              href="/blog/"
+              href="/blog"
               className="text-grayText text-[18px] hover:text-[#d67938] hover:underline transition-colors font-bold flex items-center gap-2 flex-shrink-0"
             >
               See All
@@ -101,7 +101,7 @@ export default function LatestNews() {
                   {idx > 0 && <div className="border-t border-[#E1E1E1] my-6 min-[431px]:my-[41px]" />}
                   <div className="flex flex-col min-[431px]:flex-row gap-4 sm:gap-6 items-start min-[431px]:items-center">
                     <div className="w-full min-[431px]:w-[200px] h-[200px] min-[431px]:h-[112px] flex-shrink-0 overflow-hidden rounded-2xl shadow-sm">
-                      <Link href={`/blog/${post.page_url}/`}>
+                      <Link href={`/blog/${post.page_url}`}>
                         <img
                           src={getImageUrl(post.image_url)}
                           alt={post.image_alt || post.title}
@@ -110,13 +110,13 @@ export default function LatestNews() {
                       </Link>
                     </div>
                     <div className="flex-1 flex flex-col justify-between py-1">
-                      <Link href={`/blog/${post.page_url}/`}>
+                      <Link href={`/blog/${post.page_url}`}>
                         <h4 className="text-black text-[18px] min-[431px]:text-[22px] font-bold line-clamp-3 hover:text-grayText transition-colors leading-tight">
                           {post.title}
                         </h4>
                       </Link>
                       <Link
-                        href={`/blog/${post.page_url}/`}
+                        href={`/blog/${post.page_url}`}
                         className="text-grayText text-[18px] font-bold hover:underline flex items-center gap-2 mt-2"
                       >
                         Read More
@@ -137,7 +137,7 @@ export default function LatestNews() {
             {featuredBlog && (
               <div className="flex flex-col bg-transparent rounded-3xl overflow-hidden lg:pl-4">
                 <div className="w-full min-[431px]:w-[648px] h-[220px] min-[431px]:h-[364px] overflow-hidden rounded-3xl shadow-sm mb-4">
-                  <Link href={`/blog/${featuredBlog.page_url}/`}>
+                  <Link href={`/blog/${featuredBlog.page_url}`}>
                     <img
                       src={getImageUrl(featuredBlog.image_url)}
                       alt={featuredBlog.image_alt || featuredBlog.title}
@@ -146,7 +146,7 @@ export default function LatestNews() {
                   </Link>
                 </div>
                 <div className="py-2">
-                  <Link href={`/blog/${featuredBlog.page_url}/`}>
+                  <Link href={`/blog/${featuredBlog.page_url}`}>
                     <h3 className="text-[20px] min-[431px]:text-[24px] font-bold font-gloock text-black hover:text-grayText transition-colors leading-snug mb-2">
                       {featuredBlog.title}
                     </h3>
@@ -158,7 +158,7 @@ export default function LatestNews() {
                     }}
                   />
                   <Link
-                    href={`/blog/${featuredBlog.page_url}/`}
+                    href={`/blog/${featuredBlog.page_url}`}
                     className="text-grayText text-[18px] font-bold  hover:underline flex items-center gap-2"
                   >
                     Read More

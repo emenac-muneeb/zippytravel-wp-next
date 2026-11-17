@@ -43,7 +43,8 @@ const CONTENT_SECURITY_POLICY = [
 
 const nextConfig = {
   reactStrictMode: true,
-  trailingSlash: true,
+  // URLs without trailing slash: /continents (not /continents/)
+  trailingSlash: false,
   async headers() {
     const headers = [
       {
