@@ -14,23 +14,6 @@ import {
 import ScriptInjector from '../../Components/common/ScriptInjector';
 import { GenericInnerPageSkeleton } from '../../Components/common/Skeleton';
 
-/** Fixed public URL — static UI, not in admin CMS. */
-const STATIC_THANKYOU_PAGE_URL = 'thankyou.html';
-
-function loadStaticThankyouPageResult() {
-  return {
-    type: 'cmsStatic',
-    variant: 'thankyou',
-    pageUrl: STATIC_THANKYOU_PAGE_URL,
-    data: {
-      pageData: {
-        title: 'Thank You',
-        browser_title: 'Thank You',
-      },
-    },
-  };
-}
-
 function stripHtmlExt(slug) {
   return slug?.replace(/\.html$/i, '').replace(/\.htm$/i, '') ?? '';
 }
@@ -208,8 +191,9 @@ async function getPageData(slugArr) {
       const destinationResult = await tryDestinationPage(s);
       if (destinationResult) return destinationResult;
 
-      if (base === 'thankyou' || s === STATIC_THANKYOU_PAGE_URL) {
-        return loadStaticThankyouPageResult();
+      // Legacy /thankyou.html and /thankyou must 404 — thank-you lives at /thank-you/
+      if (base === 'thankyou' || normSlug(s) === 'thankyou.html') {
+        return null;
       }
 
       if (s.includes('umrah') || base.includes('umrah')) {

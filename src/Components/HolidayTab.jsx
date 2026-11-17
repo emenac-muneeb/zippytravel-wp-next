@@ -110,7 +110,7 @@ const HolidayTab = () => {
 
                 // Holiday country pages disabled for now — use thank you page after enquiry
                 // router.push(`/holidays-to-${selectedCountry.slug}/`);
-                router.push("/thankyou.html");
+                router.push("/thank-you/");
 
             } else {
                 showToast("Something went wrong. Please Try Again.", "error");

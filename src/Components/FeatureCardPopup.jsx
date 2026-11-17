@@ -71,7 +71,7 @@ const FeatureCardPopup = ({ onClose }) => {
       toast.success("Submitted successfully!");
       setCallbackPhone("");
       handleClose();
-      router.push("/thankyou.html");
+      router.push("/thank-you/");
     } catch (err) {
       toast.error(err?.response?.data?.message || "Submission failed.");
     } finally {

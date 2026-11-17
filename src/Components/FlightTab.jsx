@@ -366,7 +366,7 @@ const FlightTab = ({ title, description, setFlightLoading, activeTab, setPopupMe
             setDestinationLabel("");
             setOrigin("");
             setDestination("");
-            router.push("/thankyou.html");
+            router.push("/thank-you/");
         } catch (error) {
             console.error('Multi-City submit error:', error);
             showToast("There was an error submitting your enquiry. Please try again.", "error");

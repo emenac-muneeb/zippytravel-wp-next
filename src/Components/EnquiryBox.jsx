@@ -166,7 +166,7 @@ const FlightForm = ({ formType, url }) => {
 
             if (data.status === 1) {
                 showToast(data.message || "Enquiry submitted successfully!", "success");
-                router.push("/thankyou.html");
+                router.push("/thank-you/");
                 setTimeout(() => {
                     // Optionally reset form or close modal
                 }, 2000);

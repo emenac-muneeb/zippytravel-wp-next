@@ -539,7 +539,7 @@ const FlightTabNew = ({
             setInfants(0);
 
             // Redirect to thank you page
-            router.push("/thankyou.html");
+            router.push("/thank-you/");
         } catch (error) {
             console.error('Multi-City submit error:', error);
             showToast("There was an error submitting your enquiry. Please try again.", "error");
@@ -604,7 +604,7 @@ const FlightTabNew = ({
             const data = res.data;
             if (data?.status === 1 || data?.success === 1) {
                 showToast("Form submitted successfully!", "success");
-                router.push("/thankyou.html");
+                router.push("/thank-you/");
             } else {
                 showToast(data?.message || "Something went wrong. Please try again.", "error");
             }

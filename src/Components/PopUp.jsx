@@ -32,7 +32,7 @@ const PopUp = ({ title = "Error", message, onClose, navigateOnClose, setNavigate
                                     setNavigateOnClose(false);
                                     handleCallBack();
                                     onClose();
-                                    router.push("/thankyou.html");
+                                    router.push("/thank-you/");
                                 }}
                                 className="px-4 py-2 bg-[#A57233] text-white text-sm font-medium rounded-md shadow-md hover:bg-[#A57233]/80 hover:shadow-lg transition duration-200"
                             >

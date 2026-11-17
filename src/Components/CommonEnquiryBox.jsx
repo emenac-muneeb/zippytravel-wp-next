@@ -245,7 +245,7 @@ const CommonEnquiryBox = ({ UmrahTab, formType, pageURL }) => {
             setInfants(0);
             setAnswer("");
 
-            router.push("/thankyou.html");
+            router.push("/thank-you/");
         } catch (err) {
             setLoading(false);
             if (axios.isAxiosError(err)) {

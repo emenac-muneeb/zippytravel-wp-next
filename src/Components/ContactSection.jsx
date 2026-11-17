@@ -110,7 +110,7 @@ export default function ContactSection({ heading = "", subHeading = "" }) {
             const { data } = await axios.post(endpoints.sendEmail, payload);
 
             if (data?.status === 1) {
-                router.push("/thankyou.html");
+                router.push("/thank-you/");
                 setName('');
                 setContact('');
                 setEmail('');

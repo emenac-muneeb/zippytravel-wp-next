@@ -68,7 +68,7 @@ const WhatsAppCallbackDropdown = ({ whatsappUrl, light = false }) => {
       toast.success("Submitted successfully!");
       setPhone("");
       setOpen(false);
-      router.push("/thankyou.html");
+      router.push("/thank-you/");
     } catch (error) {
       const message = error?.response?.data?.message || "Submission failed.";
       toast.error(message);

@@ -124,7 +124,7 @@ const EnquiryModalCompact = ({ onClose }) => {
     try {
       const { data } = await api.post(endpoints.sendEmail, payload);
       if (data.status === 1) {
-        router.push("/thankyou.html");
+        router.push("/thank-you/");
         setTimeout(() => onClose?.(), 3000);
         setLoading(false);
       } else {

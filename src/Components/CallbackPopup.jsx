@@ -51,7 +51,7 @@ const CallbackPopup = ({ onClose, phone, whatsapp }) => {
 
             toast.success('Submitted successfully!');
             onClose(); // Close popup
-            router.push("/thankyou.html"); // Redirect to thank you page
+            router.push("/thank-you/"); // Redirect to thank you page
         } catch (error) {
             const message = error?.response?.data?.message || 'Submission failed.';
             toast.error(message);

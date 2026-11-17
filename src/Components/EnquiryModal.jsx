@@ -206,7 +206,7 @@ const EnquiryModal = ({ setEnquiryOpen, onClose }) => {
     try {
       const { data } = await api.post(endpoints.sendEmail, payload);
       if (data.status === 1) {
-        router.push("/thankyou.html");
+        router.push("/thank-you/");
         setTimeout(() => closeModal(), 2000);
         setLoading(false);
       } else {

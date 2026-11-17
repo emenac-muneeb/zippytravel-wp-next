@@ -349,7 +349,7 @@ const HeroSectionNew = ({
       const { data } = await api.post(endpoints.sendEmail, payload);
       if (data?.status === 1 || data?.success === 1) {
         showToast("Form submitted successfully!", "success");
-        router.push("/thankyou.html");
+        router.push("/thank-you/");
       } else {
         showToast(data?.message || "Something went wrong. Please try again.", "error");
       }

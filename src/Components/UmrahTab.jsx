@@ -116,7 +116,7 @@ const UmrahTab = ({ title, description }) => {
                 setChildren(0);
                 setInfants(0);
 
-                router.push("/thankyou.html");
+                router.push("/thank-you/");
 
             } else {
                 showToast("Something went wrong. Please Try Again.", "error");
