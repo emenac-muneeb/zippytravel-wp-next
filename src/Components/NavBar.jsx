@@ -39,7 +39,7 @@ const NavBar = () => {
 
   const pathname = usePathname();
   const normalizedPath = (pathname || "").toLowerCase().replace(/\/+$/, "") || "/";
-  const isAboutUs = normalizedPath.includes("about-us");
+  const isAboutUs = normalizedPath.includes("about-usff");
   const isAboutTransparent = isAboutUs && !isScrolled;
 
   const isActive = (pageUrl) => {
