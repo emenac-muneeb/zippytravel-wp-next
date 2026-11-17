@@ -174,7 +174,7 @@ const Footer = () => {
               <p>
                 <a
                   href={`mailto:${email}`}
-                  className="hover:text-[#5CACC4] transition-colors"
+                  className="text-white hover:text-[#5CACC4] transition-colors"
                 >
                   {email}
                 </a>
