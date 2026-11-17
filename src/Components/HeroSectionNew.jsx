@@ -153,7 +153,10 @@ const HeroSectionNew = ({
     banners.find((item) => item?.title || item?.image_url || item?.url) ||
     null;
 
-  const displaySubTitle = subTitle || "— Zippy Travel";
+  const displaySubTitle =
+    subTitle && subTitle !== "— Zippy Travel" && !subTitle.includes("Zippy Travel")
+      ? subTitle
+      : null;
   const displayTitle = title || currentBanner?.title || "London-Based UK Agency";
   const displayDescription =
     description ||
@@ -386,7 +389,7 @@ const HeroSectionNew = ({
   ).padStart(2, "0")} chd - ${String(infants).padStart(2, "0")} inf`;
 
   return (
-    <section className="w-full relative mt-[28px] mb-[30px] sm:mb-[40px] lg:mb-[50px] font-poppins">
+    <section className="w-full relative mt-1 sm:mt-2 mb-[30px] sm:mb-[40px] lg:mb-[50px] font-poppins">
       {/* 
         Full-width Hero Banner Wrapper:
         Takes 100% full width of the screen, with responsive side padding so all 4 corners stay curved.
@@ -415,13 +418,14 @@ const HeroSectionNew = ({
 
           {/* Centered Text Content (Max 1360px container) */}
           <div className="w-full max-w-[1360px] mx-auto text-center pt-[70px] sm:pt-[90px] lg:pt-[107px] px-4 relative z-10">
-            {/* Subtitle stays static */}
-            <p className="font-poppins font-normal text-[18px] sm:text-[22px] lg:text-[24px] text-white tracking-wide">
-              {displaySubTitle}
-            </p>
+            {displaySubTitle ? (
+              <p className="font-poppins font-normal text-[18px] sm:text-[22px] lg:text-[24px] text-white tracking-wide mb-[8px]">
+                {displaySubTitle}
+              </p>
+            ) : null}
 
             {/* H1 from /banner title (or page override) */}
-            <h1 className="mt-[8px] font-poppins font-bold text-[36px] sm:text-[54px] md:text-[68px] lg:text-[83px] text-white tracking-tight leading-[1.08] drop-shadow-sm">
+            <h1 className="font-poppins font-bold text-[36px] sm:text-[54px] md:text-[68px] lg:text-[83px] text-white tracking-tight leading-[1.08] drop-shadow-sm">
               {displayTitle}
             </h1>
 

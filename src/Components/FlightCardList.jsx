@@ -37,7 +37,7 @@ const FlightCardList = () => {
     try {
         const resultsStr = searchParams.get('results');
         if (resultsStr) results = JSON.parse(resultsStr);
-    } catch (e) {}
+    } catch (e) { }
 
     const [BookNowLoading, setBookNowLoading] = useState(false);
     const [popupMessage, setPopupMessage] = useState(null);
@@ -84,7 +84,7 @@ const FlightCardList = () => {
             airlineCode = Array.isArray(savedData.selectedAirlines)
                 ? savedData.selectedAirlines.join(",")
                 : "";
-        } catch (e) {}
+        } catch (e) { }
 
         const tripTypeCode = searchParams.get("TripType") === "Round-Trip" ? "RT" : "OW";
         const body = {
@@ -284,7 +284,6 @@ const FlightCardList = () => {
             <HeroSectionNew
                 bgImageOverride="/flightdetail.png"
                 title="Find Your Perfect Flight"
-                subTitle="— Zippy Travel"
                 description="Compare live fares and refine your search below."
                 setFlightLoading={setBookNowLoading}
                 setPopupMessage={setPopupMessage}
@@ -292,25 +291,25 @@ const FlightCardList = () => {
             />
 
             <div className="bg-[#F3F6F8]">
-            <div className="container">
-                <div className="w-full mx-auto pt-[40px] sm:pt-[55px] pb-10">
-                    <div className="heading_section">
-                        <h2 className="pre_heading font-poppins">
-                            {flightCount} {flightCount === 1 ? 'Flight' : 'Flights'} Found
-                        </h2>
-                        <p className="sub_text font-poppins">
-                            {originShort} to {destinationShort}
-                            <span className="block text-[14px] sm:text-[16px] text-black/50 mt-1">
-                                Fares change frequently — book soon to lock in the best price. All times shown are airport local time.
-                            </span>
-                        </p>
-                    </div>
+                <div className="container">
+                    <div className="w-full mx-auto pt-[40px] sm:pt-[55px] pb-10">
+                        <div className="heading_section">
+                            <h2 className="pre_heading font-poppins">
+                                {flightCount} {flightCount === 1 ? 'Flight' : 'Flights'} Found
+                            </h2>
+                            <p className="sub_text font-poppins">
+                                {originShort} to {destinationShort}
+                                <span className="block text-[14px] sm:text-[16px] text-black/50 mt-1">
+                                    Fares change frequently — book soon to lock in the best price. All times shown are airport local time.
+                                </span>
+                            </p>
+                        </div>
 
-                    <div className="flex flex-col min-[1285px]:flex-row gap-8 mt-6 mb-9">
-                        {/* Sidebar Filters */}
-                        <div className="w-full min-[1285px]:w-[290px] min-[1360px]:w-[330px] shrink-0 space-y-5">
-                            {/* Stopovers Filter */}
-                            {/* <div className="bg-[#FFFAF5] rounded-[24px] p-4 sm:p-4 border border-[#E3DAC9]">
+                        <div className="flex flex-col min-[1285px]:flex-row gap-8 mt-6 mb-9">
+                            {/* Sidebar Filters */}
+                            <div className="w-full min-[1285px]:w-[290px] min-[1360px]:w-[330px] shrink-0 space-y-5">
+                                {/* Stopovers Filter */}
+                                {/* <div className="bg-[#FFFAF5] rounded-[24px] p-4 sm:p-4 border border-[#E3DAC9]">
                                 <div
                                     className="flex justify-between items-center cursor-pointer select-none"
                                     onClick={() => setIsStopoversOpen(!isStopoversOpen)}
@@ -343,177 +342,177 @@ const FlightCardList = () => {
                                 </div>
                             </div> */}
 
-                            {/* Price Filter */}
-                            <div className="bg-white rounded-[20px] p-4 sm:p-4 border border-[#E3E8EC] shadow-[0_8px_24px_rgba(31,0,96,0.06)]">
-                                <div
-                                    className="flex justify-between items-center cursor-pointer select-none"
-                                    onClick={() => setIsPriceOpen(!isPriceOpen)}
-                                >
-                                    <div className="flex items-center gap-2">
-                                        <h3 className="text-[#1F0060] text-[18px] font-bold font-poppins">Price</h3>
-                                        <FilterAccent />
+                                {/* Price Filter */}
+                                <div className="bg-white rounded-[20px] p-4 sm:p-4 border border-[#E3E8EC] shadow-[0_8px_24px_rgba(31,0,96,0.06)]">
+                                    <div
+                                        className="flex justify-between items-center cursor-pointer select-none"
+                                        onClick={() => setIsPriceOpen(!isPriceOpen)}
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            <h3 className="text-[#1F0060] text-[18px] font-bold font-poppins">Price</h3>
+                                            <FilterAccent />
+                                        </div>
+                                        <ChevronIcon open={isPriceOpen} />
                                     </div>
-                                    <ChevronIcon open={isPriceOpen} />
+                                    <div className={`transition-all duration-300 overflow-hidden ${isPriceOpen ? 'max-h-[120px] mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                        <div className="space-y-4 px-1 pb-4">
+                                            <div className="relative h-12 flex items-end pb-1 mt-6">
+                                                <div className="absolute h-0.5 bg-[#D7E6EC] w-full rounded-full" />
+                                                <div
+                                                    className="absolute h-0.5 bg-[#5CACC4] rounded-full"
+                                                    style={{
+                                                        left: `${minPercent}%`,
+                                                        width: `${Math.max(maxPercent - minPercent, 0)}%`
+                                                    }}
+                                                />
+                                                <span
+                                                    className="absolute text-[12px] font-medium font-poppins text-[#1F0060] px-2 py-0.5 rounded shadow-sm select-none z-10 pointer-events-none bg-white"
+                                                    style={{
+                                                        left: `${5}%`,
+                                                        transform: 'translate(-50%, -26px)',
+                                                        whiteSpace: 'nowrap'
+                                                    }}
+                                                >
+                                                    £{minPrice.toLocaleString()}
+                                                </span>
+                                                <span
+                                                    className="absolute text-[12px] font-medium font-poppins text-[#1F0060] px-2 py-0.5 rounded shadow-sm select-none z-10 pointer-events-none bg-white"
+                                                    style={{
+                                                        left: `${100 - 6}%`,
+                                                        transform: 'translate(-50%, -26px)',
+                                                        whiteSpace: 'nowrap'
+                                                    }}
+                                                >
+                                                    £{maxPrice.toLocaleString()}
+                                                </span>
+                                                <input
+                                                    type="range"
+                                                    min={absoluteMinPrice}
+                                                    max={absoluteMaxPrice}
+                                                    value={minPrice}
+                                                    onChange={(e) => {
+                                                        const val = Math.min(Number(e.target.value), maxPrice);
+                                                        setMinPrice(val);
+                                                    }}
+                                                    className="dual-slider-input absolute w-full pointer-events-none appearance-none bg-transparent h-1 focus:outline-none z-10"
+                                                />
+                                                <input
+                                                    type="range"
+                                                    min={absoluteMinPrice}
+                                                    max={absoluteMaxPrice}
+                                                    value={maxPrice}
+                                                    onChange={(e) => {
+                                                        const val = Math.max(Number(e.target.value), minPrice);
+                                                        setMaxPrice(val);
+                                                    }}
+                                                    className="dual-slider-input absolute w-full pointer-events-none appearance-none bg-transparent h-1 focus:outline-none z-10"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className={`transition-all duration-300 overflow-hidden ${isPriceOpen ? 'max-h-[120px] mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                    <div className="space-y-4 px-1 pb-4">
-                                        <div className="relative h-12 flex items-end pb-1 mt-6">
-                                            <div className="absolute h-0.5 bg-[#D7E6EC] w-full rounded-full" />
-                                            <div
-                                                className="absolute h-0.5 bg-[#5CACC4] rounded-full"
-                                                style={{
-                                                    left: `${minPercent}%`,
-                                                    width: `${Math.max(maxPercent - minPercent, 0)}%`
-                                                }}
-                                            />
-                                            <span
-                                                className="absolute text-[12px] font-medium font-poppins text-[#1F0060] px-2 py-0.5 rounded shadow-sm select-none z-10 pointer-events-none bg-white"
-                                                style={{
-                                                    left: `${5}%`,
-                                                    transform: 'translate(-50%, -26px)',
-                                                    whiteSpace: 'nowrap'
-                                                }}
-                                            >
-                                                £{minPrice.toLocaleString()}
-                                            </span>
-                                            <span
-                                                className="absolute text-[12px] font-medium font-poppins text-[#1F0060] px-2 py-0.5 rounded shadow-sm select-none z-10 pointer-events-none bg-white"
-                                                style={{
-                                                    left: `${100 - 6}%`,
-                                                    transform: 'translate(-50%, -26px)',
-                                                    whiteSpace: 'nowrap'
-                                                }}
-                                            >
-                                                £{maxPrice.toLocaleString()}
-                                            </span>
+
+                                {/* Airlines Filter */}
+                                <div className="bg-white rounded-[20px] p-4 sm:p-4 border border-[#E3E8EC] shadow-[0_8px_24px_rgba(31,0,96,0.06)]">
+                                    <div
+                                        className="flex justify-between items-center cursor-pointer select-none"
+                                        onClick={() => setIsAirlinesOpen(!isAirlinesOpen)}
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            <h3 className="text-[#1F0060] text-[18px] font-bold font-poppins">Airlines</h3>
+                                            <FilterAccent />
+                                        </div>
+                                        <ChevronIcon open={isAirlinesOpen} />
+                                    </div>
+                                    <div className={`transition-all duration-300 overflow-hidden ${isAirlinesOpen ? 'max-h-[300px] mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                        <div className="relative mb-4 px-[19px]">
                                             <input
-                                                type="range"
-                                                min={absoluteMinPrice}
-                                                max={absoluteMaxPrice}
-                                                value={minPrice}
-                                                onChange={(e) => {
-                                                    const val = Math.min(Number(e.target.value), maxPrice);
-                                                    setMinPrice(val);
-                                                }}
-                                                className="dual-slider-input absolute w-full pointer-events-none appearance-none bg-transparent h-1 focus:outline-none z-10"
+                                                type="text"
+                                                placeholder="Search Airline"
+                                                value={searchAirline}
+                                                onChange={(e) => setSearchAirline(e.target.value)}
+                                                className="w-full bg-transparent border-b border-[#D7E6EC] py-1 pr-6 text-[13px] font-poppins text-black placeholder-black/30 focus:outline-none focus:border-[#5CACC4]"
                                             />
-                                            <input
-                                                type="range"
-                                                min={absoluteMinPrice}
-                                                max={absoluteMaxPrice}
-                                                value={maxPrice}
-                                                onChange={(e) => {
-                                                    const val = Math.max(Number(e.target.value), minPrice);
-                                                    setMaxPrice(val);
-                                                }}
-                                                className="dual-slider-input absolute w-full pointer-events-none appearance-none bg-transparent h-1 focus:outline-none z-10"
-                                            />
+                                            <svg className="w-3.5 h-3.5 text-black/40 absolute right-1 top-2" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                            </svg>
+                                        </div>
+                                        <div className="border border-[#E3E8EC] rounded-2xl bg-[#F3F6F8] p-4 max-h-[180px] overflow-y-auto space-y-3 custom-scrollbar">
+                                            {filteredAirlinesList.length > 0 ? (
+                                                filteredAirlinesList.map((airline, idx) => {
+                                                    const isChecked = selectedAirlines.includes(airline.airlineName);
+                                                    return (
+                                                        <label key={idx} className="flex items-center gap-3 cursor-pointer group">
+                                                            <div className="relative flex-shrink-0">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={isChecked}
+                                                                    onChange={() => toggleAirline(airline.airlineName)}
+                                                                    className="sr-only"
+                                                                />
+                                                                <div className={`w-[18px] h-[18px] rounded-full border border-[#5CACC4]/60 flex items-center justify-center transition-all ${isChecked ? 'bg-[#5CACC4] border-[#5CACC4]' : 'bg-white'}`}>
+                                                                    <svg className={`w-2.5 h-2.5 text-white transition-opacity ${isChecked ? 'opacity-100' : 'opacity-0'}`} fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" aria-hidden>
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                            <span className="text-[14px] text-[#1F0060] font-poppins font-medium leading-none select-none">{airline?.airlineName}</span>
+                                                        </label>
+                                                    );
+                                                })
+                                            ) : (
+                                                <p className="text-[12px] text-gray-500 text-center py-2 font-poppins">No airlines found</p>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Airlines Filter */}
-                            <div className="bg-white rounded-[20px] p-4 sm:p-4 border border-[#E3E8EC] shadow-[0_8px_24px_rgba(31,0,96,0.06)]">
-                                <div
-                                    className="flex justify-between items-center cursor-pointer select-none"
-                                    onClick={() => setIsAirlinesOpen(!isAirlinesOpen)}
-                                >
-                                    <div className="flex items-center gap-2">
-                                        <h3 className="text-[#1F0060] text-[18px] font-bold font-poppins">Airlines</h3>
-                                        <FilterAccent />
+                            {/* Flight List */}
+                            <div className="flex-grow min-w-0">
+                                {loadingRes ? (
+                                    <div className="border border-[#E3E8EC] py-[80px] px-[30px] rounded-3xl text-center bg-white shadow-[0_8px_24px_rgba(31,0,96,0.05)]">
+                                        <div className="mx-auto mb-4 h-10 w-10 rounded-full border-4 border-[#5CACC4] border-t-transparent animate-spin" />
+                                        <p className="text-[#1F0060] font-poppins font-semibold text-[16px]">
+                                            Searching flights…
+                                        </p>
+                                        <p className="text-gray-500 font-poppins text-[14px] mt-2">
+                                            Comparing live fares for your route.
+                                        </p>
                                     </div>
-                                    <ChevronIcon open={isAirlinesOpen} />
-                                </div>
-                                <div className={`transition-all duration-300 overflow-hidden ${isAirlinesOpen ? 'max-h-[300px] mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                    <div className="relative mb-4 px-[19px]">
-                                        <input
-                                            type="text"
-                                            placeholder="Search Airline"
-                                            value={searchAirline}
-                                            onChange={(e) => setSearchAirline(e.target.value)}
-                                            className="w-full bg-transparent border-b border-[#D7E6EC] py-1 pr-6 text-[13px] font-poppins text-black placeholder-black/30 focus:outline-none focus:border-[#5CACC4]"
+                                ) : filteredResults.length > 0 ? (
+                                    <div className="border border-[#E3E8EC] py-4 px-3 sm:py-6 sm:px-5 min-[1360px]:py-[34px] min-[1360px]:px-[30px] rounded-3xl overflow-hidden bg-white shadow-[0_8px_24px_rgba(31,0,96,0.05)]">
+                                        <Flightlist
+                                            results={{ ...finalResults, result: { ...(finalResults?.result || {}), airSolutions: filteredResults } }}
+                                            setBookNowLoading={setBookNowLoading}
+                                            BookNowLoading={BookNowLoading}
+                                            popupMessage={popupMessage}
+                                            setPopupMessage={setPopupMessage}
+                                            TokenResult={results || fetchedResults}
                                         />
-                                        <svg className="w-3.5 h-3.5 text-black/40 absolute right-1 top-2" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden>
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                                        </svg>
                                     </div>
-                                    <div className="border border-[#E3E8EC] rounded-2xl bg-[#F3F6F8] p-4 max-h-[180px] overflow-y-auto space-y-3 custom-scrollbar">
-                                        {filteredAirlinesList.length > 0 ? (
-                                            filteredAirlinesList.map((airline, idx) => {
-                                                const isChecked = selectedAirlines.includes(airline.airlineName);
-                                                return (
-                                                    <label key={idx} className="flex items-center gap-3 cursor-pointer group">
-                                                        <div className="relative flex-shrink-0">
-                                                            <input
-                                                                type="checkbox"
-                                                                checked={isChecked}
-                                                                onChange={() => toggleAirline(airline.airlineName)}
-                                                                className="sr-only"
-                                                            />
-                                                            <div className={`w-[18px] h-[18px] rounded-full border border-[#5CACC4]/60 flex items-center justify-center transition-all ${isChecked ? 'bg-[#5CACC4] border-[#5CACC4]' : 'bg-white'}`}>
-                                                                <svg className={`w-2.5 h-2.5 text-white transition-opacity ${isChecked ? 'opacity-100' : 'opacity-0'}`} fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" aria-hidden>
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                                                </svg>
-                                                            </div>
-                                                        </div>
-                                                        <span className="text-[14px] text-[#1F0060] font-poppins font-medium leading-none select-none">{airline?.airlineName}</span>
-                                                    </label>
-                                                );
-                                            })
-                                        ) : (
-                                            <p className="text-[12px] text-gray-500 text-center py-2 font-poppins">No airlines found</p>
+                                ) : (
+                                    <div className="border border-[#E3E8EC] py-[60px] px-[30px] rounded-3xl text-center bg-white shadow-[0_8px_24px_rgba(31,0,96,0.05)]">
+                                        <p className="text-gray-500 font-poppins font-medium text-[16px]">
+                                            {finalResults?.result?.airSolutions?.length
+                                                ? 'No fares match your selected filters.'
+                                                : 'Sorry, there are no flights available for your selected route or date at the moment.'}
+                                        </p>
+                                        {finalResults?.result?.airSolutions?.length > 0 && (
+                                            <button
+                                                type="button"
+                                                onClick={resetFilters}
+                                                className="mt-4 px-5 py-2 bg-[#5CACC4] text-white font-poppins text-sm font-semibold rounded-xl hover:bg-[#4ea0b8] transition-colors"
+                                            >
+                                                Reset Filters
+                                            </button>
                                         )}
                                     </div>
-                                </div>
+                                )}
                             </div>
-                        </div>
-
-                        {/* Flight List */}
-                        <div className="flex-grow min-w-0">
-                            {loadingRes ? (
-                                <div className="border border-[#E3E8EC] py-[80px] px-[30px] rounded-3xl text-center bg-white shadow-[0_8px_24px_rgba(31,0,96,0.05)]">
-                                    <div className="mx-auto mb-4 h-10 w-10 rounded-full border-4 border-[#5CACC4] border-t-transparent animate-spin" />
-                                    <p className="text-[#1F0060] font-poppins font-semibold text-[16px]">
-                                        Searching flights…
-                                    </p>
-                                    <p className="text-gray-500 font-poppins text-[14px] mt-2">
-                                        Comparing live fares for your route.
-                                    </p>
-                                </div>
-                            ) : filteredResults.length > 0 ? (
-                                <div className="border border-[#E3E8EC] py-4 px-3 sm:py-6 sm:px-5 min-[1360px]:py-[34px] min-[1360px]:px-[30px] rounded-3xl overflow-hidden bg-white shadow-[0_8px_24px_rgba(31,0,96,0.05)]">
-                                    <Flightlist
-                                        results={{ ...finalResults, result: { ...(finalResults?.result || {}), airSolutions: filteredResults } }}
-                                        setBookNowLoading={setBookNowLoading}
-                                        BookNowLoading={BookNowLoading}
-                                        popupMessage={popupMessage}
-                                        setPopupMessage={setPopupMessage}
-                                        TokenResult={results || fetchedResults}
-                                    />
-                                </div>
-                            ) : (
-                                <div className="border border-[#E3E8EC] py-[60px] px-[30px] rounded-3xl text-center bg-white shadow-[0_8px_24px_rgba(31,0,96,0.05)]">
-                                    <p className="text-gray-500 font-poppins font-medium text-[16px]">
-                                        {finalResults?.result?.airSolutions?.length
-                                            ? 'No fares match your selected filters.'
-                                            : 'Sorry, there are no flights available for your selected route or date at the moment.'}
-                                    </p>
-                                    {finalResults?.result?.airSolutions?.length > 0 && (
-                                        <button
-                                            type="button"
-                                            onClick={resetFilters}
-                                            className="mt-4 px-5 py-2 bg-[#5CACC4] text-white font-poppins text-sm font-semibold rounded-xl hover:bg-[#4ea0b8] transition-colors"
-                                        >
-                                            Reset Filters
-                                        </button>
-                                    )}
-                                </div>
-                            )}
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
         </>
     );
